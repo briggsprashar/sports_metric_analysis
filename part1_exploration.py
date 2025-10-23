@@ -144,23 +144,24 @@ print(f"Total number of unique metrics: {len(metric_list)}")
 # Ensure timestamp is in datetime format
 raw_data['timestamp'] = pd.to_datetime(raw_data['timestamp'])
 
-# Aggregate record count and date range by data source and metric
+# Group by data source and metric to get count and date range
 summary = raw_data.groupby(['data_source', 'metric']).agg(
     record_count=('timestamp', 'count'),
     start_date=('timestamp', 'min'),
     end_date=('timestamp', 'max')
 ).reset_index()
 
-# Get top 1 metric per data source
+# Get top 1 metric per data source by record count
 top_metrics = summary.sort_values(['data_source', 'record_count'], ascending=[True, False]) \
                      .groupby('data_source').head(1)
 
-# Strip time from dates
+# Remove time from dates
 top_metrics['start_date'] = top_metrics['start_date'].dt.date
 top_metrics['end_date'] = top_metrics['end_date'].dt.date
 
-# Display result
-print(top_metrics[['data_source', 'metric', 'start_date', 'end_date']])
+# Display final result
+print(top_metrics[['data_source', 'metric', 'record_count', 'start_date', 'end_date']])
+
 
 
 
