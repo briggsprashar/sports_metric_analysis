@@ -1,4 +1,6 @@
-# lets aim at creating a peofessional readme nt a student project readme.
+# lets aim at creating a professional readme not a student project readme.
+
+Please read the project_workflow folder outside this repo
 
 ## SB Athletics Performance Analytics
 
