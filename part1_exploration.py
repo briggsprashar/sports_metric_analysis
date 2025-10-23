@@ -19,7 +19,7 @@ url_string = f"mysql+pymysql://{sql_username}:{sql_password}@{sql_host}:3306/{sq
 
 conn = create_engine(url_string)
 
-# remove limit 1000; to get full dataset
+# remove limit 1000000; to get full dataset
 sql_toexecute = """
   select *
   from research_experiment_refactor_test
@@ -41,9 +41,18 @@ response = pd.read_sql(sql_toexecute, conn)
 # removing duplicate rows based even if ID number is different
 response_duprem = response.drop_duplicates(subset=[col for col in response.columns if col != 'ID'])
 
+# Standardizing responses in 'metric' column to ensure consistency
+response_duprem['metric'] = response_duprem['metric'].str.strip().str.title()
+
 # viewing list of entries in metric column
 metric_list = response_duprem['metric'].unique()
+print(metric_list)
 
 # counting unique entries in metric column
 unique_count = metric_list.shape[0]
 print(unique_count)
+
+# creating subset of data for specific metrics of interest (will change once team decides on which metrics to focus on)
+metrics_five = ['Braking Rfd(N/s)', 'Jump Height(M)', 'Rsi', 'Time To Stabilization(Ms)', 'Peak Landing Force(N)']
+response_subset = response_duprem[response_duprem['metric'].isin(metrics_five)]
+
