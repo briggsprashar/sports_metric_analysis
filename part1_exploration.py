@@ -26,7 +26,7 @@ sql_toexecute = """
   limit 100000; 
   """
 
-response = pd.read_sql(sql_toexecute, conn)
+raw_data = pd.read_sql(sql_toexecute, conn)
 
 ## Downloading the data locally (optional) remove # below to enable
 # Ensure 'raw' folder exists
@@ -41,6 +41,7 @@ response = pd.read_sql(sql_toexecute, conn)
 ####### PART 1: EXPLORING RAW DATASET ##########
 # Standardizing responses in 'metric' column to ensure consistency (found out responses have upper/lower issues)
 raw_data['metric'] = raw_data['metric'].str.strip().str.title()
+
 
 ### INFORMATION FROM RAW DATASET
 ## Counting unique numbers of athletes
@@ -65,7 +66,7 @@ print(f"The available data ranges from {start_date} to {end_date} in the raw dat
 
 
 ## Hightest Number of Records per data source 
-# Count the number of records per data source
+# Counting the number of records per data source
 source_counts = raw_data['data_source'].value_counts()
 
 # Print the counts
@@ -83,10 +84,6 @@ invalid_names = raw_data[raw_data['playername'].isnull() | (raw_data['playername
 
 # Print the number of invalid entries
 print(f"Number of athletes with missing or invalid names in the raw: {len(invalid_names)}")
-
-# Optionally, display the affected rows
-print(invalid_names)
-
 
 ## Checking for number of athlete entries with more than 1 source of data
 # Count how many unique sources each athlete has
@@ -107,8 +104,8 @@ hawkins_data = raw_data[raw_data['data_source'] == 'hawkins']
 hawkins_metrics = hawkins_data['metric'].value_counts().head(10)
 
 # Display the result
-print("Top 10 most common metrics for Hawkins data:")
-print(hawkins_metrics)
+print("Top 10 most common metrics for Hawkins data:\n", hawkins_metrics)
+
 
 
 # Focusing on 'kinexon' data source for metric exploration
@@ -118,8 +115,7 @@ kinexon_data = raw_data[raw_data['data_source'] == 'kinexon']
 kinexon_metrics = kinexon_data['metric'].value_counts().head(10)
 
 # Display the result
-print("Top 10 most common metrics for Kinexon data:")
-print(kinexon_metrics)
+print("Top 10 most common metrics for Hawkins data:\n", kinexon_metrics)
 
 
 # Focusing on 'vald' data source for metric exploration
@@ -129,12 +125,11 @@ vald_data = raw_data[raw_data['data_source'] == 'vald']
 vald_metrics = vald_data['metric'].value_counts().head(10)
 
 # Display the result
-print("Top 10 most common metrics for Vald data:")
-print(vald_metrics)
+print("Top 10 most common metrics for Hawkins data:\n", vald_metrics)
 
 
-# Identifying unique metrics across all data sources
-metric_list = response['metric'].unique()
+## Identifying unique metrics across all data sources
+metric_list = raw_data['metric'].unique()
 print("Unique metrics:")
 print(metric_list)
 print(f"Total number of unique metrics: {len(metric_list)}")
@@ -170,23 +165,20 @@ print(top_metrics[['data_source', 'metric', 'record_count', 'start_date', 'end_d
 # viewing list of unique entries in metric column
 
 # removing duplicate rows based even if ID number is different
-response = response.drop_duplicates(subset=[col for col in response.columns if col != 'ID'])
+clean_data = raw_data.drop_duplicates(subset=[col for col in raw_data.columns if col != 'ID'])
 
-# Standardizing responses in 'metric' column to ensure consistency (found out responses have upper/lower issues)
-response['metric'] = response['metric'].str.strip().str.title()
-
+# Selecting five metrics of interest
 metrics_five = ['Braking Rfd(N/s)', 'Jump Height(M)', 'Rsi', 'Time To Stabilization(Ms)', 'Peak Landing Force(N)']
-response_subset = response[response['metric'].isin(metrics_five)]
+response_subset = clean_data[clean_data['metric'].isin(metrics_five)]
 
 # Creating final dataset with selected columns
-Final_Data = response_subset[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
+fivemetrics_data = response_subset[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
 
 # saving final dataset to CSV in 'raw' folder (ensure 'raw' folder exists)
 raw_folder = "raw"
 os.makedirs(raw_folder, exist_ok=True)
 
 # Save final dataset to CSV
-output_path = os.path.join(raw_folder, "final_data.csv")
-Final_Data.to_csv(output_path, index=False)
+output_path = os.path.join(raw_folder, "fivemetrics_data.csv")
+fivemetrics_data.to_csv(output_path, index=False)
 print(f"Final dataset saved to: {output_path}")
-
