@@ -99,10 +99,8 @@ print(f"Number of athletes that have data from multiple sources (2 or 3 systems)
 ### Metric Discovery and Selection
 # Focusing on 'hawkins' data source for metric exploration
 hawkins_data = raw_data[raw_data['data_source'] == 'hawkins']
-
 # Count the frequency of each metric
 hawkins_metrics = hawkins_data['metric'].value_counts().head(10)
-
 # Display the result
 print("Top 10 most common metrics for Hawkins data:\n", hawkins_metrics)
 
@@ -110,22 +108,18 @@ print("Top 10 most common metrics for Hawkins data:\n", hawkins_metrics)
 
 # Focusing on 'kinexon' data source for metric exploration
 kinexon_data = raw_data[raw_data['data_source'] == 'kinexon']
-
 # Count the frequency of each metric
 kinexon_metrics = kinexon_data['metric'].value_counts().head(10)
-
 # Display the result
-print("Top 10 most common metrics for Hawkins data:\n", kinexon_metrics)
+print("Top 10 most common metrics for Kinexon data:\n", kinexon_metrics)
 
 
 # Focusing on 'vald' data source for metric exploration
 vald_data = raw_data[raw_data['data_source'] == 'vald']
-
 # Count the frequency of each metric
 vald_metrics = vald_data['metric'].value_counts().head(10)
-
 # Display the result
-print("Top 10 most common metrics for Hawkins data:\n", vald_metrics)
+print("Top 10 most common metrics for Vald data:\n", vald_metrics)
 
 
 ## Identifying unique metrics across all data sources
