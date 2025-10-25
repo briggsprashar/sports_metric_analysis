@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 # Load preselection dataset
 raw_data = pd.read_csv('raw/preselection.csv')
