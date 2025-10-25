@@ -31,6 +31,9 @@ raw_data = pd.read_sql(sql_toexecute, conn)
 #Removing non numeric entries and null or empty entries in 'value' column
 raw_data = raw_data[pd.to_numeric(raw_data['value'], errors='coerce').notnull()]
 
+# Standardizing responses in 'metric' column to ensure consistency (found out responses have upper/lower issues)
+raw_data['metric'] = raw_data['metric'].str.strip().str.title()
+
 ####### PART 1: PRE SELECTION AND DATA MANAGEMENT OF RAW DATASET ##########
 #Selecting relevant columns for analysis
 relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
