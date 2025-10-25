@@ -9,9 +9,9 @@ cleansports = pd.read_csv('raw/preselection.csv')
 # Focusing on 'hawkins' data source for metric exploration
 hawkins_data = cleansports[cleansports['data_source'] == 'hawkins']
 # Count the frequency of each metric
-hawkins_metrics = hawkins_data['metric'].value_counts().head(20)
+hawkins_metrics = hawkins_data['metric'].value_counts().head(40)
 # Display the result
-print("Top 20 most common metrics for Hawkins data:\n", hawkins_metrics)
+print("Top 40 most common metrics for Hawkins data:\n", hawkins_metrics)
 
 
 # Focusing on 'kinexon' data source for metric exploration
@@ -57,3 +57,5 @@ top_metrics['end_date'] = top_metrics['end_date'].dt.date
 
 # Display final result
 print(top_metrics[['data_source', 'metric', 'record_count', 'start_date', 'end_date']])
+
+#shared results to team in teams group chat
