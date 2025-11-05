@@ -42,7 +42,7 @@ relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 
 def groupteam_from_team(team):
     for sport in ['Football', 'Basketball', 'Lacrosse', 'Soccer', 'Baseball']:
         if sport in team:
-            return f"Women's {sport}" if "Women's" in team else f"Men's {sport}" if "Men's" in team else sport
+            return f"Women's {sport}" if "Women" in team else f"Men's {sport}" if "Men" in team else sport
     return "OTHERS"
 
 relevantcolumn['groupteam'] = relevantcolumn['team'].apply(groupteam_from_team)
