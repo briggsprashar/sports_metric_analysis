@@ -11,7 +11,7 @@
 > In the order of joining the team
 
 <details>
-<summary>Siddhika Abraham</summary>
+<summary>Siddikha Abrahim</summary>
 
 <br />
 
