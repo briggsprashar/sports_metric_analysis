@@ -8,7 +8,8 @@ DATA_PATH = 'raw/fivemetrics_data.csv'
 fivemetrics = pd.read_csv(DATA_PATH)
 print("Columns in dataset:", fivemetrics.columns.tolist())
 
-# Filter rows with missing or zero 'value'
+## MISSING DATA ANALYSIS
+# 1.Identify rows with NULL or zero values in 'value' column
 problem_rows = fivemetrics[fivemetrics['value'].isna() | (fivemetrics['value'] == 0)]
 
 # Count problematic entries per metric
@@ -21,11 +22,11 @@ problem_summary = (
 
 print("Metrics with most NULL or zero values:\n", problem_summary)
 
-
+# 2. For each sport/team, calculate what percentage of athletes have at least 5 measurements for your selected metrics
 # Count measurements per player per metric per team
 counts = (
     fivemetrics
-    .groupby(['team', 'metric', 'playername'])
+    .groupby(['sportsteam', 'metric', 'playername'])
     .size()
     .reset_index(name='measurement_count')
 )
@@ -35,7 +36,7 @@ counts['has_5_or_more'] = counts['measurement_count'] >= 5
 
 # Aggregate per team and metric
 summary = (
-    counts.groupby(['team', 'metric'])
+    counts.groupby(['sportsteam', 'metric'])
     .agg(
         total_players=('playername', 'nunique'),
         players_with_5_or_more=('has_5_or_more', 'sum')
@@ -53,9 +54,7 @@ summary = summary.sort_values(by='percentage_with_5_or_more', ascending=False)
 print("Percentage of athletes with ≥5 measurements per team and metric:\n", summary)
 
 
-
-#ATHLETES DID NOT GET TESTED FOR 6 MONTHS
-
+ # 3. Identify athletes who haven't been tested in the last 6 months (for your selected metrics)
 # Convert 'timestamp' to datetime format
 fivemetrics['timestamp'] = pd.to_datetime(fivemetrics['timestamp'], errors='coerce')
 
@@ -89,39 +88,21 @@ print("\nUnique athletes who haven't been tested in the last 6 months:")
 print(unique_players_not_tested)
 
 
+# Step 6: Create a filtered DataFrame excluding athletes not tested in the last 6 months
+recently_tested_players = latest_test[latest_test['tested_recently']]['playername'].unique()
+
+# Filter original valid_data to include only those players
+sixmonthsmetrics = valid_data[valid_data['playername'].isin(recently_tested_players)].copy()
+
+# Optional: Reset index for cleanliness
+sixmonthsmetrics.reset_index(drop=True, inplace=True)
+
+sixmonthsmetrics.to_csv('raw/sixmonthsmetrics_data.csv', index=False)
 
 
-
-# Define cutoff date: 6 months ago from today
-cutoff_date = datetime.today() - timedelta(days=180)
-
-# Identify last test date per athlete per metric
-last_tests_all = (
-    fivemetrics
-    .groupby(['playername', 'metric'])['timestamp']
-    .max()
-    .reset_index(name='last_test_date')
-)
-
-# Flag athletes tested in last 6 months
-last_tests_all['tested_recently'] = last_tests_all['last_test_date'] >= cutoff_date
-
-# Filter athletes who have been tested recently
-tested_recently_all = last_tests_all[last_tests_all['tested_recently']]
-
-# Count unique athletes tested recently
-unique_tested_athletes = tested_recently_all['playername'].nunique()
-
-# Display results
-print(f"\nNumber of athletes tested in the last 6 months (all metrics): {unique_tested_athletes}")
-print("List of unique athletes tested in the last 6 months:")
-print(tested_recently_all['playername'].drop_duplicates().sort_values().reset_index(drop=True))
-
-
-
-###SINGLE
+###SINGLE METRIC
 # Load the dataset
-fivemetrics = pd.read_csv('raw/fivemetrics_data.csv')
+final6month = pd.read_csv('raw/sixmonthsmetrics_data.csv')
 
 # Define the function
 def get_player_metric_sessions(data, player_name, selected_metrics):
@@ -157,41 +138,13 @@ player_sessions_rsi = get_player_metric_sessions(fivemetrics, player_name, selec
 print(f"\nTest sessions for {player_name} with metric {selected_metrics[0]}:")
 print(player_sessions_rsi)
 
+#removing NaN and 0 values from final6month dataset
+# Step 1: Drop rows where 'value' is NaN or 0
+cleanedsixmonth = final6month.dropna(subset=['value'])
+cleanedsixmonth = cleanedsixmonth[cleanedsixmonth['value'] != 0].copy()
 
+# Optional: Reset index for cleanliness
+cleanedsixmonth.reset_index(drop=True, inplace=True)
 
-
-# Define the function to support multiple players
-def get_player_metric_sessions(data, player_names, selected_metrics):
-
-    # Ensure timestamp is in datetime format
-    data['timestamp'] = pd.to_datetime(data['timestamp'], errors='coerce')
-    
-    # Filter for selected players and metrics
-    filtered = data[
-        (data['playername'].isin(player_names)) &
-        (data['metric'].isin(selected_metrics))
-    ].dropna(subset=['timestamp'])
-    
-    # Pivot to get one row per session with metrics as columns
-    session_df = (
-        filtered
-        .pivot_table(index=['playername', 'timestamp'], columns='metric', values='value', aggfunc='first')
-        .reset_index()
-    )
-    
-    # Reorder columns: playername, timestamp, then selected metrics
-    ordered_cols = ['playername', 'timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
-    session_df = session_df[ordered_cols]
-    
-    return session_df
-
-# Example usage
-player_names = ["PLAYER_1167", "PLAYER_1208", "PLAYER_892"]
-selected_metrics = ["Rsi"]
-
-# Get the players' Rsi sessions
-player_sessions_rsi = get_player_metric_sessions(fivemetrics, player_names, selected_metrics)
-
-# Display the result
-print(f"\nTest sessions for players {', '.join(player_names)} with metric {selected_metrics[0]}:")
-print(player_sessions_rsi)
+# Optional: Save cleaned data if needed
+# cleanedsixmonth.to_csv('raw/cleanedsixmonthsmetrics_data.csv', index=False)
