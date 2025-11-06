@@ -117,3 +117,81 @@ print(f"\nNumber of athletes tested in the last 6 months (all metrics): {unique_
 print("List of unique athletes tested in the last 6 months:")
 print(tested_recently_all['playername'].drop_duplicates().sort_values().reset_index(drop=True))
 
+
+
+###SINGLE
+# Load the dataset
+fivemetrics = pd.read_csv('raw/fivemetrics_data.csv')
+
+# Define the function
+def get_player_metric_sessions(data, player_name, selected_metrics):
+    
+
+    # Filter for the selected player and metrics
+    filtered = data[
+        (data['playername'] == player_name) &
+        (data['metric'].isin(selected_metrics))
+    ].dropna(subset=['timestamp'])
+    
+    # Pivot to get one row per session with metrics as columns
+    session_df = (
+        filtered
+        .pivot_table(index='timestamp', columns='metric', values='value', aggfunc='first')
+        .reset_index()
+    )
+    
+    # Reorder columns: timestamp first, then selected metrics
+    ordered_cols = ['timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
+    session_df = session_df[ordered_cols]
+    
+    return session_df
+
+# Example usage
+player_name = "PLAYER_1167"
+selected_metrics = ["Rsi"]
+
+# Get the player's Rsi sessions
+player_sessions_rsi = get_player_metric_sessions(fivemetrics, player_name, selected_metrics)
+
+# Display the result
+print(f"\nTest sessions for {player_name} with metric {selected_metrics[0]}:")
+print(player_sessions_rsi)
+
+
+
+
+# Define the function to support multiple players
+def get_player_metric_sessions(data, player_names, selected_metrics):
+
+    # Ensure timestamp is in datetime format
+    data['timestamp'] = pd.to_datetime(data['timestamp'], errors='coerce')
+    
+    # Filter for selected players and metrics
+    filtered = data[
+        (data['playername'].isin(player_names)) &
+        (data['metric'].isin(selected_metrics))
+    ].dropna(subset=['timestamp'])
+    
+    # Pivot to get one row per session with metrics as columns
+    session_df = (
+        filtered
+        .pivot_table(index=['playername', 'timestamp'], columns='metric', values='value', aggfunc='first')
+        .reset_index()
+    )
+    
+    # Reorder columns: playername, timestamp, then selected metrics
+    ordered_cols = ['playername', 'timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
+    session_df = session_df[ordered_cols]
+    
+    return session_df
+
+# Example usage
+player_names = ["PLAYER_1167", "PLAYER_1208", "PLAYER_892"]
+selected_metrics = ["Rsi"]
+
+# Get the players' Rsi sessions
+player_sessions_rsi = get_player_metric_sessions(fivemetrics, player_names, selected_metrics)
+
+# Display the result
+print(f"\nTest sessions for players {', '.join(player_names)} with metric {selected_metrics[0]}:")
+print(player_sessions_rsi)
