@@ -5,17 +5,22 @@ import os
 raw_data = pd.read_csv('raw/preselection.csv')
 
 ####### CREATING FINAL DATASET WITH METRICS OF INTEREST ##########
-# Creating subset of data for specific metrics of interest (will change once team decides on which metrics to focus on)
-# viewing list of unique entries in metric column
 
-# removing duplicate rows based even if ID number is different
+# Remove duplicate rows based on all columns except 'ID'
 clean_data = raw_data.drop_duplicates(subset=[col for col in raw_data.columns if col != 'ID'])
 
-# Selecting five metrics of interest
-metrics_five = ['Braking Rfd(N/s)', 'Jump Height(M)', 'Rsi', 'Time To Stabilization(Ms)', 'Peak Landing Force(N)']
+# Define metrics of interest
+metrics_five = ['Speed_Max', 'Jump Height(M)', 'Rsi', 'Peak Velocity(M/S)', 'Peak Propulsive Force(W)', 'Distance_Total']
+
+# Filter rows where 'metric' column matches one of the selected metrics
 response_subset = clean_data[clean_data['metric'].isin(metrics_five)]
 
-# saving final dataset to CSV in 'raw' folder (ensure 'raw' folder exists)
+# Create a new DataFrame with only the relevant columns
+# Adjust this list based on which columns you want to keep
+columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'sportsteam', 'groupteam']  # example column names
+fivemetrics_data = response_subset[columns_to_keep]
+
+# Ensure 'raw' folder exists
 raw_folder = "raw"
 os.makedirs(raw_folder, exist_ok=True)
 
