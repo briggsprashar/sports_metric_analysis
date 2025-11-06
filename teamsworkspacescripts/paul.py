@@ -1,61 +1,119 @@
-#after doing the part1_preselection.py script
+#CLEANING SCriPT before going to final cleaning.py
+
 import pandas as pd
+from datetime import datetime, timedelta
 
-#load preselection dataset
-cleansports = pd.read_csv('raw/preselection.csv')
+# Load dataset and verify columns
+DATA_PATH = 'raw/fivemetrics_data.csv'
+fivemetrics = pd.read_csv(DATA_PATH)
+print("Columns in dataset:", fivemetrics.columns.tolist())
 
+# Filter rows with missing or zero 'value'
+problem_rows = fivemetrics[fivemetrics['value'].isna() | (fivemetrics['value'] == 0)]
 
-### Metric Discovery and Selection
-# Focusing on 'hawkins' data source for metric exploration
-hawkins_data = cleansports[cleansports['data_source'] == 'hawkins']
-# Count the frequency of each metric
-hawkins_metrics = hawkins_data['metric'].value_counts().head(40)
-# Display the result
-print("Top 40 most common metrics for Hawkins data:\n", hawkins_metrics)
+# Count problematic entries per metric
+problem_summary = (
+    problem_rows['metric']
+    .value_counts()
+    .reset_index(name='null_or_zero_count')
+    .rename(columns={'index': 'metric'})
+)
 
-
-# Focusing on 'kinexon' data source for metric exploration
-kinexon_data = cleansports[cleansports['data_source'] == 'kinexon']
-# Count the frequency of each metric
-kinexon_metrics = kinexon_data['metric'].value_counts().head(30)
-# Display the result
-print("Top 30 most common metrics for Kinexon data:\n", kinexon_metrics)
-
-
-# Focusing on 'vald' data source for metric exploration
-vald_data = cleansports[cleansports['data_source'] == 'vald']
-# Count the frequency of each metric
-vald_metrics = vald_data['metric'].value_counts().head(20)
-# Display the result
-print("Top 20 most common metrics for Vald data:\n", vald_metrics)
+print("Metrics with most NULL or zero values:\n", problem_summary)
 
 
+# Count measurements per player per metric per team
+counts = (
+    fivemetrics
+    .groupby(['team', 'metric', 'playername'])
+    .size()
+    .reset_index(name='measurement_count')
+)
 
-## Identifying unique metrics across all data sources
-metric_list = cleansports['metric'].unique()
-print(f"Total number of unique metrics: {len(metric_list)}")
+# Flag players with ≥5 measurements
+counts['has_5_or_more'] = counts['measurement_count'] >= 5
+
+# Aggregate per team and metric
+summary = (
+    counts.groupby(['team', 'metric'])
+    .agg(
+        total_players=('playername', 'nunique'),
+        players_with_5_or_more=('has_5_or_more', 'sum')
+    )
+    .reset_index()
+)
+
+# Calculate percentage
+summary['percentage_with_5_or_more'] = (
+    summary['players_with_5_or_more'] / summary['total_players'] * 100
+).round(2)
+
+# Sort and display
+summary = summary.sort_values(by='percentage_with_5_or_more', ascending=False)
+print("Percentage of athletes with ≥5 measurements per team and metric:\n", summary)
 
 
-# Top date ranges for top metrics for each data source
-# Ensure timestamp is in datetime format
-cleansports['timestamp'] = pd.to_datetime(cleansports['timestamp'])
 
-# Group by data source and metric to get count and date range
-summary = cleansports.groupby(['data_source', 'metric']).agg(
-    record_count=('timestamp', 'count'),
-    start_date=('timestamp', 'min'),
-    end_date=('timestamp', 'max')
-).reset_index()
+#ATHLETES DID NOT GET TESTED FOR 6 MONTHS
 
-# Get top 1 metric per data source by record count
-top_metrics = summary.sort_values(['data_source', 'record_count'], ascending=[True, False]) \
-                     .groupby('data_source').head(1)
+# Convert 'timestamp' to datetime format
+fivemetrics['timestamp'] = pd.to_datetime(fivemetrics['timestamp'], errors='coerce')
 
-# Remove time from dates
-top_metrics['start_date'] = top_metrics['start_date'].dt.date
-top_metrics['end_date'] = top_metrics['end_date'].dt.date
+# Define cutoff date (6 months ago from today)
+cutoff_date = datetime.today() - timedelta(days=6*30)  # approx 6 months
 
-# Display final result
-print(top_metrics[['data_source', 'metric', 'record_count', 'start_date', 'end_date']])
+# Filter only valid timestamps
+valid_data = fivemetrics.dropna(subset=['timestamp'])
 
-#shared results to team in teams group chat
+# Step 1: Get latest test date per athlete per metric
+latest_test = (
+    valid_data
+    .groupby(['playername', 'metric'])['timestamp']
+    .max()
+    .reset_index(name='last_test_date')
+)
+
+# Step 2: Flag athletes not tested in last 6 months
+latest_test['tested_recently'] = latest_test['last_test_date'] >= cutoff_date
+
+# Step 3: Filter athletes who haven't been tested recently
+not_tested_recently = latest_test[~latest_test['tested_recently']]
+
+# Step 4: Display full results
+print("Athletes who haven't been tested in the last 6 months (by metric):")
+print(not_tested_recently.sort_values(by='last_test_date'))
+
+# Step 5: Display unique player names
+unique_players_not_tested = not_tested_recently['playername'].drop_duplicates().sort_values().reset_index(drop=True)
+print("\nUnique athletes who haven't been tested in the last 6 months:")
+print(unique_players_not_tested)
+
+
+
+
+
+# Define cutoff date: 6 months ago from today
+cutoff_date = datetime.today() - timedelta(days=180)
+
+# Identify last test date per athlete per metric
+last_tests_all = (
+    fivemetrics
+    .groupby(['playername', 'metric'])['timestamp']
+    .max()
+    .reset_index(name='last_test_date')
+)
+
+# Flag athletes tested in last 6 months
+last_tests_all['tested_recently'] = last_tests_all['last_test_date'] >= cutoff_date
+
+# Filter athletes who have been tested recently
+tested_recently_all = last_tests_all[last_tests_all['tested_recently']]
+
+# Count unique athletes tested recently
+unique_tested_athletes = tested_recently_all['playername'].nunique()
+
+# Display results
+print(f"\nNumber of athletes tested in the last 6 months (all metrics): {unique_tested_athletes}")
+print("List of unique athletes tested in the last 6 months:")
+print(tested_recently_all['playername'].drop_duplicates().sort_values().reset_index(drop=True))
+
