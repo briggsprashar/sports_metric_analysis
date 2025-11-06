@@ -40,7 +40,7 @@ relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 
 
 #Adding new column 'groupteam' based on 'team' column to categorize into broader sports categories
 def groupteam_from_team(team):
-    for sport in ['Football', 'Basketball', 'Lacrosse', 'Soccer', 'Baseball']:
+    for sport in ['Football', 'Basketball']:
         if sport in team:
             return f"Women's {sport}" if "Women" in team else f"Men's {sport}" if "Men" in team else sport
     return "OTHERS"
@@ -52,7 +52,7 @@ print(relevantcolumn['groupteam'].value_counts())
 
 #adding new column sportsteam based on 'team' column to simplify team names to just sport names
 def groupteam_from_team(team):
-    for sport in ['Football', 'Basketball', 'Lacrosse', 'Soccer', 'Baseball']:
+    for sport in ['Football', 'Basketball']:
         if sport in team:
             return sport
     return "OTHERS"
