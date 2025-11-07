@@ -89,7 +89,7 @@ print("Number of unique players not tested in the last 6 months:", unique_player
 
 #OPTIONAL: showing list of the unique player names who have been tested recently along with their sportsteam
 # Step 1: Filter rows with valid timestamps older than cutoff
-older_than_cutoff = fivemetrics[fivemetrics['timestamp'] < cutoff_date]
+older_than_cutoff = fivemetrics[fivemetrics['timestamp'] > cutoff_date]
 
 # Step 2: Get player-sportsteam pairs from those older rows
 player_team_pairs = older_than_cutoff[['playername', 'sportsteam']].dropna(subset=['playername'])
@@ -136,7 +136,7 @@ def get_player_metric_sessions(data, player_name, selected_metrics):
         .pivot_table(index='timestamp', columns='metric', values='value', aggfunc='first')
         .reset_index()
     )
-    
+   
     # Reorder columns: timestamp first, then selected metrics
     ordered_cols = ['timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
     session_df = session_df[ordered_cols]
@@ -168,19 +168,19 @@ meanteam = meanteam[meanteam['value'] > 0].copy()
 # Calculate mean value per team and metric
 team_means = (
     meanteam
-    .groupby(['team', 'metric'])['value']
+    .groupby(['groupteam', 'metric'])['value']
     .mean()
     .reset_index()
     .rename(columns={'value': 'team_avg'})
 )
 
 # Display team means
-print("Mean metric value per team:")
+print("Mean metric value per group teams:")
 print(team_means.sort_values(by='team_avg', ascending=False))
 
     #2. For each athlete measurement, calculates their percent difference from their team's average
 #Merge team averages into athlete data
-playdiff = meanteam.merge(team_means, on=['team', 'metric'], how='left')
+playdiff = meanteam.merge(team_means, on=['groupteam', 'metric'], how='left')
 
 # Calculate percent difference from team average
 playdiff['percent_diff_from_team'] = ((playdiff['value'] - playdiff['team_avg']) / playdiff['team_avg']) * 100
@@ -205,10 +205,10 @@ bottom_5 = sorted_diff.tail(5)
 
 # Display results
 print("\nTop 5 performers relative to their team mean:")
-print(top_5[['playername', 'team', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
+print(top_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
 
 print("\nBottom 5 performers relative to their team mean:")
-print(bottom_5[['playername', 'team', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
+print(bottom_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
 
 
 
@@ -221,10 +221,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #REMINDER FIVEMETRICS IS NOT TOTALLY CLEANED YET SO MAY HAVE TO HANDLE NA/0 VALUES
+# Clean the dataset by removing rows with NaN or zero values in 'value'
+# df = df[df['value'].notna() & (df['value'] != 0)]
+
 # Load the dataset 
 df = pd.read_csv('raw/fivemetrics_data.csv')
 
-# Filter for player_0001
+# Filter for player_1022
 player_df = df[df['playername'] == 'PLAYER_1022'].copy()
 
 # Convert timestamp to datetime
@@ -235,6 +238,10 @@ player_df = player_df.dropna(subset=['timestamp'])
 cutoff_date = player_df['timestamp'].max() - pd.DateOffset(months=12)
 player_df = player_df[player_df['timestamp'] >= cutoff_date]
 
+# Get sportsteam label (assumes consistent team for this player)
+sportsteam = player_df['sportsteam'].dropna().unique()
+team_label = sportsteam[0] if len(sportsteam) > 0 else "Unknown Team"
+
 # Get unique metrics
 metrics = player_df['metric'].unique()
 
@@ -243,7 +250,7 @@ for metric in metrics:
     metric_df = player_df[player_df['metric'] == metric]
     plt.figure(figsize=(10, 4))
     plt.plot(metric_df['timestamp'], metric_df['value'], marker='o')
-    plt.title(f"{metric} over time for player_1022")
+    plt.title(f"{metric} over time for PLAYER_1022 ({team_label})")
     plt.xlabel("timestamp")
     plt.ylabel("value")
     plt.grid(True)
@@ -274,7 +281,7 @@ worst_dates = (
 performance_summary = pd.merge(best_dates, worst_dates, on='metric')
 
 # Display results
-print("Best and worst performance dates for player_1022:")
+print(f"Best and worst performance dates for {player_df['playername'].iloc[0]}:")
 print(performance_summary.sort_values(by='metric'))
 
 
@@ -304,7 +311,7 @@ bottom_dates = (
 
 # Combine and display
 performance_dates = pd.concat([top_dates, bottom_dates]).sort_values(by=['metric', 'performance', 'timestamp'])
-print("Top and bottom 5 performance dates for player_0001:")
+print(f"Top and bottom 5 performance dates for for {player_df['playername'].iloc[0]}:")
 print(performance_dates)
 
 
@@ -345,7 +352,7 @@ for metric in metrics:
 
 # Display trend summary
 trend_df = pd.DataFrame(trend_results)
-print("\nPerformance trend for player_1022 (last 12 months):")
+print(f"\nPerformance trend for {player_df['playername'].iloc[0]} (last 12 months):")
 print(trend_df.sort_values(by='metric'))
 
 
