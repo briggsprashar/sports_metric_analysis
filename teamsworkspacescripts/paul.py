@@ -79,7 +79,7 @@ latest_test = (
 # Step 2: Flag athletes not tested in last 6 months
 latest_test['tested_recently'] = latest_test['last_test_date'] >= cutoff_date
 
-# Step 3: Filter athletes who haven't been tested recently
+# Step 3: Filter athletes who haven't been tested recently (instead of using ~ you can use == False at the end)
 not_tested_recently = latest_test[~latest_test['tested_recently']]
 
 # Step 4: Display full results
@@ -215,55 +215,345 @@ print(bottom_5[['playername', 'team', 'metric', 'value', 'team_avg', 'percent_di
 
 
 
+        ## 3. LONGITUDINAL ANALYSIS AND VISUALIZATION
+    #3.1 Individual Athlete Timeline (Pair Work)
+#3.1A  Individual Athlete Timeline (Pair Work) (in part3_viz_individual.ipynb)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#REMINDER FIVEMETRICS IS NOT TOTALLY CLEANED YET SO MAY HAVE TO HANDLE NA/0 VALUES
+# Load the dataset 
+df = pd.read_csv('raw/fivemetrics_data.csv')
+
+# Filter for player_0001
+player_df = df[df['playername'] == 'PLAYER_1022'].copy()
+
+# Convert timestamp to datetime
+player_df['timestamp'] = pd.to_datetime(player_df['timestamp'], errors='coerce')
+player_df = player_df.dropna(subset=['timestamp'])
+
+# Filter for last 12 months
+cutoff_date = player_df['timestamp'].max() - pd.DateOffset(months=12)
+player_df = player_df[player_df['timestamp'] >= cutoff_date]
+
+# Get unique metrics
+metrics = player_df['metric'].unique()
+
+# Plot each metric separately
+for metric in metrics:
+    metric_df = player_df[player_df['metric'] == metric]
+    plt.figure(figsize=(10, 4))
+    plt.plot(metric_df['timestamp'], metric_df['value'], marker='o')
+    plt.title(f"{metric} over time for player_1022")
+    plt.xlabel("timestamp")
+    plt.ylabel("value")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 
+#3.1B Identify their best and worst performance dates
+# Load and clean the dataset
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp', 'value'])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Count unique teams and their frequency
-team_counts = (
-    cleanedsixmonth['team']
-    .value_counts()
-    .reset_index()
-    .rename(columns={'index': 'team', 'team': 'count'})
+# Group by metric to find best and worst performance dates
+best_dates = (
+    player_df.loc[player_df.groupby('metric')['value'].idxmax()]
+    [['metric', 'value', 'timestamp']]
+    .rename(columns={'value': 'best_value', 'timestamp': 'best_date'})
 )
 
-# Display the result
-print("\nUnique teams and their total entry counts:")
-print(team_counts)
+worst_dates = (
+    player_df.loc[player_df.groupby('metric')['value'].idxmin()]
+    [['metric', 'value', 'timestamp']]
+    .rename(columns={'value': 'worst_value', 'timestamp': 'worst_date'})
+)
+
+# Merge best and worst into one summary
+performance_summary = pd.merge(best_dates, worst_dates, on='metric')
+
+# Display results
+print("Best and worst performance dates for player_1022:")
+print(performance_summary.sort_values(by='metric'))
+
+
+#  OPTIONAL SHOWS TOP 5 and TOP 5 WORST PERFORMANCES ACROSS ALL METRICS
+# Load and clean the dataset
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp', 'value'])
+
+# Get top 5 and bottom 5 performance dates per metric
+top_dates = (
+    player_df
+    .sort_values(by='value', ascending=False)
+    .groupby('metric')
+    .head(5)
+    [['metric', 'timestamp', 'value']]
+    .assign(performance='top')
+)
+
+bottom_dates = (
+    player_df
+    .sort_values(by='value', ascending=True)
+    .groupby('metric')
+    .head(5)
+    [['metric', 'timestamp', 'value']]
+    .assign(performance='bottom')
+)
+
+# Combine and display
+performance_dates = pd.concat([top_dates, bottom_dates]).sort_values(by=['metric', 'performance', 'timestamp'])
+print("Top and bottom 5 performance dates for player_0001:")
+print(performance_dates)
 
 
 
-# Show unique players with more than 5 metrics and their sportsteam
-# Load the CSV
-cleanedsixmonth = pd.read_csv('raw/sixmonthsmetrics_data.csv')
+#3.1C Calculate if they show improvement or decline trends over the last 12 months for each metric
+from scipy.stats import linregress
 
-# Count non-null metrics per row, excluding 'playername'
+trend_results = []
 
-metric_counts = cleanedsixmonth.drop(columns=['playername', 'sportsteam']).notnull().sum(axis=1)
+for metric in metrics:
+    metric_df = player_df[player_df['metric'] == metric].copy()
+    
+    # Skip if not enough data
+    if len(metric_df) < 2:
+        continue
 
-# Filter rows where the player has more than 5 metrics
-filtered_df = cleanedsixmonth.loc[metric_counts >= 5, ['playername', 'sportsteam']]
+    # Convert timestamp to ordinal for regression
+    x = metric_df['timestamp'].map(pd.Timestamp.toordinal).values
+    y = metric_df['value'].values
 
-# Drop duplicates to get unique player-team pairs
-unique_players = filtered_df.drop_duplicates()
+    # Perform linear regression
+    slope, intercept, r_value, p_value, std_err = linregress(x, y)
 
-# Display the result
-print("Unique players with more than 5 metrics and their sportsteam:")
-print(unique_players)
+    # Determine trend
+    if slope > 0.01:
+        trend = 'improvement'
+    elif slope < -0.01:
+        trend = 'decline'
+    else:
+        trend = 'stable'
+
+    trend_results.append({
+        'metric': metric,
+        'slope': round(slope, 4),
+        'r_squared': round(r_value**2, 4),
+        'trend': trend
+    })
+
+# Display trend summary
+trend_df = pd.DataFrame(trend_results)
+print("\nPerformance trend for player_1022 (last 12 months):")
+print(trend_df.sort_values(by='metric'))
 
 
+
+    #3.2 Individual Athlete Timeline (Pair Work) this will be in part3_viz_comparison.ipynb
+#3.2A Create box plots or violin plots comparing your selected metric(s) between teams
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['value', 'sportsteam', 'metric'])
+
+# Get all unique metrics
+all_metrics = df['metric'].unique()
+
+# Plot each metric separately
+for metric in all_metrics:
+    metric_df = df[df['metric'] == metric]
+
+    # Box Plot
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(x='sportsteam', y='value', data=metric_df)
+    plt.title(f"Box Plot of {metric} by Team")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+    # Violin Plot
+    plt.figure(figsize=(12, 6))
+    sns.violinplot(x='sportsteam', y='value', data=metric_df, inner='quartile')
+    plt.title(f"Violin Plot of {metric} by Team")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+
+#3.2B Calculate statistical significance (t-test or ANOVA as appropriate)
+import pandas as pd
+from scipy.stats import f_oneway
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['value', 'sportsteam', 'metric'])
+
+# Prepare results
+anova_results = []
+
+# Loop through each metric
+for metric in df['metric'].unique():
+    metric_df = df[df['metric'] == metric]
+    teams = metric_df['sportsteam'].unique()
+
+    # Collect values per team
+    team_values = [metric_df[metric_df['sportsteam'] == team]['value'].values for team in teams]
+
+    # Skip if any team has fewer than 2 values
+    if any(len(vals) < 2 for vals in team_values):
+        continue
+
+    # Perform ANOVA
+    stat, p = f_oneway(*team_values)
+
+    anova_results.append({
+        'metric': metric,
+        'F_statistic': round(stat, 4),
+        'p_value': round(p, 4),
+        'significant': p < 0.05
+    })
+
+# Display results
+anova_df = pd.DataFrame(anova_results)
+print("ANOVA results comparing sportsteams for each metric:")
+print(anova_df.sort_values(by='metric'))
+
+
+#3.2C  Create a visualization showing testing frequency by team over time
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp', 'sportsteam'])
+
+# Create a 'month' column
+df['month'] = df['timestamp'].dt.to_period('M').dt.to_timestamp()
+
+# Group by team and month to count tests
+test_counts = df.groupby(['sportsteam', 'month']).size().reset_index(name='test_count')
+
+# Pivot for plotting
+pivot_df = test_counts.pivot(index='month', columns='sportsteam', values='test_count').fillna(0)
+
+# Plot
+plt.figure(figsize=(14, 6))
+pivot_df.plot(marker='o')
+plt.title("Testing Frequency by Team Over Time")
+plt.xlabel("Month")
+plt.ylabel("Number of Tests")
+plt.grid(True)
+plt.legend(title='Team', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+
+    #3.3C  Dashboard Metric (Full Group)
+#3.3A Total number of tests per month (all systems combined)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp', 'device'])
+
+# Create a 'month' column
+df['month'] = df['timestamp'].dt.to_period('M').dt.to_timestamp()
+
+# Group by month and count tests
+monthly_tests = df.groupby('month').size().reset_index(name='total_tests')
+
+# Format month for display
+monthly_tests['month_str'] = monthly_tests['month'].dt.strftime('%Y - %m')
+
+# Plot
+plt.figure(figsize=(12, 4))
+plt.bar(monthly_tests['month_str'], monthly_tests['total_tests'], color='skyblue')
+plt.title("Total Number of Tests per Month (All Devices)")
+plt.xlabel("Month")
+plt.ylabel("Total Tests")
+plt.xticks(rotation=90)
+plt.tight_layout()
+plt.grid(axis='y')
+plt.show()
+
+
+#3.3B Breakdown by data source (stacked bar chart recommended)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp', 'device'])
+
+# Create a 'month' column
+df['month'] = df['timestamp'].dt.to_period('M').dt.to_timestamp()
+
+# Group by month and device to count tests
+monthly_device_counts = df.groupby(['month', 'device']).size().unstack(fill_value=0)
+
+# Plot stacked bar chart
+monthly_device_counts.index = monthly_device_counts.index.strftime('%Y-%m')
+monthly_device_counts.plot(kind='bar', stacked=True, figsize=(14, 6), colormap='tab20')
+plt.title("Monthly Test Counts by Data Source (Device)")
+plt.xlabel("Month")
+plt.ylabel("Number of Tests")
+plt.xticks(rotation=90)
+plt.legend(title='Device', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.grid(axis='y')
+plt.show()
+
+
+
+
+
+#3.3C Identify any gaps or unusual patterns in data collection
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load and clean the dataset
+df = pd.read_csv('raw/fivemetrics_data.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+df = df.dropna(subset=['timestamp'])
+
+# Create a 'month' column
+df['month'] = df['timestamp'].dt.to_period('M').dt.to_timestamp()
+
+# Count tests per month
+monthly_counts = df.groupby('month').size().reset_index(name='test_count')
+
+# Calculate rolling mean and flag dips
+monthly_counts['rolling_mean'] = monthly_counts['test_count'].rolling(window=3, center=True).mean()
+monthly_counts['is_gap'] = monthly_counts['test_count'] < 0.5 * monthly_counts['rolling_mean']
+
+# Display flagged months
+gaps = monthly_counts[monthly_counts['is_gap'] | (monthly_counts['test_count'] == 0)]
+print("Gaps or unusual dips in data collection:")
+print(gaps[['month', 'test_count']])
+
+# Plot with annotations
+plt.figure(figsize=(12, 5))
+plt.plot(monthly_counts['month'], monthly_counts['test_count'], marker='o', label='Monthly Tests')
+plt.plot(monthly_counts['month'], monthly_counts['rolling_mean'], linestyle='--', label='3-Month Rolling Mean')
+for _, row in gaps.iterrows():
+    plt.annotate('Gap', xy=(row['month'], row['test_count']), xytext=(row['month'], row['test_count'] + 5),
+                 arrowprops=dict(facecolor='red', shrink=0.05), fontsize=9, color='red')
+plt.title("Monthly Test Counts with Gaps Highlighted")
+plt.xlabel("Month")
+plt.ylabel("Test Count")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
