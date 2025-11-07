@@ -2,18 +2,15 @@
 import pandas as pd
 from datetime import datetime, timedelta
 
-#THIS CODE WILL BE USED IN PART2_CLEANING.PY
-
+    #THIS CODE WILL BE USED IN PART2_CLEANING.PY
 # Load five metrics dataset
 fivemetrics = pd.read_csv('raw/fivemetrics_data.csv')
-
 # Display list of columns to verify loading
 print("Columns in five metrics dataset:\n", fivemetrics.columns.tolist())
 
 
-
-            ## 2.1 MISSING DATA ANALYSIS
-    # 1.Identify rows with NULL or zero values in 'value' column
+        ## 2.1 MISSING DATA ANALYSIS
+# 1. Identify rows with NULL or zero values in 'value' column
 problem_rows = fivemetrics[fivemetrics['value'].isna() | (fivemetrics['value'] == 0)]
 
 # Count problematic entries per metric
@@ -25,9 +22,15 @@ problem_summary = (
 )
 print("Metrics with most NULL or zero values:\n", problem_summary)
 
+# Display total number of rows in the dataset
+print("Total number of rows in dataset:", len(fivemetrics))
+
 
     # 2.For each sport/team, calculate what percentage of athletes have at least 5 measurements for your selected metrics
 # Count measurements per player per metric per team
+#removing rows with NaN or zero values in 'value' for accurate counts
+fivemetrics = fivemetrics.dropna(subset=['value'])
+
 counts = (
     fivemetrics
     .groupby(['sportsteam', 'metric', 'playername'])
@@ -58,53 +61,48 @@ summary = summary.sort_values(by='percentage_with_5_or_more', ascending=False)
 print("Percentage of athletes with ≥5 measurements per team and metric:\n", summary)
 
 
+
     # 3.Identify athletes who haven't been tested in the last 6 months (for your selected metrics)
-# Convert 'timestamp' to datetime format
+# Step 1: Convert 'timestamp' to datetime format
 fivemetrics['timestamp'] = pd.to_datetime(fivemetrics['timestamp'], errors='coerce')
 
-# Define cutoff date (6 months ago from today)
-cutoff_date = datetime.today() - timedelta(days=180)  # approx 6 months
+# Step 2: Define cutoff date (6 months ago from today)
+cutoff_date = datetime.today() - timedelta(days=180)
 
-# Filter only valid timestamps
-valid_data = fivemetrics.dropna(subset=['timestamp'])
+# Step 3: Filter rows with valid timestamps older than cutoff
+older_than_cutoff = fivemetrics[fivemetrics['timestamp'] < cutoff_date]
 
-# Step 1: Get latest test date per athlete per metric
-latest_test = (
-    valid_data
-    .groupby(['playername', 'metric'])['timestamp']
-    .max()
-    .reset_index(name='last_test_date')
-)
+# Step 4: Get player-sportsteam pairs from those older rows
+player_team_pairs = older_than_cutoff[['playername', 'sportsteam']].dropna(subset=['playername'])
 
-# Step 2: Flag athletes not tested in last 6 months
-latest_test['tested_recently'] = latest_test['last_test_date'] >= cutoff_date
+# Step 5: Drop duplicates to get unique player-sportsteam pairs
+unique_players_not_tested_recently = player_team_pairs.drop_duplicates().sort_values(by='playername')
 
-# Step 3: Filter athletes who haven't been tested recently (instead of using ~ you can use == False at the end)
-not_tested_recently = latest_test[~latest_test['tested_recently']]
+# Step 6: Display results
+print("Players with tests older than 6 months (with sportsteam):")
+print(unique_players_not_tested_recently)
 
-# Step 4: Display full results
-print("Athletes who haven't been tested in the last 6 months (by metric):")
-print(not_tested_recently.sort_values(by='last_test_date'))
+print("\nTotal rows before uniqueness:", len(player_team_pairs))
+print("Number of unique players not tested in the last 6 months:", unique_players_not_tested_recently['playername'].nunique())
+
 
 
 #OPTIONAL: showing list of the unique player names who have been tested recently along with their sportsteam
-# Step 5: Filter athletes who HAVE been tested recently
-tested_recently = latest_test[latest_test['tested_recently']]
+# Step 1: Filter rows with valid timestamps older than cutoff
+older_than_cutoff = fivemetrics[fivemetrics['timestamp'] < cutoff_date]
 
-# Step 6: Merge with original data to get sportsteam info
-player_team_info = fivemetrics[['playername', 'sportsteam']].drop_duplicates()
+# Step 2: Get player-sportsteam pairs from those older rows
+player_team_pairs = older_than_cutoff[['playername', 'sportsteam']].dropna(subset=['playername'])
 
-# Merge to get sportsteam for tested players
-tested_with_team = tested_recently.merge(player_team_info, on='playername', how='left')
+# Step 5: Drop duplicates to get unique player-sportsteam pairs
+unique_players_not_tested_recently = player_team_pairs.drop_duplicates().sort_values(by='playername')
 
-# Step 7: Drop duplicates to get unique player-team pairs
-unique_tested_players = tested_with_team[['playername', 'sportsteam']].drop_duplicates()
+# Step 6: Display results
+print("Players with tests older than 6 months (with sportsteam):")
+print(unique_players_not_tested_recently)
 
-# Step 8: Display results
-print("Unique players tested in the last 6 months with their sportsteam:")
-print(unique_tested_players.sort_values(by='playername'))
-
-
+print("\nTotal rows before uniqueness:", len(player_team_pairs))
+print("Number of unique players not tested in the last 6 months:", unique_players_not_tested_recently['playername'].nunique())
 
 
 
@@ -155,6 +153,7 @@ player_sessions_rsi = get_player_metric_sessions(singlemetric, player_name, sele
 # Display the result
 print(f"\nTest sessions for {player_name} with metric {selected_metrics[0]}:")
 print(player_sessions_rsi)
+
 
 
 
