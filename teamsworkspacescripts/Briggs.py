@@ -29,6 +29,5 @@ desc_statsseparate = filtered_df.groupby(['groupteam', 'metric'])['value'].descr
 # Generate descriptive statistics with specified percentiles for METRIC ALL TEAMS
 desc_statsall = filtered_df.groupby(['metric'])['value'].describe(percentiles=percentiles)
 
-print('\nPercentile description by all sports:', desc_statsall)
-print('\nPercentile description by separated teams:', desc_statsseparate)
-
+print('\nPercentile description by all sports:\n', desc_statsall.to_string())
+print('\nPercentile description by separated teams:\n', desc_statsseparate.to_string())
