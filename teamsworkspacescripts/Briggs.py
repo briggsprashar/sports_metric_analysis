@@ -31,3 +31,17 @@ desc_statsall = filtered_df.groupby(['metric'])['value'].describe(percentiles=pe
 
 print('\nPercentile description by all sports:\n', desc_statsall.to_string())
 print('\nPercentile description by separated teams:\n', desc_statsseparate.to_string())
+
+
+#count unique athletes
+# Count unique player names for each groupteam
+unique_players_by_group = (
+    df.groupby('groupteam')['playername']
+    .nunique()
+    .reset_index(name='unique_player_count')
+)
+
+# Display the result
+print("Unique player counts by groupteam:")
+print(unique_players_by_group)
+ 
