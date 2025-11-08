@@ -30,6 +30,15 @@ Please refer to the `project_workflow` folder in the organization profile
 repository for the full process and deliverables.
 
 > Note: PDF files in this repo are placeholders for now.
+> 
+### Database Connection Details
+
+The project connects to a managed Azure MySQL instance using the following credentials (stored securely in `.env`):
+
+- `DB_HOST`: `shtm-fallprev.mysql.database.azure.com`
+- `DB_NAME`: `sbu_athletics`
+- `DB_USER`: `ahistudent`
+- `DB_PASSWORD`: `researcher` (do not commit this to source control)
 
 ## Team
 
