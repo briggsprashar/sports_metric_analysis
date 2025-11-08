@@ -18,7 +18,6 @@ metrics_of_interest = [
 ]
 
 filtered_df = df[
-    df['groupteam'].str.contains('football|basketball', case=False, na=False) &
     df['metric'].isin(metrics_of_interest)
 ]
 
