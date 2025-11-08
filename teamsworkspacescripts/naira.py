@@ -5,7 +5,7 @@ Description: Connects to MySQL, previews data, summarizes metrics, and generates
 """
 
 import pandas as pd
-from sqlalchemy import create_engine # type: ignore
+from sqlalchemy import create_engine # pyright: ignore[reportMissingImports]
 from dotenv import load_dotenv # type: ignore
 import os
 # Removed unused plotting and datetime imports: matplotlib, seaborn, datetime, timedelta

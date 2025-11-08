@@ -10,12 +10,14 @@ anonymization step to produce pseudonymized datasets suitable for sharing.
 
 The cleaned dataset (`naira_cleaned_data.csv`) follows a long-format schema with the following columns:
 
-- `playername` — anonymized athlete ID (e.g., PLAYER_001)
-- `metric` — performance metric name (e.g., Jump Height)
-- `team` — sport/team affiliation (e.g., Basketball, Football)
+- `id` — unique row identifier
+- `playername` — anonymized athlete ID (e.g., PLAYER_1186)
+- `timestamp` — date and time of measurement
+- `device_metric` — performance metric name with platform prefix (e.g., kinexon_Speed Max)
 - `value` — numeric measurement
-- `timestamp` — date of measurement
-- `data_source` — tracking system (Hawkins, Kinexon, Vald)
+- `team` — tracking system or internal label (e.g., hawkins, kinexon)
+- `sports_team` — sport/team affiliation (e.g., Mens Basketball)
+- `groupteam` — group label (e.g., Team: Brook Men)
 
 ## Scripts
 
