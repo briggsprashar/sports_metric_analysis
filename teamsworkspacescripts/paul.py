@@ -599,3 +599,74 @@ desc_statsall = filtered_df.groupby(['metric'])['value'].describe(percentiles=pe
 
 print('\nPercentile description by all sports:\n', desc_statsall.to_string())
 print('\nPercentile description by separated teams:\n', desc_statsseparate.to_string())
+
+
+#CLASSIFICATION BASED ON METRIC THRESHOLDS
+import pandas as pd
+
+# Load the data
+df = pd.read_csv('raw/fivemetrics_data.csv')
+
+# Define thresholds by sport and metric
+thresholds = {
+    "Men's Basketball": {
+        "Distance_Total": (5000, 7000),
+        "Jump Height(M)": (0.54, 0.68),
+        "Peak Propulsive Power(W)": (4500, 6000),
+        "Peak Velocity(M/S)": (3.5, 4.5),
+        "Rsi": (0.344, 0.533),
+        "Speed_Max": (6.0, 8.0)
+    },
+    "Women's Basketball": {
+        "Distance_Total": (4500, 6000),
+        "Jump Height(M)": (0.42, 0.50),
+        "Peak Propulsive Power(W)": (3200, 4800),
+        "Peak Velocity(M/S)": (3.0, 4.0),
+        "Rsi": (0.308, 0.434),
+        "Speed_Max": (5.5, 7.5)
+    },
+    "Football": {
+        "Distance_Total": (9000, 11500),
+        "Jump Height(M)": (0.45, 0.60),  # Note: special case for >0.6
+        "Peak Propulsive Power(W)": (5000, 7000),
+        "Peak Velocity(M/S)": (3.5, 4.5),
+        "Rsi": (1.8, 2.8),
+        "Speed_Max": (6.5, 8.5)
+    }
+}
+
+# Classification logic
+def classify(row):
+    sport = row['groupteam']
+    metric = row['metric']
+    value = row['value']
+    
+    sport_thresholds = thresholds.get(sport, {})
+    metric_threshold = sport_thresholds.get(metric)
+    
+    if metric_threshold:
+        low, elite = metric_threshold
+        
+        # Special case: Football Jump Height(M) uses >0.6 for Peak
+        if sport == "Football" and metric == "Jump Height(M)":
+            if value < low:
+                return "Low"
+            elif value <= elite:
+                return "Normal/Elite"
+            else:
+                return "Peak"
+        
+        # Standard classification for all metrics
+        if value < low:
+            return "Low"
+        elif value <= elite:
+            return "Normal/Elite"
+        else:
+            return "Peak"
+    
+    return "Unknown"
+
+# Apply classification
+df['classification'] = df.apply(classify, axis=1)
+
+df.to_csv('raw/sixmetricsclass.csv', index=False)
