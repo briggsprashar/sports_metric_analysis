@@ -6,6 +6,12 @@ raw_data = pd.read_csv('raw/preselection.csv')
 
 ####### CREATING FINAL DATASET WITH METRICS OF INTEREST ##########
 
+#remove rows with non-numeric or zero 'value'
+raw_data = raw_data[
+    pd.to_numeric(raw_data['value'], errors='coerce').notnull() &
+    (pd.to_numeric(raw_data['value'], errors='coerce') != 0)
+]
+
 # Remove duplicate rows based on all columns except 'ID'
 clean_data = raw_data.drop_duplicates(subset=[col for col in raw_data.columns if col != 'ID'])
 

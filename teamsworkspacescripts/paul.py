@@ -670,3 +670,6 @@ def classify(row):
 df['classification'] = df.apply(classify, axis=1)
 
 df.to_csv('raw/sixmetricsclass.csv', index=False)
+
+print(df['classification'].unique())
+print(df['value'].min())
