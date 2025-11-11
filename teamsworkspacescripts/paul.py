@@ -145,14 +145,14 @@ def get_player_metric_sessions(data, player_name, selected_metrics):
 
 # Example usage
 player_name = "PLAYER_1167"
-selected_metrics = ["Rsi"]  # Pass as a list
+selected_metrics = ["Mrsi"]  # Pass as a list
 
-# Get the player's Rsi sessions
-player_sessions_rsi = get_player_metric_sessions(singlemetric, player_name, selected_metrics)
+# Get the player's Mrsi sessions
+player_sessions_mrsi = get_player_metric_sessions(singlemetric, player_name, selected_metrics)
 
 # Display the result
 print(f"\nTest sessions for {player_name} with metric {selected_metrics[0]}:")
-print(player_sessions_rsi)
+print(player_sessions_mrsi)
 
 
 
@@ -580,7 +580,7 @@ metrics_of_interest = [
     "Jump Height(M)",
     "Peak Propulsive Power(W)",
     "Peak Velocity(M/S)",
-    "Rsi",
+    "Mrsi",
     "Distance_Total",
     "Speed_Max"
 ]
@@ -614,7 +614,7 @@ thresholds = {
         "Jump Height(M)": (0.54, 0.68),
         "Peak Propulsive Power(W)": (4500, 6000),
         "Peak Velocity(M/S)": (3.5, 4.5),
-        "Rsi": (0.344, 0.533),
+        "Mrsi": (0.344, 0.533),
         "Speed_Max": (6.0, 8.0)
     },
     "Women's Basketball": {
@@ -622,7 +622,7 @@ thresholds = {
         "Jump Height(M)": (0.42, 0.50),
         "Peak Propulsive Power(W)": (3200, 4800),
         "Peak Velocity(M/S)": (3.0, 4.0),
-        "Rsi": (0.308, 0.434),
+        "Mrsi": (0.308, 0.434),
         "Speed_Max": (5.5, 7.5)
     },
     "Football": {
@@ -630,7 +630,7 @@ thresholds = {
         "Jump Height(M)": (0.45, 0.60),  # Note: special case for >0.6
         "Peak Propulsive Power(W)": (5000, 7000),
         "Peak Velocity(M/S)": (3.5, 4.5),
-        "Rsi": (1.8, 2.8),
+        "Mrsi": (1.8, 2.8),
         "Speed_Max": (6.5, 8.5)
     }
 }

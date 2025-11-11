@@ -10,7 +10,7 @@ raw_data = pd.read_csv('raw/preselection.csv')
 clean_data = raw_data.drop_duplicates(subset=[col for col in raw_data.columns if col != 'ID'])
 
 # Define metrics of interest
-metrics_five = ['Speed_Max', 'Jump Height(M)', 'Rsi', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
+metrics_five = ['Speed_Max', 'Jump Height(M)', 'Mrsi', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
 
 # Filter rows where 'metric' column matches one of the selected metrics
 response_subset = clean_data[clean_data['metric'].isin(metrics_five)]
