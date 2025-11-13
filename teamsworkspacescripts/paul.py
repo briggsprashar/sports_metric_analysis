@@ -269,7 +269,7 @@ import matplotlib.pyplot as plt
 # df = df[df['value'].notna() & (df['value'] != 0)]
 
 # Load the dataset 
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 
 # Filter for player_1022
 player_df = df[df['playername'] == 'PLAYER_1022'].copy()
@@ -408,9 +408,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
-df = df.dropna(subset=['value', 'sportsteam', 'metric'])
+df = df.dropna(subset=['value', 'groupteam', 'metric'])
 
 # Get all unique metrics
 all_metrics = df['metric'].unique()
@@ -421,7 +421,7 @@ for metric in all_metrics:
 
     # Box Plot
     plt.figure(figsize=(12, 6))
-    sns.boxplot(x='sportsteam', y='value', data=metric_df)
+    sns.boxplot(x='groupteam', y='value', data=metric_df)
     plt.title(f"Box Plot of {metric} by Team")
     plt.xticks(rotation=45)
     plt.tight_layout()
@@ -429,7 +429,7 @@ for metric in all_metrics:
 
     # Violin Plot
     plt.figure(figsize=(12, 6))
-    sns.violinplot(x='sportsteam', y='value', data=metric_df, inner='quartile')
+    sns.violinplot(x='groupteam', y='value', data=metric_df, inner='quartile')
     plt.title(f"Violin Plot of {metric} by Team")
     plt.xticks(rotation=45)
     plt.tight_layout()
@@ -441,9 +441,9 @@ import pandas as pd
 from scipy.stats import f_oneway
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
-df = df.dropna(subset=['value', 'sportsteam', 'metric'])
+df = df.dropna(subset=['value', 'groupteam', 'metric'])
 
 # Prepare results
 anova_results = []
@@ -451,10 +451,10 @@ anova_results = []
 # Loop through each metric
 for metric in df['metric'].unique():
     metric_df = df[df['metric'] == metric]
-    teams = metric_df['sportsteam'].unique()
+    teams = metric_df['groupteam'].unique()
 
     # Collect values per team
-    team_values = [metric_df[metric_df['sportsteam'] == team]['value'].values for team in teams]
+    team_values = [metric_df[metric_df['groupteam'] == team]['value'].values for team in teams]
 
     # Skip if any team has fewer than 2 values
     if any(len(vals) < 2 for vals in team_values):
@@ -472,7 +472,7 @@ for metric in df['metric'].unique():
 
 # Display results
 anova_df = pd.DataFrame(anova_results)
-print("ANOVA results comparing sportsteams for each metric:")
+print("ANOVA results comparing groupteam for each metric:")
 print(anova_df.sort_values(by='metric'))
 
 
@@ -481,18 +481,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
-df = df.dropna(subset=['timestamp', 'sportsteam'])
+df = df.dropna(subset=['timestamp', 'groupteam'])
 
 # Create a 'month' column
 df['month'] = df['timestamp'].dt.to_period('M').dt.to_timestamp()
 
 # Group by team and month to count tests
-test_counts = df.groupby(['sportsteam', 'month']).size().reset_index(name='test_count')
+test_counts = df.groupby(['groupteam', 'month']).size().reset_index(name='test_count')
 
 # Pivot for plotting
-pivot_df = test_counts.pivot(index='month', columns='sportsteam', values='test_count').fillna(0)
+pivot_df = test_counts.pivot(index='month', columns='groupteam', values='test_count').fillna(0)
 
 # Plot
 plt.figure(figsize=(14, 6))
@@ -512,7 +512,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
 df = df.dropna(subset=['timestamp', 'device'])
 
@@ -542,7 +542,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
 df = df.dropna(subset=['timestamp', 'device'])
 
@@ -573,7 +573,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load and clean the dataset
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
 df = df.dropna(subset=['timestamp'])
 
@@ -612,7 +612,7 @@ plt.show()
 
 import pandas as pd
 from datetime import datetime, timedelta
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 
 # Set pandas options to show full column content and width
 pd.set_option('display.max_columns', None)      # Show all columns in output
@@ -645,37 +645,39 @@ print('\nPercentile description by all sports:\n', desc_statsall.to_string())
 print('\nPercentile description by separated teams:\n', desc_statsseparate.to_string())
 
 
+
+
 #CLASSIFICATION BASED ON METRIC THRESHOLDS
 import pandas as pd
 
 # Load the data
-df = pd.read_csv('raw/fivemetrics_data.csv')
+df = pd.read_csv('raw/sixmetrics_data.csv')
 
 # Define thresholds by sport and metric
 thresholds = {
     "Men's Basketball": {
-        "Distance_Total": (5000, 7000),
-        "Jump Height(M)": (0.54, 0.68),
-        "Peak Propulsive Power(W)": (4500, 6000),
-        "Peak Velocity(M/S)": (3.5, 4.5),
-        "Mrsi": (0.344, 0.533),
-        "Speed_Max": (6.0, 8.0)
+        "Distance_Total": (4000, 7000),
+        "Jump Height(M)": (0.3, 0.66),
+        "Peak Propulsive Power(W)": (3500, 9000),
+        "Peak Velocity(M/S)": (3, 4.5),
+        "Mrsi": (0.14, 0.43),
+        "Speed_Max": (4.0, 7.5)
     },
     "Women's Basketball": {
-        "Distance_Total": (4500, 6000),
-        "Jump Height(M)": (0.42, 0.50),
-        "Peak Propulsive Power(W)": (3200, 4800),
-        "Peak Velocity(M/S)": (3.0, 4.0),
-        "Mrsi": (0.308, 0.434),
-        "Speed_Max": (5.5, 7.5)
+        "Distance_Total": (3500, 6000),
+        "Jump Height(M)": (0.21, 0.45),
+        "Peak Propulsive Power(W)": (2500, 7000),
+        "Peak Velocity(M/S)": (2.5, 4.0),
+        "Mrsi": (0.14, 0.43),
+        "Speed_Max": (3.5, 7.5)
     },
     "Football": {
-        "Distance_Total": (9000, 11500),
-        "Jump Height(M)": (0.45, 0.60),  # Note: special case for >0.6
-        "Peak Propulsive Power(W)": (5000, 7000),
-        "Peak Velocity(M/S)": (3.5, 4.5),
-        "Mrsi": (1.8, 2.8),
-        "Speed_Max": (6.5, 8.5)
+        "Distance_Total": (8000, 11500),
+        "Jump Height(M)": (0.3, 0.55),  
+        "Peak Propulsive Power(W)": (3000, 9000),
+        "Peak Velocity(M/S)": (3, 4.5),
+        "Mrsi": (0.25, 0.6),
+        "Speed_Max": (5, 8.5)
     }
 }
 
@@ -685,26 +687,19 @@ def classify(row):
     metric = row['metric']
     value = row['value']
     
+    if pd.isna(value):
+        return "Unknown"
+    
     sport_thresholds = thresholds.get(sport, {})
     metric_threshold = sport_thresholds.get(metric)
     
     if metric_threshold:
-        low, elite = metric_threshold
+        low, high = metric_threshold
         
-        # Special case: Football Jump Height(M) uses >0.6 for Peak
-        if sport == "Football" and metric == "Jump Height(M)":
-            if value < low:
-                return "Low"
-            elif value <= elite:
-                return "Normal/Elite"
-            else:
-                return "Peak"
-        
-        # Standard classification for all metrics
         if value < low:
             return "Low"
-        elif value <= elite:
-            return "Normal/Elite"
+        elif value <= high:
+            return "Normal"
         else:
             return "Peak"
     
@@ -717,8 +712,6 @@ df.to_csv('raw/sixmetricsclass.csv', index=False)
 
 print(df['classification'].unique())
 print(df['value'].min())
-
-
 
 
 
