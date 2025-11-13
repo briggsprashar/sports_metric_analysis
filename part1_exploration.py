@@ -23,20 +23,10 @@ conn = create_engine(url_string)
 sql_toexecute = """
   select *
   from research_experiment_refactor_test
-  limit 100000; 
+  
   """
 
 raw_data = pd.read_sql(sql_toexecute, conn)
-
-## Downloading the data locally (optional) remove # below to enable
-# Ensure 'raw' folder exists
-# raw_folder = "raw"
-# os.makedirs(raw_folder, exist_ok=True)
-
-##Save result to CSV in 'raw' folder
-# output_path = os.path.join(raw_folder, "query_result.csv")
-# response.to_csv(output_path, index=False)
-# print(f"Query result saved to: {output_path}")
 
 ####### PART 1: EXPLORING RAW DATASET ##########
 # Standardizing responses in 'metric' column to ensure consistency (found out responses have upper/lower issues)
@@ -150,3 +140,12 @@ top_metrics['end_date'] = top_metrics['end_date'].dt.date
 
 # Display final result
 print(top_metrics[['data_source', 'metric', 'record_count', 'start_date', 'end_date']])
+
+
+## Downloading the data locally (optional)
+raw_folder = "raw"
+os.makedirs(raw_folder, exist_ok=True)
+
+output_path = os.path.join(raw_folder, "raw.csv")
+raw_data.to_csv(output_path, index=False)
+print(f"Final dataset saved to: {output_path}")

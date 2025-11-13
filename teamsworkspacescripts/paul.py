@@ -1,17 +1,17 @@
-#STARTED FROM FIVEMETRICS DATASET THAT IS LOADED FROM PART1_POSTSELECTION.PY = FIVEMETRICS_DATA.CSV
+#STARTED FROM RAW.CSV
 import pandas as pd
 from datetime import datetime, timedelta
 
     #THIS CODE WILL BE USED IN PART2_CLEANING.PY
 # Load five metrics dataset
-fivemetrics = pd.read_csv('raw/fivemetrics_data.csv')
+sixmetrics = pd.read_csv('raw/raw.csv')
 # Display list of columns to verify loading
-print("Columns in five metrics dataset:\n", fivemetrics.columns.tolist())
+print("Columns in five metrics dataset:\n", sixmetrics.columns.tolist())
 
 
         ## 2.1 MISSING DATA ANALYSIS
 # 1. Identify rows with NULL or zero values in 'value' column
-problem_rows = fivemetrics[fivemetrics['value'].isna() | (fivemetrics['value'] == 0)]
+problem_rows = sixmetrics[sixmetrics['value'].isna() | (sixmetrics['value'] == 0)]
 
 # Count problematic entries per metric
 problem_summary = (
@@ -23,16 +23,17 @@ problem_summary = (
 print("Metrics with most NULL or zero values:\n", problem_summary)
 
 # Display total number of rows in the dataset
-print("Total number of rows in dataset:", len(fivemetrics))
+print("Total number of rows in dataset:", len(sixmetrics))
 
 
     # 2.For each sport/team, calculate what percentage of athletes have at least 5 measurements for your selected metrics
 # Count measurements per player per metric per team
+
 #removing rows with NaN or zero values in 'value' for accurate counts
-fivemetrics = fivemetrics.dropna(subset=['value'])
+sixmetrics = sixmetrics[(sixmetrics['value'].notna()) & (sixmetrics['value'] != 0)]
 
 counts = (
-    fivemetrics
+    sixmetrics
     .groupby(['sportsteam', 'metric', 'playername'])
     .size()
     .reset_index(name='measurement_count')
@@ -64,13 +65,13 @@ print("Percentage of athletes with ≥5 measurements per team and metric:\n", su
 
     # 3.Identify athletes who haven't been tested in the last 6 months (for your selected metrics)
 # Step 1: Convert 'timestamp' to datetime format
-fivemetrics['timestamp'] = pd.to_datetime(fivemetrics['timestamp'], errors='coerce')
+sixmetrics['timestamp'] = pd.to_datetime(sixmetrics['timestamp'], errors='coerce')
 
 # Step 2: Define cutoff date (6 months ago from today)
 cutoff_date = datetime.today() - timedelta(days=180)
 
 # Step 3: Filter rows with valid timestamps older than cutoff
-older_than_cutoff = fivemetrics[fivemetrics['timestamp'] < cutoff_date]
+older_than_cutoff = sixmetrics[sixmetrics['timestamp'] < cutoff_date]
 
 # Step 4: Get player-sportsteam pairs from those older rows
 player_team_pairs = older_than_cutoff[['playername', 'sportsteam']].dropna(subset=['playername'])
@@ -89,7 +90,7 @@ print("Number of unique players not tested in the last 6 months:", unique_player
 
 #OPTIONAL: showing list of the unique player names who have been tested recently along with their sportsteam
 # Step 1: Filter rows with valid timestamps older than cutoff
-older_than_cutoff = fivemetrics[fivemetrics['timestamp'] > cutoff_date]
+older_than_cutoff = sixmetrics[sixmetrics['timestamp'] > cutoff_date]
 
 # Step 2: Get player-sportsteam pairs from those older rows
 player_team_pairs = older_than_cutoff[['playername', 'sportsteam']].dropna(subset=['playername'])
@@ -209,6 +210,49 @@ print(top_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_
 
 print("\nBottom 5 performers relative to their team mean:")
 print(bottom_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
+
+    #4.Optional: Create z-scores or percentile rankings
+# --- Add-on: Calculate Z-scores for each athlete's metric value ---
+
+# Step 1: Calculate team-level mean and standard deviation
+team_stats = (
+    meanteam
+    .groupby(['groupteam', 'metric'])['value']
+    .agg(team_avg='mean', team_std='std')
+    .reset_index()
+)
+
+# Step 2: Merge stats into athlete data
+playstats = meanteam.merge(team_stats, on=['groupteam', 'metric'], how='left')
+
+# Step 3: Calculate Z-score: (value - mean) / std
+playstats['Zscore'] = (playstats['value'] - playstats['team_avg']) / playstats['team_std']
+
+# Step 4: Display or export Z-score results
+print("\nZ-scores for each athlete's metric value:")
+print(playstats[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'team_std', 'Zscore']].sort_values(by='Zscore', ascending=False))
+
+# Optional: save to CSV
+# playstats.to_csv('athlete_zscores.csv', index=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -673,3 +717,88 @@ df.to_csv('raw/sixmetricsclass.csv', index=False)
 
 print(df['classification'].unique())
 print(df['value'].min())
+
+
+
+
+
+
+
+
+#4 RESEARCH MONITORING FLAG SYSTEM
+#4.1 Performance Monitoring Flag System (Group)
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
+
+# Filter for 2025 data only
+df_2025 = df[
+    (df['timestamp'] >= '2025-01-01') &
+    (df['timestamp'] <= '2025-12-31')
+]
+
+# Calculate baseline (mean) for each groupteam + metric
+baseline_df = (
+    df_2025
+    .groupby(['groupteam', 'metric'], as_index=False)
+    .agg(baseline=('value', 'mean'))
+)
+
+# Merge baseline back into the filtered data
+df_with_baseline = df_2025.merge(baseline_df, on=['groupteam', 'metric'], how='left')
+
+# Flag players whose value declined ≥10% from baseline
+df_declined = df_with_baseline[
+    df_with_baseline['value'] < 0.9 * df_with_baseline['baseline']
+]
+
+# Select relevant columns for reporting
+declined_report = df_declined[['playername', 'groupteam', 'metric', 'value', 'baseline']]
+
+# Optional: save or inspect
+declined_report.to_csv('raw/players_below_baseline_2025.csv', index=False)
+print(declined_report.head())
+
+
+
+
+#4.2 Individual Athlete Monitoring Flag System
+import pandas as pd
+
+# Load and filter data
+df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
+df_2025 = df[(df['timestamp'] >= '2025-01-01') & (df['timestamp'] <= '2025-12-31')]
+
+# --- Standard Deviation Threshold ---
+std_stats = (
+    df_2025
+    .groupby(['groupteam', 'metric'])
+    .agg(mean=('value', 'mean'), std=('value', 'std'))
+    .reset_index()
+)
+std_stats['std_threshold'] = std_stats['mean'] - std_stats['std']
+
+# --- Percentile Threshold (10th percentile) ---
+percentile_stats = (
+    df_2025
+    .groupby(['groupteam', 'metric'])['value']
+    .quantile(0.10)
+    .reset_index()
+    .rename(columns={'value': 'percentile_threshold'})
+)
+
+# --- Merge thresholds into main data ---
+df_thresh = df_2025.merge(std_stats[['groupteam', 'metric', 'std_threshold']], on=['groupteam', 'metric'], how='left')
+df_thresh = df_thresh.merge(percentile_stats, on=['groupteam', 'metric'], how='left')
+
+# --- Flag risk status ---
+df_thresh['risk_std'] = df_thresh['value'] < df_thresh['std_threshold']
+df_thresh['risk_percentile'] = df_thresh['value'] < df_thresh['percentile_threshold']
+
+# Optional: filter only risky rows
+risky_rows = df_thresh[(df_thresh['risk_std']) | (df_thresh['risk_percentile'])]
+
+# Optional: save or inspect
+risky_rows.to_csv('raw/risky_players_2025.csv', index=False)
+print(risky_rows[['playername', 'groupteam', 'metric', 'value', 'std_threshold', 'percentile_threshold', 'risk_std', 'risk_percentile']].head())
