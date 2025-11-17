@@ -506,7 +506,7 @@ plt.tight_layout()
 plt.show()
 
 
-    #3.3C  Dashboard Metric (Full Group)
+    #3.3  Dashboard Metric (Full Group)
 #3.3A Total number of tests per month (all systems combined)
 import pandas as pd
 import matplotlib.pyplot as plt
