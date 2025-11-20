@@ -722,24 +722,28 @@ print(df['value'].min())
 #4.1 Performance Monitoring Flag System (Group)
 import pandas as pd
 
+#4.1A 
 # Load the dataset
 df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
 
 # Filter for 2025 data only
 df_2025 = df[
     (df['timestamp'] >= '2025-01-01') &
-    (df['timestamp'] <= '2025-12-31')
-]
+    (df['timestamp'] <= '2025-12-31') ]
 
-# Calculate baseline (mean) for each groupteam + metric
+# Sort by timestamp to identify oldest records
+df_2025 = df_2025.sort_values(by=['playername', 'metric', 'timestamp'])
+
+# For each player + metric, take the first 5 oldest records and compute baseline
 baseline_df = (
     df_2025
-    .groupby(['groupteam', 'metric'], as_index=False)
-    .agg(baseline=('value', 'mean'))
+    .groupby(['playername', 'metric'], as_index=False)
+    .apply(lambda g: pd.Series({'baseline': g.nsmallest(5, 'timestamp')['value'].mean()}),
+           include_groups=False)   # <-- avoids the FutureWarning
 )
 
 # Merge baseline back into the filtered data
-df_with_baseline = df_2025.merge(baseline_df, on=['groupteam', 'metric'], how='left')
+df_with_baseline = df_2025.merge(baseline_df, on=['playername', 'metric'], how='left')
 
 # Flag players whose value declined ≥10% from baseline
 df_declined = df_with_baseline[
@@ -747,16 +751,16 @@ df_declined = df_with_baseline[
 ]
 
 # Select relevant columns for reporting
-declined_report = df_declined[['playername', 'groupteam', 'metric', 'value', 'baseline']]
+declined_report = df_declined[['playername', 'groupteam', 'metric', 'timestamp', 'value', 'baseline']]
 
 # Optional: save or inspect
 declined_report.to_csv('raw/players_below_baseline_2025.csv', index=False)
+df_with_baseline.to_csv('raw/players_with_baseline_2025.csv', index=False)
 print(declined_report.head())
 
 
 
-
-#4.2 Individual Athlete Monitoring Flag System
+#4.1B Individual Athlete Monitoring Flag System
 import pandas as pd
 
 # Load and filter data
