@@ -726,13 +726,12 @@ import pandas as pd
 # Load the dataset
 df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
 
-# Filter for 2025 data only
-df_2025 = df[
-    (df['timestamp'] >= '2025-01-01') &
-    (df['timestamp'] <= '2025-12-31') ]
+# Filter from current date to 1 year ago
+current_date = pd.Timestamp.today()
+one_year_before = current_date - pd.DateOffset(years=1)
 
 # Sort by timestamp to identify oldest records
-df_2025 = df_2025.sort_values(by=['playername', 'metric', 'timestamp'])
+df_2025 = df[(df['timestamp'] >= one_year_before) & (df['timestamp'] <= current_date)]
 
 # For each player + metric, take the first 5 oldest records and compute baseline
 baseline_df = (
@@ -765,7 +764,16 @@ import pandas as pd
 
 # Load and filter data
 df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
-df_2025 = df[(df['timestamp'] >= '2025-01-01') & (df['timestamp'] <= '2025-12-31')]
+
+
+
+# Filter from current date to 1 year ago
+current_date = pd.Timestamp.today()
+one_year_before = current_date - pd.DateOffset(years=1)
+
+# Sort by timestamp to identify oldest records
+df_2025 = df[(df['timestamp'] >= one_year_before) & (df['timestamp'] <= current_date)]
+
 
 # --- Standard Deviation Threshold ---
 std_stats = (
