@@ -126,101 +126,37 @@ overdue_report.to_csv('raw/athletes_overdue_testing.csv', index=False)
 print(overdue_report.head())
 
 
+#4.1D Deviation from Team Normal groupteam
+# Load dataset
+deviation_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
 
+# Filter from current date to 1 year ago
+current_date = pd.Timestamp.today()
+one_year_before = current_date - pd.DateOffset(years=1)
+deviate_2025 = deviation_df[
+    (deviation_df['timestamp'] >= one_year_before) &
+    (deviation_df['timestamp'] <= current_date)]
 
-#4.1D Deviation from Team Normal/Thresholds Classification Letirature-Based
-# Load the data
-class_df = pd.read_csv('raw/sixmetrics_data.csv')
+# Calculate team mean and standard deviation per metric
+team_stats = (
+    deviate_2025
+    .groupby(['groupteam', 'metric'], as_index=False)
+    .agg(
+        team_mean=('value', 'mean'),
+        team_std=('value', 'std') ) )
 
-# Define thresholds by sport and metric
-thresholds = {
-    "Men's Basketball": {
-        "Distance_Total": (4000, 7000),
-        "Jump Height(M)": (0.3, 0.66),
-        "Peak Propulsive Power(W)": (3500, 9000),
-        "Peak Velocity(M/S)": (3, 4.5),
-        "Mrsi": (0.14, 0.43),
-        "Speed_Max": (4.0, 7.5)
-    },
-    "Women's Basketball": {
-        "Distance_Total": (3500, 6000),
-        "Jump Height(M)": (0.21, 0.45),
-        "Peak Propulsive Power(W)": (2500, 7000),
-        "Peak Velocity(M/S)": (2.5, 4.0),
-        "Mrsi": (0.14, 0.43),
-        "Speed_Max": (3.5, 7.5)
-    },
-    "Football": {
-        "Distance_Total": (8000, 11500),
-        "Jump Height(M)": (0.3, 0.55),  
-        "Peak Propulsive Power(W)": (3000, 9000),
-        "Peak Velocity(M/S)": (3, 4.5),
-        "Mrsi": (0.25, 0.6),
-        "Speed_Max": (5, 8.5)
-    }
-}
+# Merge stats back into main data
+df_deviate = deviate_2025.merge(team_stats, on=['groupteam', 'metric'], how='left')
 
-# Classification logic
-def classify(row):
-    sport = row['groupteam']
-    metric = row['metric']
-    value = row['value']
-    
-    if pd.isna(value):
-        return "Unknown"
-    
-    sport_thresholds = thresholds.get(sport, {})
-    metric_threshold = sport_thresholds.get(metric)
-    
-    if metric_threshold:
-        low, high = metric_threshold
-        
-        if value < low:
-            return "Low"
-        elif value <= high:
-            return "Normal"
-        else:
-            return "Peak"
-    
-    return "Unknown"
+# Calculate z-score (deviation relative to std)
+df_deviate['z_score'] = (df_deviate['value'] - df_deviate['team_mean']) / df_deviate['team_std']
 
-# Apply classification
-class_df = pd.read_csv('raw/sixmetrics_data.csv')
-class_df['classification'] = class_df.apply(classify, axis=1)
-class_df.to_csv('raw/sixmetricsclass.csv', index=False)
-print(class_df['classification'].unique())
-print(class_df['value'].min())
+# Flag significant deviations (e.g., > 2 standard deviations)
+df_deviate['significant_deviation'] = df_deviate['z_score'].abs() > 2
 
+# Filter significant deviations
+significant_deviations = df_deviate[df_deviate['significant_deviation']]
 
-
-#4.4 FLAG REASON
-# STANDALONE MONITORING SCRIPT
-# Uses sixmetricsclass.csv as input
-
-# --- Load classified dataset ---
-flag_df = pd.read_csv('raw/sixmetricsclass.csv', parse_dates=['timestamp'])
-
-# --- Ensure columns exist ---
-# Expected columns: playername, groupteam, metric, value, classification, timestamp
-
-# --- Rename classification to flag_reason ---
-flag_df['flag_reason'] = flag_df['classification']
-
-# --- Get the last record per player + metric ---
-last_records = (
-    flag_df.sort_values('timestamp')
-      .groupby(['playername', 'metric'], as_index=False)
-      .tail(1) )  # keep only the most recent row
-
-# --- Rename value column ---
-last_records = last_records.rename(columns={'value': 'metric_value',
-                                            'timestamp': 'last_test_date'})
-
-# --- Select required output columns ---
-output_df = last_records[['playername', 'groupteam', 'metric', 'metric_value', 'flag_reason', 'last_test_date']]
-
-# --- Save to CSV ---
-output_df.to_csv('raw/part4_flagged_athletes.csv', index=False)
-
-# --- Inspect sample output ---
-print(output_df.head())
+# Save or inspect
+significant_deviations.to_csv('part4_flagged_athletes.csv', index=False)
+print(significant_deviations[['playername', 'groupteam', 'metric', 'value', 'team_mean', 'team_std', 'z_score']].head())
