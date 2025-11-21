@@ -217,7 +217,7 @@ last_records = last_records.rename(columns={'value': 'metric_value',
                                             'timestamp': 'last_test_date'})
 
 # --- Select required output columns ---
-output_df = last_records[['playername', 'groupteam', 'flag_reason', 'metric', 'metric_value', 'last_test_date']]
+output_df = last_records[['playername', 'groupteam', 'metric', 'metric_value', 'flag_reason', 'last_test_date']]
 
 # --- Save to CSV ---
 output_df.to_csv('raw/part4_flagged_athletes.csv', index=False)
