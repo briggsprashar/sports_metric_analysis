@@ -188,8 +188,7 @@ def get_player_metric_sessions(data, player_name, selected_metrics):
     session_df = (
         filtered
         .pivot_table(index='timestamp', columns='metric', values='value', aggfunc='first')
-        .reset_index()
-    )
+        .reset_index() )
    
     # Reorder columns: timestamp first, then selected metrics
     ordered_cols = ['timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
@@ -230,7 +229,7 @@ team_means = (
 
 # Display team means
 print("Mean metric value per group teams:")
-print(team_means.sort_values(by='team_avg', ascending=False))
+print(team_means.sort_values(by=['groupteam', 'metric'], ascending=False))
 
     #2. For each athlete measurement, calculates their percent difference from their team's average
 #Merge team averages into athlete data
