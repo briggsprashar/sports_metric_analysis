@@ -140,18 +140,33 @@ print("Number of unique players not tested in the last 6 months:", unique_player
 
 
 ######## CREATING FINAL DATASET WITH METRICS OF INTEREST ##########
-clean_data = rawmetrics.drop_duplicates(subset=[col for col in rawmetrics.columns if col != 'id'])
+raw_data = rawmetrics.drop_duplicates(subset=[col for col in rawmetrics.columns if col != 'id'])
 
 # Define metrics of interest
 metrics_six = ['Speed_Max', 'Jump Height(M)', 'Mrsi', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
 
 # Filter rows where 'metric' column matches one of the selected metrics
-response_subset = clean_data[clean_data['metric'].isin(metrics_six)]
+response_subset = raw_data[raw_data['metric'].isin(metrics_six)]
 
 # Create a new DataFrame with only the relevant columns
 # Adjust this list based on which columns you want to keep
 columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'sportsteam', 'groupteam']  # example column names
 sixmetrics_data = response_subset[columns_to_keep]
+
+# Calculate the mean of values where metric == 'Mrsi'
+mrsi_avg = sixmetrics_data.loc[sixmetrics_data['metric'] == 'Mrsi', 'value'].mean()
+
+# Apply transformation: only for rows where metric == 'Mrsi'
+sixmetrics_data.loc[
+    (sixmetrics_data['metric'] == 'Mrsi') & (sixmetrics_data['value'] > 2 * mrsi_avg),
+    'value'
+] = sixmetrics_data.loc[
+    (sixmetrics_data['metric'] == 'Mrsi') & (sixmetrics_data['value'] > 2 * mrsi_avg),
+    'value'
+] / 100
+
+#changing value to numeric type
+sixmetrics_data['value'] = pd.to_numeric(sixmetrics_data['value'], errors='coerce')
 
 # Ensure 'raw' folder exists
 raw_folder = "raw"
