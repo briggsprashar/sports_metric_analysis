@@ -881,3 +881,40 @@ output_df.to_csv('raw/part4_flagged_athletes.csv', index=False)
 
 # --- Inspect sample output ---
 print(output_df.head())
+
+
+
+
+# WIDE FORMAT DATASET
+import pandas as pd
+
+# Import dataframe
+widedf = pd.read_csv('raw/sixmetrics_data.csv')
+
+# Convert timestamp column to datetime and keep only the date part
+widedf['timestamp'] = pd.to_datetime(widedf['timestamp'], errors='coerce').dt.date
+
+# Drop rows with missing or zero metric values
+widedf = widedf.dropna(subset=['value'])
+
+
+# Drop rows with invalid timestamps
+widedf = widedf.dropna(subset=['timestamp'])
+
+# Pivot to wide format: metrics become columns, values fill them
+pivot_wide = (
+    widedf.pivot_table(
+        index=['playername', 'groupteam', 'device', 'timestamp'],
+        columns='metric',
+        values='value',
+        aggfunc='last'
+    )
+    .reset_index()
+)
+
+# Optional: ensure metric columns are sorted alphabetically
+pivot_wide = pivot_wide.sort_index(axis=1)
+pivot_wide.to_csv('raw/sixmetrics_wide.csv', index=False)
+
+
+

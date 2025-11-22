@@ -38,6 +38,8 @@ print(cleansports['sportsteam'].value_counts())
 
 
 ### QUESTIONs and ANSWER ON PART 2 CLEANING
+#Convering from long to wide format for easier analysis
+
 
         ## 2.1 MISSING DATA ANALYSIS
 # 1. Identify rows with NULL or zero values in 'value' column
@@ -164,48 +166,42 @@ print(f"Final dataset saved to: {output_path}")
 
 
             ## 2.2 DATA TRANSFORMATION CHANLLENGES
-###SINGLE METRIC
-# Load the dataset
-singlemetric = pd.read_csv('raw/sixmetrics_data.csv')
+###SINGLE METRIC WIDE DATA FUNCTION
+#Load and pivot to wide format
+widedf = pd.read_csv('raw/sixmetrics_data.csv')
 
-# Remove rows with NaN or zero values in 'value'
-singlemetric = singlemetric.dropna(subset=['value'])
-singlemetric = singlemetric[singlemetric['value'] >= 0].copy()
+# Convert timestamp column to datetime
+widedf['timestamp'] = pd.to_datetime(widedf['timestamp'], errors='coerce')
 
-# Define the function
-def get_player_metric_sessions(data, player_name, selected_metrics):
-    # Ensure selected_metrics is a list
-    if isinstance(selected_metrics, str):
-        selected_metrics = [selected_metrics]
-    
-    # Filter for the selected player and metrics
-    filtered = data[
-        (data['playername'] == player_name) &
-        (data['metric'].isin(selected_metrics))
-    ].dropna(subset=['timestamp'])
-    
-    # Pivot to get one row per session with metrics as columns
-    session_df = (
-        filtered
-        .pivot_table(index='timestamp', columns='metric', values='value', aggfunc='first')
-        .reset_index() )
-   
-    # Reorder columns: timestamp first, then selected metrics
-    ordered_cols = ['timestamp'] + [metric for metric in selected_metrics if metric in session_df.columns]
-    session_df = session_df[ordered_cols]
-    
+# Drop rows with invalid timestamps or missing values
+widedf = widedf.dropna(subset=['timestamp', 'value'])
+
+# Pivot to wide format: metrics become columns
+pivot_wide = (
+    widedf.pivot_table(
+        index=['playername', 'groupteam', 'device', 'timestamp'],
+        columns='metric',
+        values='value',
+        aggfunc='last'
+    )
+    .reset_index()
+)
+
+# Define function using wide dataframe
+def get_player_metric_sessions_wide(data, player_name, selected_column):
+    filtered = data[data['playername'] == player_name].copy()
+    chosen_cols = ['timestamp', 'groupteam'] + [c for c in selected_column if c in filtered.columns]
+    session_df = filtered[chosen_cols].dropna(subset=selected_column, how='all')
     return session_df
 
-# Example usage
-player_name = "PLAYER_1167"
-selected_metrics = ["Mrsi"]  # Pass as a list
+#Example usage
+player_name = "PLAYER_995"
+selected_column = ["Mrsi" ]   # replace with other selected metrics as needed "Distance_Total","Jump Height(M)","Peak Propulsive Power(W)","Peak Velocity(M/S)","Speed_Max"
 
-# Get the player's Mrsi sessions
-player_sessions_mrsi = get_player_metric_sessions(singlemetric, player_name, selected_metrics)
+player_sessions = get_player_metric_sessions_wide(pivot_wide, player_name, selected_column)
 
-# Display the result
-print(f"\nTest sessions for {player_name} with metric {selected_metrics[0]}:")
-print(player_sessions_mrsi)
+print(f"\nTest sessions for {player_name} with metrics {selected_column}:")
+print(player_sessions)
 
 
 
