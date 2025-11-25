@@ -131,7 +131,7 @@ last_test['days_since_test'] = (current_date - last_test['last_test_date']).dt.d
 last_test['overdue_test'] = last_test['days_since_test'] > 30
 
 # --- Merge back into main dataset if needed ---
-df_with_test_flag = df.merge(last_test[['playername', 'last_test_date', 'days_since_test', 'overdue_test']],
+df_with_test_flag = thirty_df.merge(last_test[['playername', 'last_test_date', 'days_since_test', 'overdue_test']],
                              on='playername', how='left')
 
 # --- Filter overdue athletes ---
@@ -220,4 +220,4 @@ flagged_athletes.to_csv('part4_flagged_athletes.csv', index=False)
 print(flagged_athletes[['playername', 'groupteam', 'metric', 'value',
                         'team_mean', 'team_std', 'z_score_team',
                         'significant_deviation_team',
-                        'player_mean', 'declined_vs_player_mean']].head())
+                        'player_mean', 'declined_vs_player_mean']].head()) 
