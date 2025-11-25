@@ -10,15 +10,13 @@ def load_data():
     df = df.sort_values(by="playername")
     return df
 
-
-
-
-
 # Import dataframe
 sbusports = load_data()
 sbusports['timestamp'] = pd.to_datetime(sbusports['timestamp'])
 sbusports = sbusports.sort_values(by="playername")
 
+# Add combined label column for display
+sbusports['player_label'] = sbusports['playername'] + " (" + sbusports['groupteam'] + ")"
 
 # Sidebar selection for groupteam
 group_options = ["All"] + sorted(sbusports['groupteam'].unique().tolist())
@@ -26,7 +24,7 @@ group_choice = st.sidebar.selectbox("Select a Group Team", group_options, index=
 
 team_df = sbusports if group_choice == "All" else sbusports[sbusports['groupteam'] == group_choice]
 
-# --- NEW: Checkbox to toggle restricted player list ---
+# NEW: Checkbox to toggle restricted player list
 restrict_players = st.sidebar.checkbox("Check Box for Selected Players", value=False)
 
 # Define your 4 selected players
@@ -41,7 +39,7 @@ else:
 # Sidebar selection for playername (multi-select)
 player_choice = st.sidebar.multiselect("Select Player(s)", player_options, default=["All"])
 
-# --- FIXED FILTER LOGIC ---
+# FIXED FILTER LOGIC (still uses playername) 
 if "All" in player_choice:
     if restrict_players:
         # "All" = only the 4 selected players
@@ -58,6 +56,7 @@ year_choice = st.sidebar.radio("Select Year", ["All"] + years, index=0)
 if year_choice != "All":
     filtered_df = filtered_df[filtered_df['timestamp'].dt.year == year_choice]
 
+# Subheader (still shows chosen players by name)
 st.subheader(f"Metrics for {group_choice} - {', '.join(player_choice)}")
 
 metrics_to_plot = [
@@ -69,23 +68,26 @@ metrics_to_plot = [
 ]
 
 for metric in metrics_to_plot:
-    metric_df = filtered_df[filtered_df['metric'] == metric]
+    metric_df = filtered_df[filtered_df['metric'] == metric].copy()
     st.write(f"### {metric}")
     if metric_df.empty:
         st.write("No data available")
         continue
 
-    # Base line chart with player colors
+    # Add combined label column to filtered data
+    metric_df['player_label'] = metric_df['playername'] + " (" + metric_df['groupteam'] + ")"
+
+    # Base line chart with player+team labels
     line = (
         alt.Chart(metric_df)
         .mark_line(point=True)
         .encode(
             x=alt.X('timestamp:T', title='Timestamp'),
             y=alt.Y('value:Q', title='Value'),
-            color=alt.Color('playername:N', title='Player'),
+            color=alt.Color('player_label:N', title='Player (Team)'),
             tooltip=[
                 alt.Tooltip('timestamp:T', title='Timestamp'),
-                alt.Tooltip('playername:N', title='Player'),
+                alt.Tooltip('player_label:N', title='Player (Team)'),
                 alt.Tooltip('value:Q', title='Value')
             ]
         )
@@ -104,4 +106,4 @@ for metric in metrics_to_plot:
     )
 
     chart = line + trend
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, use_container_width=True) 
