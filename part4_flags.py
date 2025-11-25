@@ -159,7 +159,7 @@ deviate_2025 = deviation_df[
     (deviation_df['timestamp'] <= current_date)
 ]
 
-# Calculate team mean and standard deviation per metric
+# TEAM stats for STD deviation
 team_stats = (
     deviate_2025
     .groupby(['groupteam', 'metric'], as_index=False)
@@ -169,43 +169,55 @@ team_stats = (
     )
 )
 
-# Merge stats back into main data
-df_deviate = deviate_2025.merge(team_stats, on=['groupteam', 'metric'], how='left')
+#PLAYER stats for mean decline
+player_stats = (
+    deviate_2025
+    .groupby(['playername', 'metric'], as_index=False)
+    .agg(
+        player_mean=('value', 'mean')
+    )
+)
 
-# Calculate z-score (deviation relative to std)
-df_deviate['z_score'] = (df_deviate['value'] - df_deviate['team_mean']) / df_deviate['team_std']
+# Merge both sets of stats back into main data
+df_deviate = (
+    deviate_2025
+    .merge(team_stats, on=['groupteam', 'metric'], how='left')
+    .merge(player_stats, on=['playername', 'metric'], how='left')
+)
 
-# Flag significant deviations (e.g., > 2 standard deviations)
-df_deviate['significant_deviation'] = df_deviate['z_score'].abs() > 2
+# Z-score relative to TEAM
+df_deviate['z_score_team'] = (df_deviate['value'] - df_deviate['team_mean']) / df_deviate['team_std']
+df_deviate['significant_deviation_team'] = df_deviate['z_score_team'].abs() > 2
 
-# --- Thresholds relative to team mean ---
+# Thresholds relative to PLAYER mean
 thresholds = {
-    'Speed_Max': 0.90,                    # <90% of team mean
-    'Jump Height(M)': 0.90,               # <90% of team mean
-    'Peak Velocity(M/S)': 0.95,           # <95% of team mean
-    'Peak Propulsive Power(W)': 0.95,     # <95% of team mean
-    'Distance_Total': 0.80                # <80% of team mean
+    'Speed_Max': 0.90,                    # <90% of player mean
+    'Jump Height(M)': 0.90,               # <90% of player mean
+    'Peak Velocity(M/S)': 0.95,           # <95% of player mean
+    'Peak Propulsive Power(W)': 0.95,     # <95% of player mean
+    'Distance_Total': 0.80                # <80% of player mean
 }
 
-def flag_team_mean(row):
+def flag_player_mean(row):
     metric = row['metric']
-    team_mean = row['team_mean']
+    player_mean = row['player_mean']
     value = row['value']
     
     if metric in thresholds:
-        return value < thresholds[metric] * team_mean
+        return value < thresholds[metric] * player_mean
     return False
 
-df_deviate['declined_vs_team_mean'] = df_deviate.apply(flag_team_mean, axis=1)
+df_deviate['declined_vs_player_mean'] = df_deviate.apply(flag_player_mean, axis=1)
 
-# --- Filter athletes who triggered either flag ---
+# Filter athletes who triggered either flag
 flagged_athletes = df_deviate[
-    df_deviate['significant_deviation'] | df_deviate['declined_vs_team_mean']
+    df_deviate['significant_deviation_team'] | df_deviate['declined_vs_player_mean']
 ]
 
 # Save or inspect
 flagged_athletes.to_csv('part4_flagged_athletes.csv', index=False)
 
 print(flagged_athletes[['playername', 'groupteam', 'metric', 'value',
-                        'team_mean', 'team_std', 'z_score',
-                        'significant_deviation', 'declined_vs_team_mean']].head())
+                        'team_mean', 'team_std', 'z_score_team',
+                        'significant_deviation_team',
+                        'player_mean', 'declined_vs_player_mean']].head())
