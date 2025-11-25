@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 ####### PART 1: PRE SELECTION AND DATA MANAGEMENT OF RAW DATASET ##########
 #Selecting relevant columns for analysis
-raw_data = pd.read_csv('raw/raw.csv')
+raw_data = pd.read_csv('raw/raw.csv', dtype=str)
 relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
 
 #Adding new column 'groupteam' based on 'team' column to categorize into broader sports categories
@@ -143,7 +143,7 @@ print("Number of unique players not tested in the last 6 months:", unique_player
 raw_data = rawmetrics.drop_duplicates(subset=[col for col in rawmetrics.columns if col != 'id'])
 
 # Define metrics of interest
-metrics_six = ['Speed_Max', 'Jump Height(M)', 'Mrsi', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
+metrics_six = ['Speed_Max', 'Jump Height(M)', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
 
 # Filter rows where 'metric' column matches one of the selected metrics
 response_subset = raw_data[raw_data['metric'].isin(metrics_six)]
@@ -152,18 +152,6 @@ response_subset = raw_data[raw_data['metric'].isin(metrics_six)]
 # Adjust this list based on which columns you want to keep
 columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'sportsteam', 'groupteam']  # example column names
 sixmetrics_data = response_subset[columns_to_keep]
-
-# Calculate the mean of values where metric == 'Mrsi'
-mrsi_avg = sixmetrics_data.loc[sixmetrics_data['metric'] == 'Mrsi', 'value'].mean()
-
-# Apply transformation: only for rows where metric == 'Mrsi'
-sixmetrics_data.loc[
-    (sixmetrics_data['metric'] == 'Mrsi') & (sixmetrics_data['value'] > 2 * mrsi_avg),
-    'value'
-] = sixmetrics_data.loc[
-    (sixmetrics_data['metric'] == 'Mrsi') & (sixmetrics_data['value'] > 2 * mrsi_avg),
-    'value'
-] / 100
 
 #changing value to numeric type
 sixmetrics_data['value'] = pd.to_numeric(sixmetrics_data['value'], errors='coerce')
@@ -183,7 +171,7 @@ print(f"Final dataset saved to: {output_path}")
             ## 2.2 DATA TRANSFORMATION CHANLLENGES
 ###SINGLE METRIC WIDE DATA FUNCTION
 #Load and pivot to wide format
-widedf = pd.read_csv('raw/sixmetrics_data.csv')
+widedf = pd.read_csv('raw/sixmetrics_data.csv', dtype=str)
 
 # Convert timestamp column to datetime
 widedf['timestamp'] = pd.to_datetime(widedf['timestamp'], errors='coerce')
@@ -211,7 +199,7 @@ def get_player_metric_sessions_wide(data, player_name, selected_column):
 
 #Example usage
 player_name = "PLAYER_995"
-selected_column = ["Mrsi" ]   # replace with other selected metrics as needed "Distance_Total","Jump Height(M)","Peak Propulsive Power(W)","Peak Velocity(M/S)","Speed_Max"
+selected_column = ["Speed_Max" ]   # replace with other selected metrics as needed "Distance_Total","Jump Height(M)","Peak Propulsive Power(W)","Peak Velocity(M/S)","Speed_Max"
 
 player_sessions = get_player_metric_sessions_wide(pivot_wide, player_name, selected_column)
 
@@ -224,7 +212,7 @@ print(player_sessions)
             ## 2.3 CREATE A DERIVE METRIC GROUP
     #1.Calculates the mean value for each team (using the team column)
 # Load the dataset
-meanteam = pd.read_csv('raw/sixmetrics_data.csv')
+meanteam = pd.read_csv('raw/sixmetrics_data.csv', dtype=str)
 meanteam['value'] = pd.to_numeric(meanteam['value'], errors='coerce')
 meanteam = meanteam.dropna(subset=['value'])
 meanteam = meanteam[meanteam['value'] > 0].copy()
