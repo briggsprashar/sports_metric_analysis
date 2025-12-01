@@ -145,9 +145,6 @@ print(overdue_report.head())
 
 #4.1D Deviation from Team Normal groupteam
 # Load dataset
-import pandas as pd
-
-# Load dataset
 deviation_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
 
 # Filter from current date to 1 year ago
@@ -169,7 +166,7 @@ team_stats = (
     )
 )
 
-#PLAYER stats for mean decline
+# PLAYER stats for mean decline
 player_stats = (
     deviate_2025
     .groupby(['playername', 'metric'], as_index=False)
@@ -198,26 +195,44 @@ thresholds = {
     'Distance_Total': 0.80                # <80% of player mean
 }
 
-def flag_player_mean(row):
+# Evaluate decline vs player mean
+def evaluate_player_mean(row):
     metric = row['metric']
     player_mean = row['player_mean']
     value = row['value']
     
     if metric in thresholds:
-        return value < thresholds[metric] * player_mean
-    return False
+        threshold = thresholds[metric]
+        ratio = value / player_mean if player_mean else None
+        
+        if ratio is None:
+            return None  # handle missing data safely
+        
+        if ratio < threshold:
+            # Declined → return threshold marker
+            return f"Declined (<{int(threshold*100)}%)"
+        else:
+            # Above threshold → Acceptable
+            return "Acceptable"
+    return None
 
-df_deviate['declined_vs_player_mean'] = df_deviate.apply(flag_player_mean, axis=1)
+df_deviate['declined_vs_player_mean'] = df_deviate.apply(evaluate_player_mean, axis=1)
 
 # Filter athletes who triggered either flag
 flagged_athletes = df_deviate[
-    df_deviate['significant_deviation_team'] | df_deviate['declined_vs_player_mean']
+    df_deviate['significant_deviation_team'] | (df_deviate['declined_vs_player_mean'].str.contains("Declined", na=False))
 ]
 
-# Save or inspect
+# Save flagged athletes
 flagged_athletes.to_csv('part4_flagged_athletes.csv', index=False)
 
-print(flagged_athletes[['playername', 'groupteam', 'metric', 'value',
-                        'team_mean', 'team_std', 'z_score_team',
-                        'significant_deviation_team',
-                        'player_mean', 'declined_vs_player_mean']].head()) 
+# Save all players (including non-flagged)
+df_deviate.to_csv('raw/part4_all_players.csv', index=False)
+
+# Quick check
+print(df_deviate[['playername', 'groupteam', 'metric', 'value',
+                  'team_mean', 'team_std', 'z_score_team',
+                  'significant_deviation_team',
+                  'player_mean', 'declined_vs_player_mean']].head())
+
+
