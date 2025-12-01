@@ -1,0 +1,14 @@
+pandas
+sqlalchemy
+pymysql
+matplotlib
+seaborn
+numpy
+scipy
+requests
+python-dotenv
+streamlit
+tables
+
+
+
