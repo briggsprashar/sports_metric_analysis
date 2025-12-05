@@ -4,7 +4,7 @@ import pandas as pd
 
 # 4.1A Metric Declined compared to baseline
 # Load the dataset
-base_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
+base_df = pd.read_csv('raw/fivemetrics_data.csv', parse_dates=['timestamp'])
 
 # Filter from current date to 1 year ago
 current_date = pd.Timestamp.today()
@@ -65,7 +65,7 @@ print(declined_report.head())
 
 #4.1B Metric below/above published risk thresholds
 # # Load and filter data
-metric_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
+metric_df = pd.read_csv('raw/fivemetrics_data.csv', parse_dates=['timestamp'])
 
 # Filter from current date to 1 year ago
 current_date = pd.Timestamp.today()
@@ -112,7 +112,7 @@ print(risky_rows[['playername', 'groupteam', 'metric', 'value', 'std_threshold',
 
 #4.1C Athlete hasn't been tested in >30 days
 # Load dataset
-thirty_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
+thirty_df = pd.read_csv('raw/fivemetrics_data.csv', parse_dates=['timestamp'])
 
 # Current date
 current_date = pd.Timestamp.today()
@@ -145,7 +145,7 @@ print(overdue_report.head())
 
 #4.1D Deviation from Team Normal groupteam
 # Load dataset
-deviation_df = pd.read_csv('raw/sixmetrics_data.csv', parse_dates=['timestamp'])
+deviation_df = pd.read_csv('raw/fivemetrics_data.csv', parse_dates=['timestamp'])
 
 # Filter from current date to 1 year ago
 current_date = pd.Timestamp.today()

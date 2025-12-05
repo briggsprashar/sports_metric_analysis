@@ -2,14 +2,37 @@ import pandas as pd
 import os
 from datetime import datetime, timedelta
 
-####### PART 1: PRE SELECTION AND DATA MANAGEMENT OF RAW DATASET ##########
-#Selecting relevant columns for analysis
+#cleaning raw dataset
 raw_data = pd.read_csv('raw/raw.csv', dtype=str)
+
+# cleaning team names
+def clean_team_name(name):
+    if pd.isna(name):
+        return name
+    return name.strip().lower().title()
+
+# Apply to your existing 'team' column
+raw_data['team'] = raw_data['team'].apply(clean_team_name)
+
+###### PART 1: PRE SELECTION AND DATA MANAGEMENT OF RAW DATASET ##########
+#Selecting relevant columns for analysis
 relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
 
 #Adding new column 'groupteam' based on 'team' column to categorize into broader sports categories
 def groupteam_from_team(team):
-    for sport in ['Football', 'Basketball']:
+    for sport in [
+    "Football",
+    "Basketball",
+    "Baseball",
+    "Softball",
+    "Soccer",
+    "Lacrosse",
+    "Cross Country",
+    "Track",
+    "Swimming And Diving",
+    "Tennis",
+    "Volleyball"
+]:
         if sport in team:
             return f"Women's {sport}" if "Women" in team else f"Men's {sport}" if "Men" in team else sport
     return "OTHERS"
@@ -21,7 +44,19 @@ print(relevantcolumn['groupteam'].value_counts())
 
 #adding new column sportsteam based on 'team' column to simplify team names to just sport names
 def groupteam_from_team(team):
-    for sport in ['Football', 'Basketball']:
+    for sport in [
+    "Football",
+    "Basketball",
+    "Baseball",
+    "Softball",
+    "Soccer",
+    "Lacrosse",
+    "Cross Country",
+    "Track",
+    "Swimming And Diving",
+    "Tennis",
+    "Volleyball"
+]:
         if sport in team:
             return sport
     return "OTHERS"
@@ -36,10 +71,12 @@ cleansports = relevantcolumn[relevantcolumn['sportsteam'] != 'OTHERS']
 print(cleansports['groupteam'].value_counts())
 print(cleansports['sportsteam'].value_counts())
 
+#save cleaned dataset to csv
+cleansports.to_csv('raw/cleansports.csv', index=False)
+
 
 ### QUESTIONs and ANSWER ON PART 2 CLEANING
 #Convering from long to wide format for easier analysis
-
 
         ## 2.1 MISSING DATA ANALYSIS
 # 1. Identify rows with NULL or zero values in 'value' column
@@ -143,35 +180,34 @@ print("Number of unique players not tested in the last 6 months:", unique_player
 raw_data = rawmetrics.drop_duplicates(subset=[col for col in rawmetrics.columns if col != 'id'])
 
 # Define metrics of interest
-metrics_six = ['Speed_Max', 'Jump Height(M)', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
+metrics_five = ['Speed_Max', 'Jump Height(M)', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
 
 # Filter rows where 'metric' column matches one of the selected metrics
-response_subset = raw_data[raw_data['metric'].isin(metrics_six)]
+response_subset = raw_data[raw_data['metric'].isin(metrics_five)]
 
 # Create a new DataFrame with only the relevant columns
 # Adjust this list based on which columns you want to keep
-columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'sportsteam', 'groupteam']  # example column names
-sixmetrics_data = response_subset[columns_to_keep]
+columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'groupteam']  # example column names
+fivemetrics_data = response_subset[columns_to_keep]
 
 #changing value to numeric type
-sixmetrics_data['value'] = pd.to_numeric(sixmetrics_data['value'], errors='coerce')
+fivemetrics_data['value'] = pd.to_numeric(fivemetrics_data['value'], errors='coerce')
 
 # Ensure 'raw' folder exists
 raw_folder = "raw"
 os.makedirs(raw_folder, exist_ok=True)
 
 # Save final dataset to CSV
-output_path = os.path.join(raw_folder, "sixmetrics_data.csv")
-sixmetrics_data.to_csv(output_path, index=False)
+output_path = os.path.join(raw_folder, "fivemetrics_data.csv")
+fivemetrics_data.to_csv(output_path, index=False)
 print(f"Final dataset saved to: {output_path}")
-
 
 
 
             ## 2.2 DATA TRANSFORMATION CHANLLENGES
 ###SINGLE METRIC WIDE DATA FUNCTION
 #Load and pivot to wide format
-widedf = pd.read_csv('raw/sixmetrics_data.csv', dtype=str)
+widedf = pd.read_csv('raw/fivemetrics_data.csv', dtype=str)
 
 # Convert timestamp column to datetime
 widedf['timestamp'] = pd.to_datetime(widedf['timestamp'], errors='coerce')
@@ -212,7 +248,7 @@ print(player_sessions)
             ## 2.3 CREATE A DERIVE METRIC GROUP
     #1.Calculates the mean value for each team (using the team column)
 # Load the dataset
-meanteam = pd.read_csv('raw/sixmetrics_data.csv', dtype=str)
+meanteam = pd.read_csv('raw/fivemetrics_data.csv', dtype=str)
 meanteam['value'] = pd.to_numeric(meanteam['value'], errors='coerce')
 meanteam = meanteam.dropna(subset=['value'])
 meanteam = meanteam[meanteam['value'] > 0].copy()
@@ -241,7 +277,7 @@ playdiff['percent_diff_from_team'] = ((playdiff['value'] - playdiff['team_avg'])
 print("\nPercent difference from team average for each athlete measurement:")
 print(
     playdiff[
-        ['playername', 'team', 'metric', 'value', 'team_avg', 'percent_diff_from_team']
+        ['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']
     ].sort_values(by='percent_diff_from_team', ascending=False)
 )
 
@@ -284,6 +320,4 @@ print("\nZ-scores for each athlete's metric value:")
 print(playstats[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'team_std', 'Zscore']].sort_values(by='Zscore', ascending=False))
 
 # Optional: save to CSV
-# playstats.to_csv('athlete_zscores.csv', index=False)
-
-
+playstats.to_csv('athlete_zscores.csv', index=False)
