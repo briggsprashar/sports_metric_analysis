@@ -34,16 +34,16 @@ raw_data['metric'] = raw_data['metric'].str.strip().str.title()
 
 
 ### INFORMATION FROM RAW DATASET
-## Counting unique numbers of athletes
+## 1.2.1 Counting unique numbers of athletes
 athlete_count = raw_data['playername'].nunique()
 print(f"The total number of unique athletes in the raw data is {athlete_count}")
 
-## Counting unique numbers of sports/teams
+## 1.2.2 Counting unique numbers of sports/teams
 team_count = raw_data['team'].nunique()
 print(f"The total number of unique sports/teams in the raw data is {team_count}")
 
 
-## Date range of data collection
+## 1.2.3 Date range of data collection
 # Ensure timestamp column is in datetime format
 raw_data['timestamp'] = pd.to_datetime(raw_data['timestamp'])
 
@@ -55,7 +55,7 @@ end_date = raw_data['timestamp'].max().date()
 print(f"The available data ranges from {start_date} to {end_date} in the raw data.")
 
 
-## Hightest Number of Records per data source 
+## 1.2.4 Hightest Number of Records per data source 
 # Counting the number of records per data source
 source_counts = raw_data['data_source'].value_counts()
 
@@ -68,14 +68,14 @@ most_common_count = source_counts.max()
 print(f"The data source with the most records is {most_common_source} with {most_common_count} entries in the raw data.")
 
 
-## Checking for Invalid or Missing names in 'playername' column
+## 1.2.5 Checking for Invalid or Missing names in 'playername' column
 # Check for missing or invalid athlete names
 invalid_names = raw_data[raw_data['playername'].isnull() | (raw_data['playername'].str.strip() == '')]
 
 # Print the number of invalid entries
 print(f"Number of athletes with missing or invalid names in the raw: {len(invalid_names)}")
 
-## Checking for number of athlete entries with more than 1 source of data
+## 1.2.6 Checking for number of athlete entries with more than 1 source of data
 # Count how many unique sources each athlete has
 source_count = raw_data.groupby('playername')['data_source'].nunique()
 
@@ -87,7 +87,7 @@ print(f"Number of athletes that have data from multiple sources (2 or 3 systems)
 
 
 ### Metric Discovery and Selection
-# Focusing on 'hawkins' data source for metric exploration
+# 1.3.1 Focusing on 'hawkins' data source for metric exploration
 hawkins_data = raw_data[raw_data['data_source'] == 'hawkins']
 # Count the frequency of each metric
 hawkins_metrics = hawkins_data['metric'].value_counts().head(10)
@@ -96,7 +96,7 @@ print("Top 10 most common metrics for Hawkins data:\n", hawkins_metrics)
 
 
 
-# Focusing on 'kinexon' data source for metric exploration
+# 1.3.2 Focusing on 'kinexon' data source for metric exploration
 kinexon_data = raw_data[raw_data['data_source'] == 'kinexon']
 # Count the frequency of each metric
 kinexon_metrics = kinexon_data['metric'].value_counts().head(10)
@@ -104,7 +104,7 @@ kinexon_metrics = kinexon_data['metric'].value_counts().head(10)
 print("Top 10 most common metrics for Kinexon data:\n", kinexon_metrics)
 
 
-# Focusing on 'vald' data source for metric exploration
+# 1.3.3 Focusing on 'vald' data source for metric exploration
 vald_data = raw_data[raw_data['data_source'] == 'vald']
 # Count the frequency of each metric
 vald_metrics = vald_data['metric'].value_counts().head(10)
@@ -112,7 +112,7 @@ vald_metrics = vald_data['metric'].value_counts().head(10)
 print("Top 10 most common metrics for Vald data:\n", vald_metrics)
 
 
-## Identifying unique metrics across all data sources
+##  1.3.4 Identifying unique metrics across all data sources
 metric_list = raw_data['metric'].unique()
 print("Unique metrics:")
 print(metric_list)
