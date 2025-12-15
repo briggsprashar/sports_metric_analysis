@@ -71,9 +71,8 @@ print(response)
 
 ## Screenshots of Query Results
 
-![alt text](<../../Images/project screenshot1.png>)
+<img width="1500" height="948" alt="project screenshot2" src="https://github.com/user-attachments/assets/6684fd3b-b626-4f30-83f7-8a3210eb5879" />
 
-![![alt text](<../../Images/project screenshot2.png>)]
 
 
 
