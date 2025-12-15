@@ -71,9 +71,9 @@ print(response)
 
 ## Screenshots of Query Results
 
-![Alt text](raw/project%20screenshot1.png)
+![alt text](<../../Images/project screenshot1.png>)
 
-![Alt text](raw/project%20screenshot2.png)
+![![alt text](<../../Images/project screenshot2.png>)]
 
 
 
