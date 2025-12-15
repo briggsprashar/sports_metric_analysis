@@ -2,84 +2,78 @@ import pandas as pd
 import os
 from datetime import datetime, timedelta
 
-#cleaning raw dataset
+# Load raw dataset
 raw_data = pd.read_csv('raw/raw.csv', dtype=str)
 
-# cleaning team names
+# Value Cleaning
+# Convert 'value' column to numeric
+raw_data['value'] = pd.to_numeric(raw_data['value'], errors='coerce')
+
+# Replace extreme outliers (<1% of metric mean) with NaN,
+# then apply linear interpolation and backfill/forward fill
+raw_data['value'] = (
+    raw_data.groupby('metric')['value']
+        .transform(lambda s: s.mask(s < s.mean() * 0.01)
+                              .interpolate(method='linear')
+                              .bfill()
+                              .ffill())
+)
+
+# Team Name Cleaning
 def clean_team_name(name):
     if pd.isna(name):
         return name
     return name.strip().lower().title()
 
-# Apply to your existing 'team' column
+# Standardize team names
 raw_data['team'] = raw_data['team'].apply(clean_team_name)
 
-###### PART 1: PRE SELECTION AND DATA MANAGEMENT OF RAW DATASET ##########
-#Selecting relevant columns for analysis
+###### PART 1: PRE-SELECTION AND DATA MANAGEMENT ##########
+
+# Select relevant columns for analysis
 relevantcolumn = raw_data[['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'team', 'data_source']].copy()
 
-#Adding new column 'groupteam' based on 'team' column to categorize into broader sports categories
+# Categorize teams into broader sport categories with gender-specific labels
 def groupteam_from_team(team):
     for sport in [
-    "Football",
-    "Basketball",
-    "Baseball",
-    "Softball",
-    "Soccer",
-    "Lacrosse",
-    "Cross Country",
-    "Track",
-    "Swimming And Diving",
-    "Tennis",
-    "Volleyball"
-]:
+        "Football", "Basketball", "Baseball", "Softball", "Soccer",
+        "Lacrosse", "Cross Country", "Track", "Swimming And Diving",
+        "Tennis", "Volleyball"
+    ]:
         if sport in team:
             return f"Women's {sport}" if "Women" in team else f"Men's {sport}" if "Men" in team else sport
     return "OTHERS"
 
 relevantcolumn['groupteam'] = relevantcolumn['team'].apply(groupteam_from_team)
-
 print(relevantcolumn['groupteam'].value_counts())
 
-
-#adding new column sportsteam based on 'team' column to simplify team names to just sport names
+# Simplify team names to sport-only labels
 def groupteam_from_team(team):
     for sport in [
-    "Football",
-    "Basketball",
-    "Baseball",
-    "Softball",
-    "Soccer",
-    "Lacrosse",
-    "Cross Country",
-    "Track",
-    "Swimming And Diving",
-    "Tennis",
-    "Volleyball"
-]:
+        "Football", "Basketball", "Baseball", "Softball", "Soccer",
+        "Lacrosse", "Cross Country", "Track", "Swimming And Diving",
+        "Tennis", "Volleyball"
+    ]:
         if sport in team:
             return sport
     return "OTHERS"
 
 relevantcolumn['sportsteam'] = relevantcolumn['team'].apply(groupteam_from_team)
-
 print(relevantcolumn['sportsteam'].value_counts())
 
-
-#removing entries with 'OTHERS' in 'sportsteam' column to focus on main sports
+# Filter dataset to exclude 'OTHERS' teams
+print(">> PRE-SELECTION AND DATA MANAGEMENT: <<\n")
 cleansports = relevantcolumn[relevantcolumn['sportsteam'] != 'OTHERS']
 print(cleansports['groupteam'].value_counts())
 print(cleansports['sportsteam'].value_counts())
 
-#save cleaned dataset to csv
+# Save cleaned dataset
 cleansports.to_csv('raw/cleansports.csv', index=False)
 
+### PART 2: CLEANING QUESTIONS AND ANALYSIS ###
 
-### QUESTIONs and ANSWER ON PART 2 CLEANING
-#Convering from long to wide format for easier analysis
-
-        ## 2.1 MISSING DATA ANALYSIS
-# 1. Identify rows with NULL or zero values in 'value' column
+# Missing Data Analysis
+# Identify rows with NULL or zero values in 'value'
 problem_rows = cleansports[cleansports['value'].isna() | (cleansports['value'] == 0)]
 
 # Count problematic entries per metric
@@ -90,15 +84,10 @@ problem_summary = (
     .rename(columns={'index': 'metric'})
 )
 print("Metrics with most NULL or zero values:\n", problem_summary)
-
-# Display total number of rows in the dataset
 print("Total number of rows in dataset:", len(problem_rows))
 
-
-    # 2.For each sport/team, calculate what percentage of athletes have at least 5 measurements for your selected metrics
-# Count measurements per player per metric per team
-
-#removing rows with NaN or zero values in 'value' for accurate counts
+# Measurement Coverage
+# Count measurements per player per metric per team (excluding NaN/zero values)
 rawmetrics = cleansports[(cleansports['value'].notna()) & (cleansports['value'] != 0)]
 
 counts = (
@@ -121,7 +110,7 @@ summary = (
     .reset_index()
 )
 
-# Calculate percentage
+# Calculate percentage of athletes with ≥5 measurements
 summary['percentage_with_5_or_more'] = (
     summary['players_with_5_or_more'] / summary['total_players'] * 100
 ).round(2)
@@ -130,67 +119,50 @@ summary['percentage_with_5_or_more'] = (
 summary = summary.sort_values(by='percentage_with_5_or_more', ascending=False)
 print("Percentage of athletes with ≥5 measurements per team and metric:\n", summary)
 
-
-
-           # 3.Identify athletes who haven't been tested in the last 6 months (for your selected metrics)
-# Step 1: Convert 'timestamp' to datetime format
+# Athlete Testing Recency
+# Convert 'timestamp' to datetime
 rawmetrics['timestamp'] = pd.to_datetime(rawmetrics['timestamp'], errors='coerce')
 rawmetrics = rawmetrics.dropna(subset=['timestamp'])
 
-# Step 2: Define cutoff date (6 months ago from today)
+# Define cutoff date (6 months ago)
 cutoff_date = datetime.today() - timedelta(days=180)
 
-# Step 3: Filter rows with valid timestamps older than cutoff
+# Identify athletes not tested in last 6 months
 older_than_cutoff = rawmetrics[rawmetrics['timestamp'] < cutoff_date]
-
-# Step 4: Get player-sportsteam pairs from those older rows
 player_team_pairs = older_than_cutoff[['playername', 'groupteam']].dropna(subset=['playername'])
-
-# Step 5: Drop duplicates to get unique player-sportsteam pairs
 unique_players_not_tested_recently = player_team_pairs.drop_duplicates().sort_values(by='playername')
 
-# Step 6: Display results
 print("Players with tests older than 6 months (with groupteam):")
 print(unique_players_not_tested_recently)
-
 print("\nTotal rows before uniqueness:", len(player_team_pairs))
 print("Number of unique players not tested in the last 6 months:", unique_players_not_tested_recently['playername'].nunique())
 
-
-#OPTIONAL: showing list of the unique player names who have been tested recently along with their sportsteam
-# Step 1: Filter rows with valid timestamps older than cutoff
+# OPTIONAL: Identify athletes tested within last 6 months
 greater_than_cutoff = rawmetrics[rawmetrics['timestamp'] > cutoff_date]
-
-# Step 2: Get player-groupteam pairs from those older rows
 player_team_pairs = greater_than_cutoff[['playername', 'groupteam']].dropna(subset=['playername'])
-
-# Step 3: Drop duplicates to get unique player-groupteam pairs
 unique_players_tested_recently = player_team_pairs.drop_duplicates().sort_values(by='playername')
 
-# Step 4: Display results
-print("Players with tested within 6 months (with groupteam):")
+print("Players tested within 6 months (with groupteam):")
 print(unique_players_tested_recently)
-
 print("\nTotal rows before uniqueness:", len(player_team_pairs))
-print("Number of unique players not tested in the last 6 months:", unique_players_tested_recently['playername'].nunique())
+print("Number of unique players tested in the last 6 months:", unique_players_tested_recently['playername'].nunique())
 
-
-
-######## CREATING FINAL DATASET WITH METRICS OF INTEREST ##########
+######## FINAL DATASET CREATION ##########
+# Remove duplicates (excluding 'id') for clean dataset
 raw_data = rawmetrics.drop_duplicates(subset=[col for col in rawmetrics.columns if col != 'id'])
 
 # Define metrics of interest
 metrics_five = ['Speed_Max', 'Jump Height(M)', 'Peak Velocity(M/S)', 'Peak Propulsive Power(W)', 'Distance_Total']
 
-# Filter rows where 'metric' column matches one of the selected metrics
+# Filter dataset to include only selected metrics
 response_subset = raw_data[raw_data['metric'].isin(metrics_five)]
 
 # Create a new DataFrame with only the relevant columns
 # Adjust this list based on which columns you want to keep
-columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'groupteam']  # example column names
+columns_to_keep = ['id', 'playername', 'timestamp', 'device', 'metric', 'value', 'groupteam']
 fivemetrics_data = response_subset[columns_to_keep]
 
-#changing value to numeric type
+# Convert 'value' column to numeric type
 fivemetrics_data['value'] = pd.to_numeric(fivemetrics_data['value'], errors='coerce')
 
 # Ensure 'raw' folder exists
@@ -198,16 +170,16 @@ raw_folder = "raw"
 os.makedirs(raw_folder, exist_ok=True)
 
 # Save final dataset to CSV
-output_path = os.path.join(raw_folder, "fivemetrics_data.csv")
+output_path = os.path.join(raw_folder, "fivemetrics_allsports.csv")
 fivemetrics_data.to_csv(output_path, index=False)
 print(f"Final dataset saved to: {output_path}")
 
 
-
-            ## 2.2 DATA TRANSFORMATION CHANLLENGES
-###SINGLE METRIC WIDE DATA FUNCTION
-#Load and pivot to wide format
-widedf = pd.read_csv('raw/fivemetrics_data.csv', dtype=str)
+## 2.2 DATA TRANSFORMATION CHALLENGES
+### Single Metric Wide Data Function
+print(">> DATA TRANSFORMATION CHALLENGES: <<\n")
+# Load dataset and pivot to wide format
+widedf = pd.read_csv('raw/fivemetrics_allsports.csv', dtype=str)
 
 # Convert timestamp column to datetime
 widedf['timestamp'] = pd.to_datetime(widedf['timestamp'], errors='coerce')
@@ -226,34 +198,30 @@ pivot_wide = (
     .reset_index()
 )
 
-# Define function using wide dataframe
+# Function to extract sessions for a given player and selected metrics
 def get_player_metric_sessions_wide(data, player_name, selected_column):
     filtered = data[data['playername'] == player_name].copy()
     chosen_cols = ['timestamp', 'groupteam'] + [c for c in selected_column if c in filtered.columns]
     session_df = filtered[chosen_cols].dropna(subset=selected_column, how='all')
     return session_df
 
-#Example usage
-player_name = "PLAYER_995"
-selected_column = ["Speed_Max" ]   # replace with other selected metrics as needed "Distance_Total","Jump Height(M)","Peak Propulsive Power(W)","Peak Velocity(M/S)","Speed_Max"
-
+# Example usage
+player_name = "PLAYER_995" # Replace with other playersname as needed
+selected_column = ["Speed_Max"]   # Replace with other metrics as needed
 player_sessions = get_player_metric_sessions_wide(pivot_wide, player_name, selected_column)
 
 print(f"\nTest sessions for {player_name} with metrics {selected_column}:")
 print(player_sessions)
 
 
-
-
-            ## 2.3 CREATE A DERIVE METRIC GROUP
-    #1.Calculates the mean value for each team (using the team column)
-# Load the dataset
-meanteam = pd.read_csv('raw/fivemetrics_data.csv', dtype=str)
+## 2.3 CREATE DERIVED METRIC GROUP
+print(">> CREATE DERIVED METRIC GROUP: <<\n")
+# 2.3.1 Calculate mean value per team and metric
+meanteam = pd.read_csv('raw/fivemetrics_allsports.csv', dtype=str)
 meanteam['value'] = pd.to_numeric(meanteam['value'], errors='coerce')
 meanteam = meanteam.dropna(subset=['value'])
 meanteam = meanteam[meanteam['value'] > 0].copy()
 
-# Calculate mean value per team and metric
 team_means = (
     meanteam
     .groupby(['groupteam', 'metric'])['value']
@@ -262,46 +230,31 @@ team_means = (
     .rename(columns={'value': 'team_avg'})
 )
 
-# Display team means
 print("Mean metric value per group teams:")
 print(team_means.sort_values(by=['groupteam', 'metric'], ascending=False))
 
-    #2. For each athlete measurement, calculates their percent difference from their team's average
-#Merge team averages into athlete data
+# 2.3.2 Calculate percent difference from team average for each athlete measurement
 playdiff = meanteam.merge(team_means, on=['groupteam', 'metric'], how='left')
-
-# Calculate percent difference from team average
 playdiff['percent_diff_from_team'] = ((playdiff['value'] - playdiff['team_avg']) / playdiff['team_avg']) * 100
 
-# Display results
 print("\nPercent difference from team average for each athlete measurement:")
 print(
-    playdiff[
-        ['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']
-    ].sort_values(by='percent_diff_from_team', ascending=False)
+    playdiff[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']]
+    .sort_values(by='percent_diff_from_team', ascending=False)
 )
 
-    #3.Identifies the top 5 and bottom 5 performers relative to their team mean
-# Sort by percent difference
+# 2.3.3 Identify top 5 and bottom 5 performers relative to team mean
 sorted_diff = playdiff.sort_values(by='percent_diff_from_team', ascending=False)
-
-# Top 5 performers (above team average)
 top_5 = sorted_diff.head(5)
-
-# Bottom 5 performers (below team average)
 bottom_5 = sorted_diff.tail(5)
 
-# Display results
 print("\nTop 5 performers relative to their team mean:")
 print(top_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
 
 print("\nBottom 5 performers relative to their team mean:")
 print(bottom_5[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'percent_diff_from_team']])
 
-    #4.Optional: Create z-scores or percentile rankings
-# --- Add-on: Calculate Z-scores for each athlete's metric value ---
-
-# Step 1: Calculate team-level mean and standard deviation
+# 2.3.4 Optional: Calculate Z-scores for athlete metrics
 team_stats = (
     meanteam
     .groupby(['groupteam', 'metric'])['value']
@@ -309,15 +262,11 @@ team_stats = (
     .reset_index()
 )
 
-# Step 2: Merge stats into athlete data
 playstats = meanteam.merge(team_stats, on=['groupteam', 'metric'], how='left')
-
-# Step 3: Calculate Z-score: (value - mean) / std
 playstats['Zscore'] = (playstats['value'] - playstats['team_avg']) / playstats['team_std']
 
-# Step 4: Display or export Z-score results
 print("\nZ-scores for each athlete's metric value:")
 print(playstats[['playername', 'groupteam', 'metric', 'value', 'team_avg', 'team_std', 'Zscore']].sort_values(by='Zscore', ascending=False))
 
-# Optional: save to CSV
-playstats.to_csv('athlete_zscores.csv', index=False)
+# Save Z-score results to CSV
+playstats.to_csv('raw/athlete_zscores.csv', index=False)
