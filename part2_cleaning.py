@@ -97,27 +97,40 @@ counts = (
     .reset_index(name='measurement_count')
 )
 
+
+# Percent of Team (groupteam) of players with ≥5 measurements (metrics)
 # Flag players with ≥5 measurements
 counts['has_5_or_more'] = counts['measurement_count'] >= 5
 
-# Aggregate per team and metric
-summary = (
-    counts.groupby(['groupteam', 'metric'])
-    .agg(
-        total_players=('playername', 'nunique'),
-        players_with_5_or_more=('has_5_or_more', 'sum')
-    )
-    .reset_index()
+# Total players per team (unique player count)
+total_players_per_team = (
+    counts.groupby('groupteam')['playername']
+    .nunique()
+    .reset_index(name='total_players')
 )
 
-# Calculate percentage of athletes with ≥5 measurements
+# Players with ≥5 measurements per team
+players_with_5_or_more_per_team = (
+    counts[counts['has_5_or_more']]
+    .groupby('groupteam')['playername']
+    .nunique()
+    .reset_index(name='players_with_5_or_more')
+)
+
+# Merge totals and ≥5 counts
+summary = total_players_per_team.merge(players_with_5_or_more_per_team, on='groupteam', how='left')
+summary['players_with_5_or_more'] = summary['players_with_5_or_more'].fillna(0)
+
+# Calculate percentage
 summary['percentage_with_5_or_more'] = (
     summary['players_with_5_or_more'] / summary['total_players'] * 100
 ).round(2)
 
 # Sort and display
 summary = summary.sort_values(by='percentage_with_5_or_more', ascending=False)
-print("Percentage of athletes with ≥5 measurements per team and metric:\n", summary)
+print("Percentage of athletes with ≥5 measurements per team:\n", summary)
+
+
 
 # Athlete Testing Recency
 # Convert 'timestamp' to datetime
