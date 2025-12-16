@@ -142,13 +142,14 @@ cutoff_date = datetime.today() - timedelta(days=180)
 
 # Identify athletes not tested in last 6 months
 older_than_cutoff = rawmetrics[rawmetrics['timestamp'] < cutoff_date]
-player_team_pairs = older_than_cutoff[['playername', 'groupteam']].dropna(subset=['playername'])
+player_team_pairs = older_than_cutoff[['playername', 'groupteam', 'device']].dropna(subset=['playername'])
 unique_players_not_tested_recently = player_team_pairs.drop_duplicates().sort_values(by='playername')
 
 print("Players with tests older than 6 months (with groupteam):")
 print(unique_players_not_tested_recently)
 print("\nTotal rows before uniqueness:", len(player_team_pairs))
 print("Number of unique players not tested in the last 6 months:", unique_players_not_tested_recently['playername'].nunique())
+unique_players_not_tested_recently.to_csv('raw/players_not_tested_recently.csv', index=False)
 
 # OPTIONAL: Identify athletes tested within last 6 months
 greater_than_cutoff = rawmetrics[rawmetrics['timestamp'] > cutoff_date]
