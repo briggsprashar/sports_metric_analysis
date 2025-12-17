@@ -181,7 +181,7 @@ flagged_athletes = df_deviate[
 ]
 
 # Save flagged athletes and full dataset
-flagged_athletes.to_csv('raw/part4_flagged_only.csv', index=False)
+flagged_athletes.to_csv('output/csv/part4.3_flagged_athletes.csv', index=False)
 df_deviate.to_csv('raw/part4_flagged_all_players.csv', index=False)
 
 # Quick check
