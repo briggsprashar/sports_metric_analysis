@@ -20,9 +20,10 @@
 14. [Recommendations](#recommendations)
 15. [Part 4 Key Insights](#part-4-key-insights)
 16. [Closing Remarks](#closing-remarks)
-17. [Resources](#resources)
+17. [Limitations](#limitations)
+18. [Resources](#resources)
         (*Includes Tools & Team*)
-18. [References](#references)
+19. [References](#references)
 
 ## Description
 
@@ -39,11 +40,13 @@ The project has been successful in doing the following in sports performance are
 
 [TOC](#table-of-contents)
 
+---
+
 ## Overview of each part
 
 **Part 1: Data Connection and Exploration**
 
-This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexon, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Databse table used for the project: `research_experiment_refactor_test`
+This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexon, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Database table used for the project: `research_experiment_refactor_test`
 
 *Refer to `Part1_Summary.pdf` for details*
 
@@ -63,6 +66,8 @@ This phase focused on building a flagging system that operationalized the analyt
 
 [TOC](#table-of-contents)
 
+---
+
 ## 1. Data Connection and Exploration
 ### 1.1 Setup and Connection
 - Set up Python environment with required libraries (sqlalchemy, pandas, pymysql)
@@ -80,7 +85,7 @@ This phase focused on building a flagging system that operationalized the analyt
 
 [Terminal output]
 
-<img src="IMAGES/1.2.png" alt="data quality assessment" width="800">
+<img src="IMAGES/1.2.png" alt="data quality assessment" width="600">
 
 ### 1.3 Metric discovery and selection
 
@@ -134,6 +139,8 @@ Vald
 
 [TOC](#table-of-contents)
 
+---
+
 ## Part 1 Key Findings
 
 | Data Quality Question | Key Findings | 
@@ -149,6 +156,8 @@ Vald
 
 [TOC](#table-of-contents)
 
+---
+
 ### 1.4 Brief review of literature and metric selection
 
 Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed the theoretical framework for this inquiry.
@@ -159,6 +168,8 @@ Refer to `Part1_LitReview.pdf` for literature review.
 > What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
+
+---
 
 1.4.1 
 
@@ -201,7 +212,7 @@ These 5 metrics were explored only for `Basketball` as both Women's Basketball a
 <img src="IMAGES/1.4.1AllrecordsB.png" alt="allrecordsbasketball" width= "200">
 
 ---
-> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexon records could possible be because Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexon based tests is the reason for the order of magnitude more test records for Kenxion, compared to Hawkins, for Nasketball and 5 metrics selected for this informatics project.
+> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexon records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexon based tests is the reason for the order of magnitude more test records for Kenxion, compared to Hawkins, for Nasketball and 5 metrics selected for this informatics project.
 
 ---
 
@@ -241,17 +252,23 @@ ___
 
 [TOC](#table-of-contents)
 
+---
+
 ## 2. Data Cleaning and Transformation
 
 ### 2.1 Missing data analysis
 
-2.1.1 Selected metrics with the most NULL or zero values
+2.1.1 
+
+### Selected metrics with the most NULL or zero values
 
 <img src="IMAGES/2.1.1_nulls_lookback.png" alt="most nulls or zero look back prd" width= "600">
 
 *mRSI was later not used in the final analysis*
 
-2.1.2 % of athletes with > 5 measurements
+2.1.2 
+
+### % of athletes with > 5 measurements
 
 <img src="IMAGES/2.1.2.png" alt=">=5 tests" width= "500">
 
@@ -263,7 +280,9 @@ ___
 
 <br />
 
-2.1.3 Count of players not tested in the last 6 months: `877`
+2.1.3 
+
+### Count of players not tested in the last 6 months: `877`
 
 <img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 mths" width= "900">
 
@@ -277,7 +296,9 @@ List of players not tested in the last 6 months
 > **Note:** The code snapshot above is for total individual players, and can be easily be tweaked to show counts of players from specific teams who were tested in the last 6 months.  
 ___
 
-2.1.4 Sufficient data to answer research question?
+2.1.4 
+
+### Sufficient data to answer research question?
 
 Not entirely, if the sample dataset is considered as a standalone data-source. 
 
@@ -299,6 +320,8 @@ As these 7 questions can be adequately answered from data-project, there was suf
 
 [TOC](#table-of-contents)
 
+---
+
 ## 3. Longitudinal analysis and visualization
 
 ### 3.1 Individual Athlete Timeline
@@ -307,9 +330,33 @@ The following parts are included in `part3.1_viz_individual.ipynb`
 
 3.1.1 Line plots 6-12 months: The time series line plots with markers may look a little crowded, but does the job for this project. Code is in ***3.1A** in part3.1_viz_individual.ipynb*.
 
-Individual player plots (12 months)
+Peak Propulsive Power
 
-<img src="IMAGES/3.1.1.1.png" alt="sample gender based individual plots" width="800">
+<img src="IMAGES/3.1.1_Peak_propulsive_over_time.png" alt="Peak Propulsive Power" width="600">
+
+<br />
+
+Jump Height
+
+<img src="IMAGES/3.1.1_Jump_Height_over_time.png" alt="Jump height" width="600">
+
+<br />
+
+Peak Velocity
+
+<img src="IMAGES/3.1.1_Peak_velocity_over_time.png" alt="Peak velocity" width="600">
+
+<br />
+
+Speed Max
+
+<img src="IMAGES/3.1.1_Speed_max_over_time.png" alt="Speed Max" width="600">
+
+<br />
+
+Distance Total
+
+<img src="IMAGES/3.1.1_Distance_total_over_time.png" alt="Distance total" width="600">
 
 <br />
 
@@ -317,9 +364,9 @@ Individual player plots (12 months)
 
 3.1.3 Trend (regression): Code is in ***3.1C** in part3.1_viz_individual.ipynb*.
 
-<br />
-
 <img src="IMAGES/3.1.3trend.png" alt="trend" width= "600">
+
+<br />
 
 ---
 
@@ -328,7 +375,6 @@ Individual player plots (12 months)
 <br />
 
 3.1.4 Are the trends expected with ref. to Lit. Review? any surprises?
-
 
 ### 3.2 Team Comparison Analysis
 
@@ -343,6 +389,10 @@ Gender stratified aggregate plots
 3.2.2 Statistical significance. Code is part of ***`3.2B`** in part3_viz_comparison.ipynb*
 
 <img src="IMAGES/3.2.2Anova.png" alt="Anova Stats sign" width="600">
+
+<br />
+
+<img src="IMAGES/3.2.2trend.png" alt="trend" width="400">
 
 <br />
 
@@ -379,11 +429,15 @@ Gender stratified aggregate plots
 
 [TOC](#table-of-contents)
 
+---
+
 ### Streamlit App
 
 A basic <a href="https://507groupproject2025-gtiyppvvdgrfcijefzwtqz.streamlit.app/">Streamlit App</a>  was created to display the data.
 
 [TOC](#table-of-contents)
+
+---
 
 ## 4. Research Synthesis and Application 
 
@@ -399,6 +453,8 @@ The following gaps were identified in the literature & data:
 To address these issues, the 5 metrics, consistently represented in both men’s and women’s teams in at least two tracking systems, were seleted
 
 [TOC](#table-of-contents)
+
+---
 
 4.1.1 
 
@@ -453,6 +509,8 @@ To address these issues, the 5 metrics, consistently represented in both men’s
 
 [TOC](#table-of-contents)
 
+---
+
 4.1.2
 
 ## Flag System
@@ -472,6 +530,8 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 *For more information refer to `Part4_Justification.pdf`*
 
 [TOC](#table-of-contents)
+
+---
 
 ## Recommendations
 
@@ -517,6 +577,8 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 [TOC](#table-of-contents)
 
+---
+
 ## Part 4 Key Insights
 
 1. There is a relationship between two primary sports performance constructs that form the framework on which this study was designed. These 2 constructs are  
@@ -527,15 +589,17 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 3. The project demonstarted key performance based clinical observations.
 
-3. Women's sports metric based testing is a lot less than Men's sprts metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performace based scholarly work and literature.
+4. Women's sports metric based testing is a lot less than Men's sprts metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performace based scholarly work and literature.
 
 [TOC](#table-of-contents)
+
+---
 
 4.2.4 
 
 ### Contextual Insight
 
-**Female athlete gap**
+**1. Female athlete gap**
 
 This project highlighted a significant disparity in current research on female athletes. 
 - 70.7% of studies focus solely on male athletes
@@ -545,11 +609,25 @@ This gap underscores the critical need to expand female athlete testing and to c
 
 When combined, vast **gap in female focused studies** found in the literature, use of differenet **thresholds** and underepresentation of **female testing data**, togther point to major gaps in the curret collegiate sports performance ecosystem as represented in the visual representation below.
 
+**2. Multi-metric testing** 
+
+Integrating multi-domain metrics can provide a comprehensive approach to athlete monitoring in collegiate sports. This review underscores the practical benefits of combining neuromuscular and movement-based data for fatigue detection, readiness assessment, and injury risk management. 
+
+**3. Future research** 
+
+Expanding normative datasets for collegiate sports athletes and validating cross-platform metrics to enhance precision and applicability can address many research and gender based gaps in sports performance.
+
+**4. Consistent Testing**
+
+Metric values can be highly sport-, athelete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. This is compounded by inconsistent metric performance measurement thresholds.
+
 <img src="IMAGES/4.2.4_contextual_insights.png" alt="cont insights" width="500">
 
 <br />
 
 [TOC](#table-of-contents)
+
+---
 
 ## Closing Remarks
 
@@ -562,6 +640,25 @@ Many more questions came-up while wrapping up this project. Here are some that s
 - Is the ease of using Kinexon devices vs Hawkins devices (re 1.4.1 above) lead to more Kinexon based testing? How does this explain the far less number of female player testing?
 - NCAA tier-one sports campuses have a lot of money at stake, federal grants, sponsorships, etc. They also benefit from employing studnets in the atheletic departments. Do these factors influence the quality of testing and data gathering?
 - Athletic data can take a lot of compute and technology resources to get any meaningfu insights from the data. Does the IT infrastructure and a an athlelic departmenst IT budget determine how the quality of sports data and how it can be used?
+
+<br />
+
+[TOC](#table-of-contents)
+
+---
+
+## Limitations
+
+The following limitatons can be seen in any sports performance measurement and sports data based projects.
+
+- Missing or irregular testing reduces baseline stability.
+- Gaps in gender testing biases or practices can skew data results.
+- Gender inference from team labels may lead to classification errors.
+- Team-level z-scores may mask individual variability.
+- Sensor noise and interpolation may influence ME&GC metrics.
+- Contextual factors like injury, fatigue, practice type, etc. are often not measured and accounted for in sports testing.
+
+<br />
 
 [TOC](#table-of-contents)
 
@@ -736,4 +833,6 @@ Contributions:
 
 [TOC](#table-of-contents)
 
---x--
+--- 
+
+<div align="left">⁂</div>

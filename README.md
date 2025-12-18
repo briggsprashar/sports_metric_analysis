@@ -159,7 +159,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 ## 5. How to Run Each Script
 
-Part 1 - Exploration
+Part 1 — Exploration
 
 - Script file name: `part1.1_exploration.py` 
 - Use the command below or use other IDE UI methods to run the script file
@@ -240,7 +240,7 @@ Part 4 - Flagging Logic
 │   ├── part2_cleaning.py                      # Data cleaning pipeline (missing values, normalization, merging)  
 │   ├── part3.1_viz_individual.py              # Individual athlete visualizations  
 │   ├── part3.2_viz_comparison.py              # Group and comparative visualizations 
-│   ├── Part3.3 streamlit.py                   # Demo dashboard/visualization on Streamlit
+│   ├── part3.3_streamlit.py                   # Demo dashboard/visualization on Streamlit
 │   └── part4.1_flags.py                       # Threshold logic, decline detection, and flag generation 
 ├── .gitignore                                 # .env, raw files, etc to ignore
 ├── Project.md                                 # Comprehensive project details
@@ -253,7 +253,7 @@ Part 4 - Flagging Logic
 
 `Project.md` has extensive details about the project. 
 
---x--
+<div align="left">⁂</div>
 
 
 
