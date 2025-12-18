@@ -202,7 +202,7 @@ The 5 metrics were selected because of the properties of correlation and their p
 | Distance Total       | Indicates cumulative load & ACWR spikes[^9] | >20% ACWR associated with risk[^10]|
 *References section is at the end*
 
-Some of the thresholds above changed later in Part 4 after digging deeper into the literature was necessiated to build the Flagging system
+Some of the thresholds above changed later in Part 4 after digging deeper into the literature was necessitated to build the Flagging system
 
 These 5 metrics were explored only for `Basketball` as both Women's Basketball and Men's Basketball teams had the most records for the selected metrics to conduct a gender-based study from the dataset.
 
@@ -275,7 +275,7 @@ ___
 <img src="IMAGES/2.1.2viz.png" alt=">=5 tests viz" width= "900">
 
 ---
-> **Note:** The % of players with >5 tests is much more for Men's baskteball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
+> **Note:** The % of players with >5 tests is much more for Men's basketball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
 ___
 
 <br />
@@ -284,13 +284,13 @@ ___
 
 ### Count of players not tested in the last 6 months: `877`
 
-<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 mths" width= "900">
+<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 months" width= "900">
 
 <br />
 
 List of players not tested in the last 6 months
 
-<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 mths" width= "400">
+<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 months" width= "400">
 
 ---
 > **Note:** The code snapshot above is for total individual players, and can be easily be tweaked to show counts of players from specific teams who were tested in the last 6 months.  
@@ -450,7 +450,7 @@ The following gaps were identified in the literature & data:
 - As in many other sports, women’s basketball athletes are underrepresented in testing data and literature, reducing generalizability and exposing gaps in coverage
 - Lack of unified frameworks that integrate multiple systems (see 4.2.2 below for more on this) this is also the basis of this study
 
-To address these issues, the 5 metrics, consistently represented in both men’s and women’s teams in at least two tracking systems, were seleted
+To address these issues, the 5 metrics, consistently represented in both men’s and women’s teams in at least two tracking systems, were selected
 
 [TOC](#table-of-contents)
 
@@ -521,7 +521,7 @@ To address these issues, the 5 metrics, consistently represented in both men’s
 
 The performance monitoring flag system highlights essential changes in athlete performance, training load, and testing consistency. It uses individual baselines, statistical benchmarks, and team norms for a multi-layered approach. Thresholds are based on physiological logic, best practices, and reliable statistics.
 
-*For more information refer to `Part4_FlagSystem.pdf`* for explanation abou the flag system**
+*For more information refer to `Part4_FlagSystem.pdf`* for explanation about the flag system**
 ​
 ### Data Cleaning and Validity Thresholds
 
@@ -563,9 +563,9 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 ### Practical Applications and Utility
 
-*   **Composite Index:** A composite index with multiple metrics tied togther with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
+*   **Composite Index:** A composite index with multiple metrics tied together with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
 
-*   **Multi-domain Metrics Clustering:** The empirical data derived from the relationships listed above can help in the creation of netric clusterings for comprehensive performance assessment.
+*   **Multi-domain Metrics Clustering:** The empirical data derived from the relationships listed above can help in the creation of metric clustering for comprehensive performance assessment.
 
 *   **Prediction and Improvement:** The established correlations and relationships are crucial because they enable coaches to combine tests of rapid force and movement coordination to better predict and improve performance.
 
@@ -573,7 +573,7 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 *   **Performance Assessment:** The empirical data derived from these relationships can help support **multi-domain metrics clustering** for comprehensive performance assessment across both male and female athletes.
 
-*   **Closing the Gender-gap:** These empirical data driven and derived intiatives can help for comprehensive performance assessment across both male and female athletes.
+*   **Closing the Gender-gap:** These empirical data driven and derived initiatives can help for comprehensive performance assessment across both male and female athletes.
 
 [TOC](#table-of-contents)
 
@@ -589,7 +589,7 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 3. The project demonstarted key performance based clinical observations.
 
-4. Women's sports metric based testing is a lot less than Men's sprts metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performace based scholarly work and literature.
+4. Women's sports metric based testing is a lot less than Men's sports metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performance based scholarly work and literature.
 
 [TOC](#table-of-contents)
 
@@ -607,7 +607,7 @@ This project highlighted a significant disparity in current research on female a
 
 This gap underscores the critical need to expand female athlete testing and to conduct more studies based on female athletes. Female athletes are underrepresented in many device-based studies. 
 
-When combined, vast **gap in female focused studies** found in the literature, use of differenet **thresholds** and underepresentation of **female testing data**, togther point to major gaps in the curret collegiate sports performance ecosystem as represented in the visual representation below.
+When combined, vast **gap in female focused studies** found in the literature, use of different **thresholds** and under representation of **female testing data**, together point to major gaps in the current collegiate sports performance ecosystem as represented in the visual representation below.
 
 **2. Multi-metric testing** 
 
@@ -619,7 +619,7 @@ Expanding normative datasets for collegiate sports athletes and validating cross
 
 **4. Consistent Testing**
 
-Metric values can be highly sport-, athelete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. This is compounded by inconsistent metric performance measurement thresholds.
+Metric values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. This is compounded by inconsistent metric performance measurement thresholds.
 
 <img src="IMAGES/4.2.4_contextual_insights.png" alt="cont insights" width="500">
 
@@ -638,8 +638,8 @@ Many more questions came-up while wrapping up this project. Here are some that s
 - What is the role of technicians and staff who actually operate/monitor these devices?
 - Are there SOP's around these tests, and are such SOP's being followed? 
 - Is the ease of using Kinexon devices vs Hawkins devices (re 1.4.1 above) lead to more Kinexon based testing? How does this explain the far less number of female player testing?
-- NCAA tier-one sports campuses have a lot of money at stake, federal grants, sponsorships, etc. They also benefit from employing studnets in the atheletic departments. Do these factors influence the quality of testing and data gathering?
-- Athletic data can take a lot of compute and technology resources to get any meaningfu insights from the data. Does the IT infrastructure and a an athlelic departmenst IT budget determine how the quality of sports data and how it can be used?
+- NCAA tier-one sports campuses have a lot of money at stake, federal grants, sponsorships, etc. They also benefit from employing students in the athletic departments. Do these factors influence the quality of testing and data gathering?
+- Athletic data can take a lot of compute and technology resources to get any meaningful insights from the data. Does the IT infrastructure and a an athletic departments IT budget determine how the quality of sports data and how it can be used?
 
 <br />
 
@@ -649,7 +649,7 @@ Many more questions came-up while wrapping up this project. Here are some that s
 
 ## Limitations
 
-The following limitatons can be seen in any sports performance measurement and sports data based projects.
+The following limitations can be seen in any sports performance measurement and sports data based projects.
 
 - Missing or irregular testing reduces baseline stability.
 - Gaps in gender testing biases or practices can skew data results.
@@ -680,7 +680,7 @@ Collaboration & communication
 - Microsoft Teams / Zoom 
 - Google Drive
 
-IDE's for coding and stastical analysis
+IDE's for coding and statistical analysis
 - VS Code
 - Google Colab
 
@@ -706,7 +706,7 @@ Contributions:
 - Initial literature review
 - Ranges and thresholds research
 - Documentation templates
-- Initail pair work on 2 women athletes
+- Initial pair work on 2 women athletes
 - Assisted in quality check
 
 </details>
@@ -743,9 +743,9 @@ Contributions:
 
 - Initial deliverables mapping
 - Checked some parts for code reproducibility
-- Inital literature review
+- Initial literature review
 - Worked on all four selected players and teams 
-- Real-world applicabiity with clinical relevance
+- Real-world applicability with clinical relevance
 - Documentation
 - Analysis and Insights
 
