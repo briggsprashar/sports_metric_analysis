@@ -165,7 +165,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
