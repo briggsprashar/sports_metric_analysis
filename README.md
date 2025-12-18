@@ -159,7 +159,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 ## 5. How to Run Each Script
 
-Part 1 — Exploration
+Part 1 - Exploration
 
 - Script file name: `part1.1_exploration.py` 
 - Use the command below or use other IDE UI methods to run the script file
