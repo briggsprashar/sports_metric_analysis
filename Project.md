@@ -362,6 +362,10 @@ Distance Total
 
 3.1.2 Best and worst performance dates: There are many reasons this data is not accurate as there are gaps and inconsistent testing. Code is in ***3.1B** in part3.1_viz_individual.ipynb*.
 
+<img src="IMAGES/3.1.2bestworst.png" alt="trend" width= "600">
+
+<br />
+
 3.1.3 Trend (regression): Code is in ***3.1C** in part3.1_viz_individual.ipynb*.
 
 <img src="IMAGES/3.1.3trend.png" alt="trend" width= "600">
