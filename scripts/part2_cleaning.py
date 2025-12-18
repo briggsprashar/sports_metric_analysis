@@ -87,7 +87,7 @@ print("Metrics with most NULL or zero values:\n", problem_summary)
 print("Total number of rows in dataset:", len(problem_rows))
 
 # Measurement Coverage
-# Count measurements per player per metric per team (excluding NaN/zero values)
+# 2.1.A Count measurements per player per metric per team (excluding NaN/zero values)
 rawmetrics = cleansports[(cleansports['value'].notna()) & (cleansports['value'] != 0)]
 
 counts = (
@@ -98,7 +98,7 @@ counts = (
 )
 
 
-# Percent of Team (groupteam) of players with ≥5 measurements (metrics)
+# 2.1.B Percent of Team (groupteam) of players with ≥5 measurements (metrics)
 # Flag players with ≥5 measurements
 counts['has_5_or_more'] = counts['measurement_count'] >= 5
 
@@ -132,7 +132,7 @@ print("Percentage of athletes with ≥5 measurements per team:\n", summary)
 
 
 
-# Athlete Testing Recency
+# 2.1.C Athlete Testing Recency
 # Convert 'timestamp' to datetime
 rawmetrics['timestamp'] = pd.to_datetime(rawmetrics['timestamp'], errors='coerce')
 rawmetrics = rawmetrics.dropna(subset=['timestamp'])
