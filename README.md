@@ -4,18 +4,18 @@
 
 ## Keywords
 
-- Exploratoty data analytics (EDA)
+- Exploratory data analytics (EDA)
 - Federated analytics
 - Python
 - MySQL database (remote connection)
 - `.env` credentialing (secure connection)
 - Sanitized dataset (privacy secured)
-- Literature review (theortical basis)
+- Literature review (theoretical basis)
 - Framework based inquiry (robust methodology)
 - Research question (focused approach)
 - Sports performance constructs (RFD & ME&GC)
 - Sports metrics
-- Stastical patterns/trends
+- Statistical patterns/trends
 - Data visualization
 - Gender gap in sports testing 
 - Research gap identification
@@ -119,7 +119,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 ## 4. Database Connection Instructions
 
-4. Create a `.env` file to add databse credentials
+4. Create a `.env` file to add database credentials
     
     ```env
     DB_HOST=secret hostname
@@ -209,7 +209,7 @@ Part 4 - Flagging Logic
     ```
 - Extracted output(s):
     - `players_with_baseline_2025.csv` - contains all players with baseline and current value
-    - `risky_players_2025.csv` - containts STD threshold, percentilethreshold, riskSTD and riskPercentile
+    - `risky_players_2025.csv` - contains STD threshold, percentile threshold, riskSTD and riskPercentile
     - `athletes_overdue_testing.csv` contains players not tested more than 30 days
     - `part4_flagged_only.csv` - list of players that are flagged only
     - `part4_flagged_all_players.csv` - list of players 
@@ -232,7 +232,7 @@ Part 4 - Flagging Logic
 │   ├── Part4_FlagSystem.pdf                   # Explains the Flagging Logic
 │   ├── Part4_Research_Synthesis.PDF           # 
 │   ├── Part4_Presentation.pdf                 # Presentation of project overview
-│   ├── Part5_Observations_Limitations.pdf     # Observtions and limitations in the project
+│   ├── Part5_Observations_Limitations.pdf     # Observations and limitations in the project
 ├── scripts/
 │   ├── part1.1_exploration.py                 # Initial data exploration, descriptive statistics, distributions 
 │   ├── part1.2_preselection.py                # Focused on all metrics and sports
