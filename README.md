@@ -228,6 +228,7 @@ Part 4 - Flagging Logic
 │   ├── Part1_LitReview.pdf                    # Brief literature review
 │   ├── Part1_Metrics.pdf                      # Research literature focused reasoning behind metric selection
 │   ├── Part1_Summary.pdf                      # Summary of Exploration & Code, Key data, Top 3 metrics/source, Research and Metric selection
+│   ├── Part3_Player_analysis.pdf              # Individual player analysis
 │   ├── Part4_Justification.pdf                # Performance Monitoring Flag System: Threshold Justification
 │   ├── Part4_FlagSystem.pdf                   # Explains the Flagging Logic
 │   ├── Part4_Research_Synthesis.PDF           # 

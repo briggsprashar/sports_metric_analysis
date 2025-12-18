@@ -13,6 +13,7 @@ Because multiple sources point to the same basic information, the references use
 | Part1_LitReview.pdf              | **Yes**                          |
 | Part1_Metrics.pdf                | **Yes**                          |
 | Part1_Summary.pdf                | N/A                          |
+| Part3_Player_analysis.pdf                | **Yes**                          |
 | Part4_Justification.pdf          | **Yes**                          |
 | Part4_FlagSystem.pdf             | N/A                          |
 | Part4_Research_Synthesis.pdf     | N/A                          |

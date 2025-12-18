@@ -27,14 +27,14 @@
 
 ## Description
 
-This data-science/informatics-based Exploratory Data Analytics (EDA) project explores a sanitized collegaiate atheletes sample dataset of student athletes of a US-based NCAA Tier-1 University. The aim is to go through the entire EDA and federated analytics processes, creating remote database connections, and various methods and techniques to extract practically usable insight from the data about the use of athlete sports testing using various metrics and devices. Python and its various tools are majorly used to access, explore, clean, transform and parse data from a remote dataset. Various statistical techniques were used to meaning and insights from the datasets. This exploration was basedon a research question absed on a throught literature review.
+This data-science/informatics-based Exploratory Data Analytics (EDA) project explores a sanitized collegiate athletes sample dataset of student athletes of a US-based NCAA Tier-1 University. The aim is to go through the entire EDA and federated analytics processes, creating remote database connections, and various methods and techniques to extract practically usable insight from the data about the use of athlete sports testing using various metrics and devices. Python and its various tools are majorly used to access, explore, clean, transform and parse data from a remote dataset. Various statistical techniques were used to meaning and insights from the datasets. This exploration was based on a research question based on a thorough literature review.
 
 The project has been successful in doing the following in sports performance area:
 - Identifying and addressing gender equity gaps, especially the scarcity of sports research based on women players.
-- Exploring the whole dataset based with the aid of a logical framework that bridges vaious metrics and devices with well researched logic and body-of-work.
+- Exploring the whole dataset based with the aid of a logical framework that bridges various metrics and devices with well researched logic and body-of-work.
 - Standardizing thresholds across systems.
 - Building a foundation for multi-metric performance metrics that build on the likes of fatigue detection models and others.
-- Supporting consistent and reproducible athletic testing and monitoring in collegiate settings for both male and femalw athletes.
+- Supporting consistent and reproducible athletic testing and monitoring in collegiate settings for both male and female athletes.
 
 *Refer to `Part1_Framework.pdf` for details on framework.*
 
@@ -165,7 +165,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -188,7 +188,7 @@ Across all metrics, five Hawkins and Kenxion metrics stood out for availability,
 - **Jump Height** *(in top 10 Hawkins metrics by count above in 1.3.5)*
 - **Peak Propulsive Power** *(in top 10 Hawkins metrics by count above in 1.3.5)*
 - **Peak Velocity** *(in top 10 Hawkins metrics by count above in 1.3.5)*
-- **Speed Max** *(top Kinexon metric tested for Women's Baketball)*
+- **Speed Max** *(top Kinexon metric tested for Women's Basketball)*
 - **Distance total** *(in top 10 Kinexon metrics by count above in 1.3.5)*
 
 The 5 metrics were selected because of the properties of correlation and their predictive power when used in combination. 
@@ -212,7 +212,7 @@ These 5 metrics were explored only for `Basketball` as both Women's Basketball a
 <img src="IMAGES/1.4.1AllrecordsB.png" alt="allrecordsbasketball" width= "200">
 
 ---
-> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexon records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexon based tests is the reason for the order of magnitude more test records for Kenxion, compared to Hawkins, for Nasketball and 5 metrics selected for this informatics project.
+> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexon records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexon based tests is the reason for the order of magnitude more test records for Kenxion, compared to Hawkins, for basketball and 5 metrics selected for this informatics project.
 
 ---
 
@@ -245,7 +245,7 @@ Metric ranges
 
 ___
 
-> **Note:** Football records show the contrast with not only women basketball players but also with women baskteball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
+> **Note:** Football records show the contrast with not only women basketball players but also with women basketball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
 ___
 
 *Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.*
@@ -275,7 +275,7 @@ ___
 <img src="IMAGES/2.1.2viz.png" alt=">=5 tests viz" width= "900">
 
 ---
-> **Note:** The % of players with >5 tests is much more for Men's basketball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
+> **Note:** The % of players with >5 tests is much more for Men's baskteball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
 ___
 
 <br />
@@ -284,13 +284,13 @@ ___
 
 ### Count of players not tested in the last 6 months: `877`
 
-<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 months" width= "900">
+<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 mths" width= "900">
 
 <br />
 
 List of players not tested in the last 6 months
 
-<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 months" width= "400">
+<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 mths" width= "400">
 
 ---
 > **Note:** The code snapshot above is for total individual players, and can be easily be tweaked to show counts of players from specific teams who were tested in the last 6 months.  
@@ -371,6 +371,8 @@ Distance Total
 ---
 
 > Player 995 shows strong, statistically significant gains in key power and velocity metrics over the last 12 months, serving as a model of positive adaptation. Player 555 demonstrates statistically significant improvements in maximum speed, indicating enhanced athletic readiness and explosive capabilities. Player 755 shows significant negative trends in power and velocity, core components of explosive performance, suggest a need for review of this athlete's training load and recovery protocols. Player 741 shows a statistically significant  decline across all metrics, indicating a high risk of overtraining, illness or potential injury.
+
+---
 
 <br />
 
@@ -563,9 +565,9 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 ### Practical Applications and Utility
 
-*   **Composite Index:** A composite index with multiple metrics tied together with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
+*   **Composite Index:** A composite index with multiple metrics tied togther with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
 
-*   **Multi-domain Metrics Clustering:** The empirical data derived from the relationships listed above can help in the creation of metric clustering for comprehensive performance assessment.
+*   **Multi-domain Metrics Clustering:** The empirical data derived from the relationships listed above can help in the creation of netric clusterings for comprehensive performance assessment.
 
 *   **Prediction and Improvement:** The established correlations and relationships are crucial because they enable coaches to combine tests of rapid force and movement coordination to better predict and improve performance.
 
@@ -589,7 +591,7 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 3. The project demonstarted key performance based clinical observations.
 
-4. Women's sports metric based testing is a lot less than Men's sports metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performance based scholarly work and literature.
+4. Women's sports metric based testing is a lot less than Men's sports metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performace based scholarly work and literature.
 
 [TOC](#table-of-contents)
 
@@ -607,7 +609,7 @@ This project highlighted a significant disparity in current research on female a
 
 This gap underscores the critical need to expand female athlete testing and to conduct more studies based on female athletes. Female athletes are underrepresented in many device-based studies. 
 
-When combined, vast **gap in female focused studies** found in the literature, use of different **thresholds** and under representation of **female testing data**, together point to major gaps in the current collegiate sports performance ecosystem as represented in the visual representation below.
+When combined, vast **gap in female focused studies** found in the literature, use of different **thresholds** and under representation of **female testing data**, together point to major gaps in the curret collegiate sports performance ecosystem as represented in the visual representation below.
 
 **2. Multi-metric testing** 
 
@@ -680,7 +682,7 @@ Collaboration & communication
 - Microsoft Teams / Zoom 
 - Google Drive
 
-IDE's for coding and statistical analysis
+IDE's for coding and stastical analysis
 - VS Code
 - Google Colab
 
@@ -743,9 +745,9 @@ Contributions:
 
 - Initial deliverables mapping
 - Checked some parts for code reproducibility
-- Initial literature review
+- Inital literature review
 - Worked on all four selected players and teams 
-- Real-world applicability with clinical relevance
+- Real-world applicabiity with clinical relevance
 - Documentation
 - Analysis and Insights
 
@@ -794,9 +796,10 @@ Contributions:
 - Analysis and Insights
 - Streamlit app (Feedback)
 - Documentation and quality check and audit 
+- Double checked and corrected all submitted documentation and references
 - Code documentation and audit (with Paul)
 - Created the final versions of the presentation and all final documentation for the project
-- Final README.md
+- Final GitHub documentation.
 
 </details>
 
@@ -832,6 +835,7 @@ Contributions:
 </details>
 
 <br />
+
 
 [TOC](#table-of-contents)
 
