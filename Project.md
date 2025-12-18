@@ -1,7 +1,6 @@
-Project.md
 # Athletics Performance Analytics
 
-*Refer to `README.md` for high level and technical information about the project*
+*Refer to [README.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/README.md) for detailed information about the project*
 
 ## Table of Contents
 
@@ -166,7 +165,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -246,7 +245,7 @@ Metric ranges
 
 ___
 
-> **Note:** Football records show the contrast with not only women basketball players but also with women Basketball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
+> **Note:** Football records show the contrast with not only women basketball players but also with women Baskteball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
 ___
 
 *Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.*
@@ -276,7 +275,7 @@ ___
 <img src="IMAGES/2.1.2viz.png" alt=">=5 tests viz" width= "900">
 
 ---
-> **Note:** The % of players with >5 tests is much more for Men's basketball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
+> **Note:** The % of players with >5 tests is much more for Men's baskteball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
 ___
 
 <br />
@@ -285,13 +284,13 @@ ___
 
 ### Count of players not tested in the last 6 months: `877`
 
-<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 months" width= "900">
+<img src="IMAGES/2.1.3nottestein6mths.png" alt="not tested in last 6 mths" width= "900">
 
 <br />
 
 List of players not tested in the last 6 months
 
-<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 months" width= "400">
+<img src="IMAGES/2.1.3tested6mths.png" alt="tested in last 6 mths" width= "400">
 
 ---
 > **Note:** The code snapshot above is for total individual players, and can be easily be tweaked to show counts of players from specific teams who were tested in the last 6 months.  

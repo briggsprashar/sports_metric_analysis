@@ -1,6 +1,18 @@
 # Athletics Performance Analytics
 
-*Refer to `Project.md` for detailed information about the project*
+*Refer to [Project.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/Project.md) for detailed information about the project*
+
+## Table of Contents
+
+1. [Keywords](#keywords)
+2. [Description](#1-description)
+3. [Project workflow](#project-workflow)
+4. [Team](#2-team)
+5. [Setup Instructions](#3-setup-instructions)
+5. [Database Connection Instructions](#4-database-connection-instructions)
+5. [How to run each script](#5-how-to-run-each-script)
+6. [Github Folder structure](#6-github-folder-structure)
+
 
 ## Keywords
 
@@ -20,6 +32,10 @@
 - Gender gap in sports testing 
 - Research gap identification
 
+[TOC](#table-of-contents)
+
+---
+
 ## 1. Description
 
 This project is research-oriented exploratory data analysis (EDA) project using an existing SBU athlete sport-performance sanitized dataset. It involves **federated analytics** including data-cleaning, transformation and extraction to make the data direct query-based to do further exploratory data analysis (EDA) using lightweight ad-hoc querying.  
@@ -27,6 +43,10 @@ This project is research-oriented exploratory data analysis (EDA) project using 
 A literature review based research question and hypothesis guided the EDA.
 
 The unified collegiate athletics dataset had data different metrics captured from Hawkins, Kinexion and Vald. This data was stored in long format for each athlete and test, giving detailed, timestamped performance metrics for the anonymized athletes across multiple teams across various metrics and data-source devices. Each row had a unique test. About a million rows were usable due to lack of appropriate data.
+
+[TOC](#table-of-contents)
+
+---
 
 ### Project Workflow
 
@@ -58,15 +78,19 @@ The unified collegiate athletics dataset had data different metrics captured fro
 - Developed a performance flagging system based on evidence‑based thresholds 
 - Generated a CSV of flagged athletes
 
-**Documenation**
+**Documentation**
 - Summarized findings, insights and recommendations.
-- Recorded findings in various written reports and a slide deck
+- Recorded findings in various written reports and a slide-deck
 - The reproducible code and documentation are available on <a href= "https://github.com/SBU-Sports-Metrics/507_groupproject_2025">GitHub</a>.
 
 **Project Management**
 
 - This <a href="https://github.com/SBU-Sports-Metrics/Project-Workflow">artifact</a> was used to initially establish a workflow
 - Later <a href="https://github.com/orgs/SBU-Sports-Metrics/projects/1/views/1">GitHub Project</a> was used to manage the full project lifecycle.
+
+<br />
+
+[TOC](#table-of-contents)
 
 ---
 
@@ -79,6 +103,10 @@ The unified collegiate athletics dataset had data different metrics captured fro
 - Briggs Prashar: Project Lead
 
 *Details under Resources > Team in `Project.md`*
+
+<br />
+
+[TOC](#table-of-contents)
 
 ---
 
@@ -114,6 +142,10 @@ The unified collegiate athletics dataset had data different metrics captured fro
     Clone from Terminal or IDE UI when cloning the GitHub repo
         
     In Visual Studio Code > Clone using Command Palette > `Shift + Command + P` (or `Ctrl + Shift + P` on Windows/Linux)
+
+<br />
+
+[TOC](#table-of-contents)
 
 ---
 
@@ -154,6 +186,10 @@ The unified collegiate athletics dataset had data different metrics captured fro
     ```
 
     *Alternatively, create a separate `url string` first and then call it `engine = create_engine(url)` to create the connection engine*
+
+<br />
+
+[TOC](#table-of-contents)
 
 ---
 
@@ -215,6 +251,10 @@ Part 4 - Flagging Logic
     - `part4_flagged_all_players.csv` - list of players 
 
 
+<br />
+
+[TOC](#table-of-contents)
+
 ---
 
 ## 6. Github Folder structure
@@ -233,7 +273,7 @@ Part 4 - Flagging Logic
 │   ├── Part4_FlagSystem.pdf                   # Explains the Flagging Logic
 │   ├── Part4_Research_Synthesis.PDF           # 
 │   ├── Part4_Presentation.pdf                 # Presentation of project overview
-│   ├── Part5_Observations_Limitations.pdf     # Observations and limitations in the project
+│   ├── Part5_Observations_Limitations.pdf     # Observtions and limitations in the project
 ├── scripts/
 │   ├── part1.1_exploration.py                 # Initial data exploration, descriptive statistics, distributions 
 │   ├── part1.2_preselection.py                # Focused on all metrics and sports
@@ -252,6 +292,8 @@ Part 4 - Flagging Logic
 
 <br />
 
-`Project.md` has extensive details about the project. 
+[TOC](#table-of-contents)
+
+---
 
 <div align="left">⁂</div>
