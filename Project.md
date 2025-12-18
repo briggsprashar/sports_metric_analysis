@@ -374,6 +374,8 @@ Distance Total
 
 ---
 
+*Refer to `Part3_Player_analysis.pdf` for additional analysis and clinical/performance implications*
+
 <br />
 
 3.1.4 Are the trends expected with ref. to Lit. Review? any surprises?
