@@ -22,7 +22,7 @@
 16. [Closing Remarks](#closing-remarks)
 17. [Limitations](#limitations)
 18. [Resources](#resources)
-        (*Includes Tools & Team*)
+        (*Includes Tools & Team Members*)
 19. [References](#references)
 
 ## Description
@@ -165,7 +165,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -419,9 +419,15 @@ Gender stratified aggregate plots
 <br />
 
 3.2.4 In context of your literature review
+
 - Do differences make sense given sport demands?
+    - Yes. Moreover, gender based differences do exist. 
+
 - How do values compare to published norms (if available)?
+    - After normalizing outliers, all values are within norms.
+
 - What might explain the differences or similarities?
+    - Values are similar as they are well documented, even when thresholds are inconsistent. Moreover, the 5 metrics are all basic human capability measures based in basic physics and are not composite derived metrics. Humans (especially college level athletes) can perform in sports only within a small range. So values and ranges found in Literature review and in the dataset are comparable and similar (within most used ranges). Outliers were handled by the script. Except in one case where Jump Height was 7+ meters, most other metrics did not have wild single outliers that stood out.
 
 ### 3.3 Dashboard Metric
 
@@ -665,14 +671,15 @@ Many more questions came-up while wrapping up this project. Here are some that s
 
 ## Limitations
 
-The following limitations can be seen in any sports performance measurement and sports data based projects.
+The following limitations can be seen in sports performance measurement and sports data projects.
 
 - Missing or irregular testing reduces baseline stability.
-- Gaps in gender testing biases or practices can skew data results.
-- Gender inference from team labels may lead to classification errors.
-- Team-level z-scores may mask individual variability.
-- Sensor noise and interpolation may influence ME&GC metrics.
+- Gaps in gender testing biases or practices can skew data results. This dataset does not show male and female teams for many sports; that reduces gender based data analysis. Most women teams in this dataset has far less >5 measurements then men. That skews results, and can impact performance, as composite metrics are more meaningful. An argument could be that this is because there are more male vs female players. But when percentages are less for women than men, that clearly shows women players are not tested the same. This is clear in bar plot in Section 2.1.2 above.
+- Gender inference from team labels may lead to classification errors. Inferring gender from team labels can sometimes lead to people being assigned to the wrong gender category. This happens because team names or labels are an imperfect way to determine individuals’ genders and can introduce classification errors.
+- Team-level z-scores may mask individual variability. Team-level z-scores aggregate individual performances into a single group metric, which can hide differences in performance among team members.
+- Sensor noise and interpolation may influence ME&GC metrics. Imputation and interpolation rely on surrounding data points, the resulting values are assumptions rather than true observations. If the neighboring values are unusually low or high, the imputed value will inherit that bias. Moreover, these methods can also create artificial trend lines, reduce natural variability, and potentially mask the true cause of changes in the data. Additionally, imputation often pulls values toward the median, introducing bias and altering the distribution of the dataset.
 - Contextual factors like injury, fatigue, practice type, etc. are often not measured and accounted for in sports testing.
+- More data also tends to create higher averages.
 
 *Refer to `Part5_Observations_Limitations.pdf` for additional information*
 
@@ -705,11 +712,11 @@ IDE's for coding and statistical analysis
 <br />
 
 <details>
-<summary>Team</summary>
+<summary>Team Members</summary>
 
 <br />
 
-<details>
+<details>   
 <summary>Siddikha Abrahim</summary>
 
 <br />
@@ -822,11 +829,6 @@ Contributions:
 
 ## References
 
-<details>
-<summary>References</summary>
-
-<br />
-
 [^1]: Philipp NM, Cabarkapa D, Nijem RM, Blackburn SD, Fry AC. Vertical Jump Neuromuscular Performance Characteristics Determining On-Court Contribution in Male and Female NCAA Division 1 Basketball Players. Sports (Basel). 2023;11(12):239. Published 2023 Dec 4. doi:10.3390/sports11120239
 
 [^2]: Hicks J, McLaren SJ, Malone JJ, et al. Investigating the stretch-shortening cycle fatigue response to a high-intensity stressful phase of training in collegiate men's basketball. Front Sports Act Living. 2024;6:1377528. doi:10.3389/fspor.2024.1377528
@@ -846,8 +848,6 @@ Contributions:
 [^9]: Gholizadeh R, Nobari H, Bolboli L, Siahkouhian M, Brito JP. Comparison of Measurements of External Load between Professional Soccer Players. Healthcare (Basel). 2022;10(6):1116. Published 2022 Jun 15. doi:10.3390/healthcare10061116
 
 [^10]: Qin W, Li R, Chen L. Acute to chronic workload ratio (ACWR) for predicting sports injury risk: a systematic review and meta-analysis. BMC Sports Sci Med Rehabil. 2025;17(1):285. Published 2025 Sep 30. doi:10.1186/s13102-025-01332-x
-
-</details>
 
 <br />
 
