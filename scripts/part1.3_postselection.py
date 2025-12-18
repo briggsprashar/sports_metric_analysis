@@ -43,7 +43,7 @@ raw_data['value'] = pd.to_numeric(raw_data['value'], errors='coerce')
 # then apply linear interpolation followed by backfill/forward fill
 raw_data['value'] = (
     raw_data.groupby('metric')['value']
-        .transform(lambda s: s.mask(s < s.mean() * 0.01)
+        .transform(lambda s: s.mask(s < s.mean() * 0.1)
                               .interpolate(method='linear')
                               .bfill()
                               .ffill())
