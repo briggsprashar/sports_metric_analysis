@@ -362,10 +362,6 @@ Distance Total
 
 3.1.2 Best and worst performance dates: There are many reasons this data is not accurate as there are gaps and inconsistent testing. Code is in ***3.1B** in part3.1_viz_individual.ipynb*.
 
-<img src="IMAGES/3.1.2bestworst.png" alt="trend" width= "600">
-
-<br />
-
 3.1.3 Trend (regression): Code is in ***3.1C** in part3.1_viz_individual.ipynb*.
 
 <img src="IMAGES/3.1.3trend.png" alt="trend" width= "600">
@@ -468,46 +464,46 @@ To address these issues, the 5 metrics, consistently represented in both men’s
 
 **1. Jump Height Decline**
 
-    Threshold: >10–15% decline from baseline.
+- Threshold: >10–15% decline from baseline.
 
-    Clinical/Performance Relevance: Indicates neuromuscular fatigue even when athletes may not self‑report symptoms. Serves as a practical “red flag” for readiness monitoring.
+- Clinical/Performance Relevance: Indicates neuromuscular fatigue even when athletes may not self‑report symptoms. Serves as a practical “red flag” for readiness monitoring.
 
         
 **2. Peak Velocity Asymmetry / Decline**
 
-    Thresholds: 5% decline compared to baseline. 10% limb asymmetry between left/right outputs.
+- Thresholds: 5% decline compared to baseline. 10% limb asymmetry between left/right outputs.
     
-    Clinical/Performance Relevance: Sensitive to neuromuscular fatigue and imbalance. 10% asymmetry linked to performance decline and potential injury risk.
+- Clinical/Performance Relevance: Sensitive to neuromuscular fatigue and imbalance. 10% asymmetry linked to performance decline and potential injury risk.
 
 **3. Speed Max Relative to Personal Best**
 
-    Threshold: <90% of personal best sprint speed.
+- Threshold: <90% of personal best sprint speed.
     
-    Clinical/Performance Relevance: Identifies suboptimal sprint performance, often reflecting fatigue or incomplete recovery. Position‑specific contextualization (e.g., football linemen vs. skill positions, basketball guards vs. forwards).
+- Clinical/Performance Relevance: Identifies suboptimal sprint performance, often reflecting fatigue or incomplete recovery. Position‑specific contextualization (e.g., football linemen vs. skill positions, basketball guards vs. forwards).
 
 **4. Distance Total / Workload Ratio**
 
-    Threshold: Acute‑to‑Chronic Workload Ratio (ACWR) increase >20%.
+- Threshold: Acute‑to‑Chronic Workload Ratio (ACWR) increase >20%.
     
-    Clinical/Performance Relevance: Strongly associated with elevated injury risk. Useful for flagging overload conditions in both men’s and women’s cohorts.
+- Clinical/Performance Relevance: Strongly associated with elevated injury risk. Useful for flagging overload conditions in both men’s and women’s cohorts.
 
 **5. Peak Propulsive Power (PPP)**
 
-    Threshold: such as declines of 5–10% from baseline PPP indicate moderate fatigue, while >10% reductions signal significant neuromuscular impairment requiring recovery interventions. 
+- Threshold: such as declines of 5–10% from baseline PPP indicate moderate fatigue, while >10% reductions signal significant neuromuscular impairment requiring recovery interventions. 
     
-    Clinical/Performance Relevance: Identifies values falling below 90% of an athlete’s personal best PPP are commonly used to flag reduced readiness and elevated injury risk. These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks.
+- Clinical/Performance Relevance: Identifies values falling below 90% of an athlete’s personal best PPP are commonly used to flag reduced readiness and elevated injury risk. These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks.
 
 **Why These Thresholds Matter**
 
-    Jump Height: Simple, widely used, but limited sensitivity — best interpreted alongside PPP or velocity.
+- Jump Height: Simple, widely used, but limited sensitivity; best interpreted alongside PPP or velocity.
     
-    Peak Velocity: Adds nuance by detecting asymmetry and fatigue not captured by jump height alone.
+- Peak Velocity: Adds nuance by detecting asymmetry and fatigue not captured by jump height alone.
     
-    Speed Max: Contextualizes sprint demands by position and ensures athletes are performing near their best.
+- Speed Max: Contextualizes sprint demands by position and ensures athletes are performing near their best.
     
-    Distance Total: Provides a workload lens, critical for balancing training load and injury prevention.
+- Distance Total: Provides a workload lens, critical for balancing training load and injury prevention.
     
-    Peak Propulsice Power: These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks
+- Peak Propulsice Power: These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks
 
 <br />
 
@@ -545,23 +541,23 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 **Fundamental Relationship** 
 
-    RFD is conceptualized as the athlete's "Engine" (representing explosive strength and lower-limb power output), while ME&GC is the "Drivetrain" (representing explosiveness, quickness, and cumulative movement load). RFD powers an athlete's movement, and ME&GC determines how effectively that power translates into performance.
+- RFD is conceptualized as the athlete's "Engine" (representing explosive strength and lower-limb power output), while ME&GC is the "Drivetrain" (representing explosiveness, quickness, and cumulative movement load). RFD powers an athlete's movement, and ME&GC determines how effectively that power translates into performance.
 
 **Positive Relationship** 
 
-    RFD and ME&GC are positively and consistently related.
+- RFD and ME&GC are positively and consistently related.
 
 **Consistency of Coupling** 
 
-    Coupling between RFD and ME&GC metrics is similar in both sexes.
+- Coupling between RFD and ME&GC metrics is similar in both sexes.
 
 **Difference in operating Range** 
 
-    Although the coupling is similar, male athletes tend to have an higher operating range in the metrics. Interaction data-models were tested using Gender as a Moderator of the RFD and ME&GC relationships.
+- Although the coupling is similar, male athletes tend to have an higher operating range in the metrics. Interaction data-models were tested using Gender as a Moderator of the RFD and ME&GC relationships.
 
 **Inconsistent Threshold**
 
-    The literature review identified inconsistent thresholds for most  metrics. Standardized thresholds can be created for various tiers of athletes addressing gender specific variations.
+- The literature review identified inconsistent thresholds for most  metrics. Standardized thresholds can be created for various tiers of athletes addressing gender specific variations.
 
 4.2.2 
 
@@ -661,6 +657,8 @@ The following limitatons can be seen in any sports performance measurement and s
 - Team-level z-scores may mask individual variability.
 - Sensor noise and interpolation may influence ME&GC metrics.
 - Contextual factors like injury, fatigue, practice type, etc. are often not measured and accounted for in sports testing.
+
+*Refer to `Part5_Observations_Limitations.pdf` for additional information*
 
 <br />
 
