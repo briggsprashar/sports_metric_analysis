@@ -1,3 +1,4 @@
+Project.md
 # Athletics Performance Analytics
 
 *Refer to `README.md` for high level and technical information about the project*
@@ -46,7 +47,7 @@ The project has been successful in doing the following in sports performance are
 
 **Part 1: Data Connection and Exploration**
 
-This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexon, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Database table used for the project: `research_experiment_refactor_test`
+This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexion, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Database table used for the project: `research_experiment_refactor_test`
 
 *Refer to `Part1_Summary.pdf` for details*
 
@@ -73,13 +74,13 @@ This phase focused on building a flagging system that operationalized the analyt
 - Set up Python environment with required libraries (sqlalchemy, pandas, pymysql)
 - Connected to a remote SQL database via a url string, and a connection engine using a secrets .env file. 
 - Test connection by querying the research_experiment_refactor_test table
-- Verified the secured schema access tp explore the datatypes and data structure to identify metric availability across the three devices (Hawkins, Kinexon and VALD) used to measure sports performance.
+- Verified the secured schema access to explore the data types and data structure to identify metric availability across the three devices (Hawkins, Kinexion and Vald) used to measure sports performance.
 
 ### 1.2 Data Quality Assessment 
 - 1.2.1 Unique athletes: `1287` 
 - 1.2.2 Unique sports/teams: `92`
 - 1.2.3 Available date ranges: `10-15-2018` to `10-21-2025`
-- 1.2.4 Devices: Kinexon (most records) `4073754`, Hawkins `24922372`, Vald (least records) `51300`
+- 1.2.4 Devices: Kinexion (most records) `4073754`, Hawkins `24922372`, Vald (least records) `51300`
 - 1.2.5 Athletes with missing or invalid names: `0`
 - 1.2.6 Athletes have data from multiple sources: `541`
 
@@ -93,7 +94,7 @@ This phase focused on building a flagging system that operationalized the analyt
 
 - *Hawkins:* Jump + Force Plate Metrics: Jump Height, Peak Propulsive Power (PPP), Peak Velocity, Concentric/RSI derivatives.
 
-- *Kinexon:* Tracking Metrics: Speed Max, Peak Velocity, Distance Total, accelerations, decelerations
+- *Kinexion:* Tracking Metrics: Speed Max, Peak Velocity, Distance Total, accelerations, decelerations
 
 - *Vald:* Strength & Asymmetry: unilateral force outputs, asymmetry calculations.
 
@@ -103,7 +104,7 @@ This phase focused on building a flagging system that operationalized the analyt
 
 <br />
 
-1.3.2 Top 10 most common metrics for Kinexon data
+1.3.2 Top 10 most common metrics for Kinexion data
 
 <img src="IMAGES/1.312.png" alt="top10k" width="400">
 
@@ -129,7 +130,7 @@ Hawkins
 
 <img src="IMAGES/1.3.52.png" alt="datasourceh" width="800">
 
-Kinexon
+Kinexion
 
 <img src="IMAGES/1.3.53.png" alt="datasourcek" width="800">
 
@@ -148,7 +149,7 @@ Vald
 |Unique athletes| Consistent across sources; overlapping IDs present |  
 |Teams with most data| Football, Men’s Basketball, Women’s Basketball | 
 |Date ranges| Varied by system; Vald had the broadest continuous timeline | 
-|Largest data source |Kinexon had the highest record count| 
+|Largest data source |Kinexion had the highest record count| 
 |Missing or invalid names | Significant issues detected; approximately one million unusable rows were flagged| 
 |Multi-system athletes | Several athletes had data from 2–3 systems, useful for cross-metric triangulation| 
 
@@ -165,7 +166,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -183,13 +184,13 @@ An initial effort in metrics exploration is presented below.
 
 <br />
 
-Across all metrics, five Hawkins and Kenxion metrics stood out for availability, quality, and cross-sport coverage.
+Across all metrics, five Hawkins and Kinexion metrics stood out for availability, quality, and cross-sport coverage.
 
 - **Jump Height** *(in top 10 Hawkins metrics by count above in 1.3.5)*
 - **Peak Propulsive Power** *(in top 10 Hawkins metrics by count above in 1.3.5)*
 - **Peak Velocity** *(in top 10 Hawkins metrics by count above in 1.3.5)*
-- **Speed Max** *(top Kinexon metric tested for Women's Basketball)*
-- **Distance total** *(in top 10 Kinexon metrics by count above in 1.3.5)*
+- **Speed Max** *(top Kinexion metric tested for Women's Basketball)*
+- **Distance total** *(in top 10 Kinexion metrics by count above in 1.3.5)*
 
 The 5 metrics were selected because of the properties of correlation and their predictive power when used in combination. 
 
@@ -202,7 +203,7 @@ The 5 metrics were selected because of the properties of correlation and their p
 | Distance Total       | Indicates cumulative load & ACWR spikes[^9] | >20% ACWR associated with risk[^10]|
 *References section is at the end*
 
-Some of the thresholds above changed later in Part 4 after digging deeper into the literature was necessitated to build the Flagging system
+Some of the thresholds above changed later in Part 4 after digging deeper into the literature was needed to build the Flagging system
 
 These 5 metrics were explored only for `Basketball` as both Women's Basketball and Men's Basketball teams had the most records for the selected metrics to conduct a gender-based study from the dataset.
 
@@ -212,7 +213,7 @@ These 5 metrics were explored only for `Basketball` as both Women's Basketball a
 <img src="IMAGES/1.4.1AllrecordsB.png" alt="allrecordsbasketball" width= "200">
 
 ---
-> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexon records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexon based tests is the reason for the order of magnitude more test records for Kenxion, compared to Hawkins, for Basketball and 5 metrics selected for this informatics project.
+> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexion records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexion based tests is the reason for the order of magnitude more test records for Kinexion, compared to Hawkins, for Basketball and 5 metrics selected for this informatics project.
 
 ---
 
@@ -245,7 +246,7 @@ Metric ranges
 
 ___
 
-> **Note:** Football records show the contrast with not only women basketball players but also with women basketball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
+> **Note:** Football records show the contrast with not only women basketball players but also with women Basketball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
 ___
 
 *Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.*
@@ -404,7 +405,7 @@ Gender stratified aggregate plots
 
 3.2.2 Statistical significance. Code is part of ***`3.2B`** in part3_viz_comparison.ipynb*
 
-<img src="IMAGES/3.2.2Anova.png" alt="ANOVA Stats sign" width="600">
+<img src="IMAGES/3.2.2Anova.png" alt="Anova Stats sign" width="600">
 
 <br />
 
@@ -579,7 +580,7 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 ### Practical Applications and Utility
 
-*   **Composite Index:** A composite index with multiple metrics tied togther with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
+*   **Composite Index:** A composite index with multiple metrics tied together with constructs (as done in this project) can help create more accurate, meaningful and actionable derived metrics. 
 
 *   **Multi-domain Metrics Clustering:** The empirical data derived from the relationships listed above can help in the creation of metric clustering for comprehensive performance assessment.
 
@@ -605,7 +606,7 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 3. The project demonstrated key performance based clinical observations.
 
-4. Women's sports metric based testing is a lot less than Men's sports metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performace based scholarly work and literature.
+4. Women's sports metric based testing is a lot less than Men's sprts metric based testing leading to gender-based equity gap. This discovery is supported with the larger sports performance based scholarly work and literature.
 
 [TOC](#table-of-contents)
 
@@ -623,7 +624,7 @@ This project highlighted a significant disparity in current research on female a
 
 This gap underscores the critical need to expand female athlete testing and to conduct more studies based on female athletes. Female athletes are underrepresented in many device-based studies. 
 
-When combined, vast **gap in female focused studies** found in the literature, use of different **thresholds** and under representation of **female testing data**, together point to major gaps in the current collegiate sports performance ecosystem as represented in the visual representation below.
+When combined, vast **gap in female focused studies** found in the literature, use of different **thresholds** and under-representation of **female testing data**, together point to major gaps in the current collegiate sports performance ecosystem as represented in the visual representation below.
 
 **2. Multi-metric testing** 
 
@@ -633,9 +634,9 @@ Integrating multi-domain metrics can provide a comprehensive approach to athlete
 
 Expanding normative datasets for collegiate sports athletes and validating cross-platform metrics to enhance precision and applicability can address many research and gender based gaps in sports performance.
 
-**4. Consistent Testing**
+**4. Testing**
 
-Metric values can be highly sport-, athelete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. This is compounded by inconsistent metric performance measurement thresholds.
+Metric test-values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. Lack of testing for longitudinal data and gender gaps in testing are compounded by inconsistent metric performance measurement thresholds.
 
 <img src="IMAGES/4.2.4_contextual_insights.png" alt="cont insights" width="500">
 
@@ -653,7 +654,7 @@ Many more questions came-up while wrapping up this project. Here are some that s
 - What role do funding, sponsorships, merch-sales, and other aspects play in one sport getting more attention than others? What explains Football athletes having the most tests, followed by Basketball athletes? Is it purely because these 2 sports are more popular and quintessentially "American" and so more preferred?
 - What is the role of technicians and staff who actually operate/monitor these devices?
 - Are there SOP's around these tests, and are such SOP's being followed? 
-- Is the ease of using Kinexon devices vs Hawkins devices (re 1.4.1 above) lead to more Kinexon based testing? How does this explain the far less number of female player testing?
+- Is the ease of using Kinexion devices vs Hawkins devices (re 1.4.1 above) lead to more Kinexion based testing? How does this explain the far less number of female player testing?
 - NCAA tier-one sports campuses have a lot of money at stake, federal grants, sponsorships, etc. They also benefit from employing students in the athletic departments. Do these factors influence the quality of testing and data gathering?
 - Athletic data can take a lot of compute and technology resources to get any meaningful insights from the data. Does the IT infrastructure and a an athletic departments IT budget determine how the quality of sports data and how it can be used?
 
@@ -665,7 +666,7 @@ Many more questions came-up while wrapping up this project. Here are some that s
 
 ## Limitations
 
-The following limitatons can be seen in any sports performance measurement and sports data based projects.
+The following limitations can be seen in any sports performance measurement and sports data based projects.
 
 - Missing or irregular testing reduces baseline stability.
 - Gaps in gender testing biases or practices can skew data results.
@@ -696,7 +697,7 @@ Collaboration & communication
 - Microsoft Teams / Zoom 
 - Google Drive
 
-IDE's for coding and stastical analysis
+IDE's for coding and statistical analysis
 - VS Code
 - Google Colab
 
@@ -759,9 +760,9 @@ Contributions:
 
 - Initial deliverables mapping
 - Checked some parts for code reproducibility
-- Inital literature review
+- Initial literature review
 - Worked on all four selected players and teams 
-- Real-world applicabiity with clinical relevance
+- Real-world applicability with clinical relevance
 - Documentation
 - Analysis and Insights
 
@@ -814,7 +815,7 @@ Contributions:
 - Double checked and corrected all submitted documentation and references
 - Code documentation and audit (with Paul)
 - Created the final versions of the presentation and all final documentation for the project
-- Final GitHub documentation.
+- Final GitHub documentation. (with Paul)
 
 </details>
 
@@ -855,5 +856,3 @@ Contributions:
 [TOC](#table-of-contents)
 
 --- 
-
-<div align="left">⁂</div>

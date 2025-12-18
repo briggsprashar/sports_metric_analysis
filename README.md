@@ -22,11 +22,11 @@
 
 ## 1. Description
 
-This project is research-oriented exploratory data analysis (EDA) project using an existing SBU athlete sport-performance sanitized dataset. It involves **federated anaytics** including data-cleaning, transformation and extraction to make the data direct query-based to do further exploratory data analysis (EDA) using lightweight ad-hoc querying.  
+This project is research-oriented exploratory data analysis (EDA) project using an existing SBU athlete sport-performance sanitized dataset. It involves **federated analytics** including data-cleaning, transformation and extraction to make the data direct query-based to do further exploratory data analysis (EDA) using lightweight ad-hoc querying.  
 
 A literature review based research question and hypothesis guided the EDA.
 
-The unified collegiate athletics dataset had data different metrics captured from Hawkins, Kinexon and Vald. This data was stored in long format for each athlete and test, giving detailed, timestamped performance metrics for the anonymized athletes across multiple teams across various metrics and data-source devices. Each row had a unique test. About a million rows were usable due to lack of appropriate data.
+The unified collegiate athletics dataset had data different metrics captured from Hawkins, Kinexion and Vald. This data was stored in long format for each athlete and test, giving detailed, timestamped performance metrics for the anonymized athletes across multiple teams across various metrics and data-source devices. Each row had a unique test. About a million rows were usable due to lack of appropriate data.
 
 ### Project Workflow
 
@@ -60,7 +60,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 **Documenation**
 - Summarized findings, insights and recommendations.
-- Recorded findings in various written reports and a slidedeck
+- Recorded findings in various written reports and a slide deck
 - The reproducible code and documentation are available on <a href= "https://github.com/SBU-Sports-Metrics/507_groupproject_2025">GitHub</a>.
 
 **Project Management**
@@ -111,7 +111,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
     or
     ! pip install -r requirements.txt (for Jupyter notebooks)
     ```
-    Clone from Terminal or IDE UI when cloming the GitHub repo
+    Clone from Terminal or IDE UI when cloning the GitHub repo
         
     In Visual Studio Code > Clone using Command Palette > `Shift + Command + P` (or `Ctrl + Shift + P` on Windows/Linux)
 
@@ -189,7 +189,7 @@ Part 3 - Visualizations
     ```bash
     jupyter notebook workflow
     ```
-- Extracted output(s): `selected_players_data.csv` - only contains 4 players with 5 metrics with slope, trending and p_value.
+- Extracted output(s): `selected_players_data.csv` - only contains 4 players with 5 metrics with slope, trending and p_value.
 
 - Script file name with output: `part3.2_viz_comparison.ipynb` 
 - Use the .ipynb files in Jupyter notebooks to generate visualizations from source files listed in the code. Save these source files in a separate folder.
@@ -212,7 +212,7 @@ Part 4 - Flagging Logic
     - `risky_players_2025.csv` - contains STD threshold, percentile threshold, riskSTD and riskPercentile
     - `athletes_overdue_testing.csv` contains players not tested more than 30 days
     - `part4_flagged_only.csv` - list of players that are flagged only
-    - `part4_flagged_all_players.csv` - list of players 
+    - `part4_flagged_all_players.csv` - list of players 
 
 
 ---
@@ -255,12 +255,3 @@ Part 4 - Flagging Logic
 `Project.md` has extensive details about the project. 
 
 <div align="left">⁂</div>
-
-
-
-
-
-
-
-
-
