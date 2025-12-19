@@ -1,3 +1,4 @@
+Readme.md
 # Athletics Performance Analytics
 
 *Refer to [Project.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/Project.md) for detailed information about the project*
@@ -261,8 +262,7 @@ Part 4 - Flagging Logic
 
 ```
 507_groupproject_2025/
-├── output/
-│   ├── part4.3_flagged_athletes.csv
+├── IMAGES/
 ├── PDF_Reports/
 │   ├── Part1_Framework.pdf                    # Theoretical framework used to guide this project
 │   ├── Part1_LitReview.pdf                    # Brief literature review
@@ -273,7 +273,9 @@ Part 4 - Flagging Logic
 │   ├── Part4_FlagSystem.pdf                   # Explains the Flagging Logic
 │   ├── Part4_Research_Synthesis.PDF           # 
 │   ├── Part4_Presentation.pdf                 # Presentation of project overview
-│   ├── Part5_Observations_Limitations.pdf     # Observtions and limitations in the project
+│   ├── Part5_Observations_Limitations.pdf     # Observations and limitations in the project
+├── output/
+│   ├── part4.3_flagged_athletes.csv
 ├── scripts/
 │   ├── part1.1_exploration.py                 # Initial data exploration, descriptive statistics, distributions 
 │   ├── part1.2_preselection.py                # Focused on all metrics and sports
@@ -283,6 +285,7 @@ Part 4 - Flagging Logic
 │   ├── part3.2_viz_comparison.py              # Group and comparative visualizations 
 │   ├── part3.3_streamlit.py                   # Demo dashboard/visualization on Streamlit
 │   └── part4.1_flags.py                       # Threshold logic, decline detection, and flag generation 
+├── teamworkspacescripts/
 ├── .gitignore                                 # .env, raw files, etc to ignore
 ├── Project.md                                 # Comprehensive project details
 ├── README.md                                  # Project overview
