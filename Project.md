@@ -1,4 +1,3 @@
-Project.md
 # Athletics Performance Analytics
 
 *Refer to [README.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/README.md) for an overview about reproducing project*
@@ -404,9 +403,37 @@ Gender stratified aggregate plots
 
 <br />
 
+**Interpretation:** "Gender as a moderator" visual clearly shows that between both basketball teams, Total Distance is almost the same, and women have a higher speed max. Gender as a moderator plays a role. 
+- However, it is also seen that in Speed Max line plot in 3.1.1 above, between April 2025 and July 2025 male players had considerably more Speed Max tests than female players. Could this be the reason that women players have a higher Speed Max?   
+- The exact same exact case happens in Total Distance lie plot in 3.1.1 above, where between between April 2025 and July 2025 male players had considerably more Total Distance tests than female players. Could this be the reason that women players almost similar Total Distance results? 
+- Were the results in both Total Distance and Speed Max skewed by the more testing frequency of male players in the 4 month period?
+
+<br />
+
 3.2.2 Statistical significance. Code is part of ***`3.2B`** in part3_viz_comparison.ipynb*
 
 <img src="IMAGES/3.2.2Anova.png" alt="Anova Stats sign" width="600">
+---
+
+**Interpretation** 
+
+The F‑statistic compares variance between teams to variance within teams; values far from 1 (here 6.89–149.41) indicate that between‑team differences are much larger than random within‑team noise.​
+
+The associated p‑values (0.01 or 0.00) are < 0.05 alpha level, giving strong evidence that at least one team’s mean differs from the others for each metric, hence the “significant = true” column.​
+
+The ANOVA table above shows that all but Distance Total metric differ significantly between teams, as F statistic is > 1, meaning at least one team’s mean performance is statistically higher or lower than another team’s for every metric tested. 
+
+The metrics are not uniform across both teams, and these differences are unlikely to be due to random variation alone. 
+
+Though Distance Total results are not that different. 
+
+These can be seen in part3.2_viz_comparison.ipynb #3.2 as well.
+
+For power metrics men have more range and higher values. For endurance women have more range and higher values, Smaller F-statistic in these metrics also points to that.
+
+**Could this be because men have had more testing in the 4 month period where women had no testing March to July 2025?**
+
+---
 
 <br />
 
@@ -417,6 +444,10 @@ Gender stratified aggregate plots
 3.2.3 Visualization showing testing frequency by team over time: Code is part of ***`3.2C`** in part3_viz_comparison.ipynb*
 
 <img src="IMAGES/3.2.3testingfreq.png" alt="testing freq" width="500">
+
+<br />
+
+**Interpretation:** "Testing Frequency by Team  Over Time" visual clearly shows the gap between male and female testing frequency.
 
 <br />
 
@@ -602,6 +633,10 @@ Before applying any flags, the dataset was cleaned using linear interpolation an
 
 *   **Closing the Gender-gap:** These empirical data driven and derived initiatives can help for comprehensive performance assessment across both male and female athletes.
 
+*   **Implications of Anova test:** As the Anova test (in 3.2.2) above gives strong evidence that at least one team’s mean differs from the others for each metric; “significant" = True”, follow‑up post‑hoc tests are warranted to identify exactly which teams differ on which variables.​ From an applied perspective, staff could use these findings to benchmark teams, target weaker squads for specific interventions (e.g., power or sprint training), and monitor whether future ANOVA tests show convergence or widening of between‑team gaps over time. [^11]
+
+<br />
+
 [TOC](#table-of-contents)
 
 ---
@@ -646,7 +681,7 @@ Expanding normative datasets for collegiate sports athletes and validating cross
 
 **4. Testing**
 
-Metric test-values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. Lack of testing for longitudinal data and gender gaps in testing are compounded by inconsistent metric performance measurement thresholds.
+Metric test-values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. Lack of testing for longitudinal data and gender gaps in testing are compounded by inconsistent metric performance measurement thresholds. In contrast, over-testing can skew results; as happened in 3.2.1 above because many more Total Distance and Speed Max tests for male players in a 4 month period possible skewed the results in favor of female players
 
 <img src="IMAGES/4.2.4_contextual_insights.png" alt="cont insights" width="500">
 
@@ -877,4 +912,4 @@ Contributions:
 
 [^10]: Qin W, Li R, Chen L. Acute to chronic workload ratio (ACWR) for predicting sports injury risk: a systematic review and meta-analysis. BMC Sports Sci Med Rehabil. 2025;17(1):285. Published 2025 Sep 30. doi:10.1186/s13102-025-01332-x
 
-<br />
+[^11]: Girginer FG, Seyhan S, Açar G, Bilici MF, Bilici ÖF, Soylu Ç. Acute effects of the RAMP warm-up on sprint and jump performance in youth soccer players. Front Physiol. 2025;16:1612611. Published 2025 Jun 24. doi:10.3389/fphys.2025.1612611
