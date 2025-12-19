@@ -167,7 +167,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -423,13 +423,16 @@ Gender stratified aggregate plots
 3.2.4 In context of your literature review
 
 - Do differences make sense given sport demands?
-    - Yes. Moreover, gender based differences do exist. 
+    - Yes. Results from all metrics align tightly with known physical and technical demands basketball (repeated jumps, agility, greater clustering for speed metrics).
 
 - How do values compare to published norms (if available)?
-    - After normalizing outliers, all values are within norms.
+    - After normalizing outliers, all values are within norms. Observed ranges for the 5 metrics closely match published NCAA and consensus norms.
 
 - What might explain the differences or similarities?
-    - Values are similar as they are well documented, even when thresholds are inconsistent. Moreover, the 5 metrics are all basic human capability measures based in basic physics and are not composite derived metrics. Humans (especially college level athletes) can perform in sports only within a small range. So values and ranges found in Literature review and in the dataset are comparable and similar (within most used ranges). Outliers were handled by the script. Except in one case where Jump Height was 7+ meters, most other metrics did not have wild single outliers that stood out.
+    
+    - **Similarities** Values are similar as they are well documented, even when thresholds are inconsistent. Moreover, the 5 metrics are all basic human capability measures based in basic physics and are not composite derived metrics. Humans (especially college level athletes) can perform in sports only within a small range. So values and ranges found in Literature review and in the dataset are comparable and similar (within most-used ranges). Outliers were handled by the script. Except in one case where Jump Height was 7+ meters, most other metrics did not have wild single outliers that stood out.
+    
+    - **Differences** Sport demands and sex/positional effects are primary drivers. Basketball has tighter clustering due to play structure. Monitoring equity is lacking; women’s basketball shows less robust tracking and reporting, confirming what was found in literature review. Integrated multi-metric frameworks (rather than isolated measures) are increasingly recommended for operationally relevant athlete profiling and better sensitivity. This has been a core insight of this study. These themes reappear in out study.
 
 ### 3.3 Dashboard Metric
 
@@ -527,7 +530,7 @@ To address these issues, the 5 metrics, consistently represented in both men’s
     
 - Distance Total: Provides a workload lens, critical for balancing training load and injury prevention.
     
-- Peak Propulsice Power: These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks
+- Peak Propulsive Power: These thresholds make PPP a practical and actionable marker for coaches and practitioners to integrate into daily monitoring frameworks
 
 <br />
 
@@ -695,7 +698,7 @@ The following limitations can be seen in sports performance measurement and spor
 
 **Were the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC) found?**
 
-While there is no certain answer, the research question most certainly steered the project in the right direct. It was established that the best approach is to use composite derived metrics that are based on sports constructs and employ multiple metrics. This is the best way to understand athletes and sports training from a systems perspective. For instance, how does force driven metrics interact with movement driven metrics, and how these two impact gait and the complex human movement spectrum. Or how such dynamics impact positional training, performance, recovery, risk assessment and remediation.
+While there is no certain answer, the research question most certainly steered the project in the right direction. It was established that the best approach is to use composite derived metrics that are based on sports constructs and employ multiple metrics. This is the best way to measure athlete performance and sports training from a systems perspective. For instance, how does force driven metrics interact with movement driven metrics, and how these two impact gait and the complex human movement spectrum. Or how such dynamics impact positional training, performance, recovery, risk assessment and remediation.
 
 **Is it known how female and male athletes perform in these metrics?**
 
@@ -875,6 +878,3 @@ Contributions:
 [^10]: Qin W, Li R, Chen L. Acute to chronic workload ratio (ACWR) for predicting sports injury risk: a systematic review and meta-analysis. BMC Sports Sci Med Rehabil. 2025;17(1):285. Published 2025 Sep 30. doi:10.1186/s13102-025-01332-x
 
 <br />
-
-
-[TOC](#table-of-contents)
