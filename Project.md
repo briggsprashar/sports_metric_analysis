@@ -1,3 +1,4 @@
+Project.md
 # Athletics Performance Analytics
 
 *Refer to [README.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/README.md) for an overview about reproducing project*
@@ -166,7 +167,7 @@ Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed t
 Refer to `Part1_LitReview.pdf` for literature review.
 
 ## Research Question
-> What are the most important metrics for Rate of Force Development ($RFD) and Movement-Efficiency & Gait-Complexity ($ME&GC), and how do female and male athletes perform in these metrics?
+> What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
 
 [TOC](#table-of-contents)
 
@@ -213,7 +214,7 @@ These 5 metrics were explored only for `Basketball` as both Women's Basketball a
 <img src="IMAGES/1.4.1AllrecordsB.png" alt="allrecordsbasketball" width= "200">
 
 ---
-> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexion records could possibly be there Kinexon likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexion based tests is the reason for the order of magnitude more test records for Kinexion, compared to Hawkins, for Basketball and 5 metrics selected for this informatics project.
+> **Note:** The small number of Hawkins records for both Basketball Women's and Mens teams and the large number of Kinexion records could possibly be there because Kinexion likely captures more holistic, continuous records due to its **wearable integration**, while Hawkins tests (force plates) focus on **fewer, lab-based reps**. Though this fact has not been validated, it seems the wearable nature of Kinexion based tests is the reason for the order of magnitude more test records for Kinexion, compared to Hawkins, for Basketball and 5 metrics selected for this EDA project.
 
 ---
 
@@ -246,7 +247,7 @@ Metric ranges
 
 ___
 
-> **Note:** Football records show the contrast with not only women basketball players but also with women Baskteball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above.
+> **Note:** Football records show the contrast with not only women basketball players but also with women Baskteball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above. This was also confirmed later in `part3.2_viz_comparison.ipynb` with Box and Violin Plot Analysis for all sports with selected 5 metrics.
 ___
 
 *Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.*
@@ -276,7 +277,7 @@ ___
 <img src="IMAGES/2.1.2viz.png" alt=">=5 tests viz" width= "900">
 
 ---
-> **Note:** The % of players with >5 tests is much more for Men's baskteball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also see is that testing in Football is overall much more thn in any other sport.
+> **Note:** The % of players with >5 tests is much more for Men's baskteball Team (~93%) than for Women's basketball team (~20% with less than 5 tests) in the sample dataset. Also seen is that testing in Football is overall much more thn in any other sport.
 ___
 
 <br />
@@ -306,7 +307,7 @@ Not entirely, if the sample dataset is considered as a standalone data-source.
 However, when combined with the literature review findings, the sample dataset seems to be sufficient to observe wider representative trends that answer the research question: 
 > *What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?*
 
-When the data analysis from the dataset, regardless of data quality (record size, testing-frequency, testing-consistency, gaps, gender-based testing differences, and other extraneous factors like device availability for actual metric measurement), is combined with literature review findings, there is sufficient data to explore the following:
+When the data analysis from the dataset, regardless of data quality (sample size, record size, testing-frequency, testing-consistency, gaps, gender-based testing differences, and other extraneous factors like device availability for actual metric measurement), is combined with literature review findings, there is sufficient data to explore the following:
 - were selected **constructs** well supported with scholarly work as the basis of the logical framework created to explore the research question?
 - is there **correlation** between RFD and ME&GC constructs?
 - were selected **metrics** well supported with scholarly work as the basis of this study?
@@ -315,7 +316,7 @@ When the data analysis from the dataset, regardless of data quality (record size
 - how do male and female athletes perform in the selected 5 metrics to answer the larger **research question**?
 - are the selected 5 metrics sufficient to determine RFD and ME&GC based **sports performance observations and interventions**?
 
-As these 7 questions can be adequately answered from data-project, there was sufficient data to answer the research question, find gaps and make other observations/insights.
+As these 7 questions can be adequately answered in this  data-project, it can be concluded that there was sufficient data to answer the research question, find gaps and make other observations/insights. Also see [Was the research question answered?](#was-the-research-question-answered) below
 
 ---
 
@@ -383,17 +384,19 @@ Distance Total
 
 **Trends** 
 
-Yes. as expected with inconsistent thresholds and the nature of dynamic human physiologic systems and the attempt to capture their performance with basic metrics without use of a composite index based derived metric.
+Yes, trends were seen. as expected with inconsistent thresholds and the nature of dynamic human physiologic systems and the attempt to capture their performance with basic metrics without use of a composite index based derived metric.
 
 **Surprises**
 
 - Female players not tested as much as the male players (confirms existing knowledge)
 - Female players have more speed max values than male players, and their distance total is almost the same as men.
 - Knowing that sports performance and metric based performance testing and measurement is very technical and has a lot of dependencies, a lot of literature covers simplistic metric capture without use of composite multi system longitudinal studies. 
-- A lot of studies are single device based; that was a shocker!
-- Construct-based studies (as attempted in this project with RFD and ME&GC) to actually understand bodily systems are not enough. Studies that do construct based studies point to limitations in combining metrics them meaningfully.
+- A lot of studies are single device-based; that was a shocker!
+- There are not enough construct-based studies to actually understand bodily systems and sports performance (as attempted in this project with RFD and ME&GC). Studies that do construct based studies point to limitations in combining metrics meaningfully.
 
 ### 3.2 Team Comparison Analysis
+
+*Refer to `part3.2_viz_comparison.ipynb` for all visualizations and full analysis*
 
 3.2.1 Comparing the 5 selected metric(s) between teams. Code is part of ***`3.2A`** in part3_viz_comparison.ipynb*
 
@@ -413,6 +416,12 @@ Gender stratified aggregate plots
 3.2.2 Statistical significance. Code is part of ***`3.2B`** in part3_viz_comparison.ipynb*
 
 <img src="IMAGES/3.2.2Anova.png" alt="Anova Stats sign" width="600">
+
+<br />
+
+<img src="IMAGES/3.2.2trend.png" alt="trend" width="400">
+
+<br />
 ---
 
 **Interpretation** 
@@ -434,10 +443,6 @@ For power metrics men have more range and higher values. For endurance women hav
 **Could this be because men have had more testing in the 4 month period where women had no testing March to July 2025?**
 
 ---
-
-<br />
-
-<img src="IMAGES/3.2.2trend.png" alt="trend" width="400">
 
 <br />
 
@@ -681,7 +686,7 @@ Expanding normative datasets for collegiate sports athletes and validating cross
 
 **4. Testing**
 
-Metric test-values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. Lack of testing for longitudinal data and gender gaps in testing are compounded by inconsistent metric performance measurement thresholds. In contrast, over-testing can skew results; as happened in 3.2.1 above because many more Total Distance and Speed Max tests for male players in a 4 month period possible skewed the results in favor of female players
+Metric test-values can be highly sport-, athlete- and protocol-dependent, calling for consistent testing especially to address female testing-gaps. Lack of testing for longitudinal data and gender gaps in testing are compounded by inconsistent metric performance measurement thresholds. In contrast, over-testing can skew results; as happened in 3.2.1 above because many more Total Distance and Speed Max tests for male players in a 4 month period possibly skewed the results such that female players have almost same distance toal values and better speed max values.
 
 <img src="IMAGES/4.2.4_contextual_insights.png" alt="cont insights" width="500">
 
@@ -913,3 +918,6 @@ Contributions:
 [^10]: Qin W, Li R, Chen L. Acute to chronic workload ratio (ACWR) for predicting sports injury risk: a systematic review and meta-analysis. BMC Sports Sci Med Rehabil. 2025;17(1):285. Published 2025 Sep 30. doi:10.1186/s13102-025-01332-x
 
 [^11]: Girginer FG, Seyhan S, Açar G, Bilici MF, Bilici ÖF, Soylu Ç. Acute effects of the RAMP warm-up on sprint and jump performance in youth soccer players. Front Physiol. 2025;16:1612611. Published 2025 Jun 24. doi:10.3389/fphys.2025.1612611
+
+
+<br />

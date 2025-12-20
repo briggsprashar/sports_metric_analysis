@@ -43,7 +43,7 @@ This project is research-oriented exploratory data analysis (EDA) project using 
 
 A literature review based research question and hypothesis guided the EDA.
 
-The unified collegiate athletics dataset had data different metrics captured from Hawkins, Kinexion and Vald. This data was stored in long format for each athlete and test, giving detailed, timestamped performance metrics for the anonymized athletes across multiple teams across various metrics and data-source devices. Each row had a unique test. About a million rows were usable due to lack of appropriate data.
+The unified collegiate athletics dataset had data different metrics captured from Hawkins, Kinexion and Vald. This data was stored in long format for each athlete and test, giving detailed, timestamped performance metrics for the anonymized athletes across multiple teams across various metrics and data-source devices. Each row had a unique test. About a million rows were unusable due to lack of appropriate data.
 
 [TOC](#table-of-contents)
 
@@ -103,7 +103,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 - Paul Quimbo: Lead Coder
 - Briggs Prashar: Project Lead
 
-*Details under Resources > Team in `Project.md`*
+*Details under Resources > Team Members in `Project.md`*
 
 <br />
 
