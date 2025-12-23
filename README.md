@@ -96,11 +96,11 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 ## 2. Team 
 
-- Siddikha Abrahim: Research Analyst
+- Siddikha Abrahim: Research Assistant
 - Naira Khergiani: Research Analyst
 - Jaison Philip: Research Analyst
-- Paul Quimbo: Lead Coder
-- Briggs Prashar: Project Lead
+- <a href="https://github.com/paulquimbo">Paul Quimbo</a>: Lead Coder
+- <a href="https://github.com/briggsprashar">Briggs Prashar</a>: Project Lead
 
 *Details under Resources > Team Members in `Project.md`*
 
@@ -225,7 +225,7 @@ Part 3 - Visualizations
     ```bash
     jupyter notebook workflow
     ```
-- Extracted output(s): `selected_players_data.csv` - only contains 4 players with 5 metrics with slope, trending and p_value.
+- Extracted output(s): `selected_players_data.csv` - only contains 4 players with 5 metrics with slope, trending and p_value.
 
 - Script file name with output: `part3.2_viz_comparison.ipynb` 
 - Use the .ipynb files in Jupyter notebooks to generate visualizations from source files listed in the code. Save these source files in a separate folder.
@@ -248,7 +248,7 @@ Part 4 - Flagging Logic
     - `risky_players_2025.csv` - contains STD threshold, percentile threshold, riskSTD and riskPercentile
     - `athletes_overdue_testing.csv` contains players not tested more than 30 days
     - `part4_flagged_only.csv` - list of players that are flagged only
-    - `part4_flagged_all_players.csv` - list of players 
+    - `part4_flagged_all_players.csv` - list of players 
 
 
 <br />
@@ -270,7 +270,7 @@ Part 4 - Flagging Logic
 │   ├── Part3_Player_analysis.pdf              # Individual player analysis
 │   ├── Part4_Justification.pdf                # Performance Monitoring Flag System: Threshold Justification
 │   ├── Part4_FlagSystem.pdf                   # Explains the Flagging Logic
-│   ├── Part4_Research_Synthesis.PDF           # 
+│   ├── Part4_Research_Synthesis.pdf           # see Part4_Research_Synthesis.md
 │   ├── Part4_Presentation.pdf                 # Presentation of project overview
 │   ├── Part5_Observations_Limitations.pdf     # Observations and limitations in the project
 ├── output/
@@ -286,6 +286,7 @@ Part 4 - Flagging Logic
 │   └── part4.1_flags.py                       # Threshold logic, decline detection, and flag generation 
 ├── teamworkspacescripts/
 ├── .gitignore                                 # .env, raw files, etc to ignore
+├── Part4_Research_Synthesis.md                # Synthesis this research-based project
 ├── Project.md                                 # Comprehensive project details
 ├── README.md                                  # Project overview
 ├── references.md                              # References/sources used in literature review and documentation

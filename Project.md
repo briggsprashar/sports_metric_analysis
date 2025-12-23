@@ -1,4 +1,3 @@
-Project.md
 # Athletics Performance Analytics
 
 *Refer to [README.md](https://github.com/SBU-Sports-Metrics/507_groupproject_2025/blob/main/README.md) for an overview about reproducing project*
@@ -19,13 +18,14 @@ Project.md
 12. [Operationalizing Thresholds](#operationalizing-thresholds) 
 13. [Flag System](#flag-system)
 14. [Recommendations](#recommendations)
-15. [Part 4 Key Insights](#part-4-key-insights)
-16. [Closing Remarks](#closing-remarks)
-17. [Limitations](#limitations)
-18. [Was the research question answered?](#was-the-research-question-answered)
-19. [Resources](#resources)
+15. [Practical Applications](#practical-applications-and-utility)
+16. [Part 4 Key Insights](#part-4-key-insights)
+17. [Closing Remarks](#closing-remarks)
+18. [Limitations](#limitations)
+19. [Was the research question answered?](#was-the-research-question-answered)
+20. [Resources](#resources)
         (*Includes Tools & Team Members*)
-20. [References](#references)
+21. [References](#references)
 
 ## Description
 
@@ -36,9 +36,8 @@ The project has been successful in doing the following in sports performance are
 - Exploring the whole dataset based with the aid of a logical framework that bridges various metrics and devices with well researched logic and body-of-work.
 - Standardizing thresholds across systems.
 - Building a foundation for multi-metric performance metrics that build on the likes of fatigue detection models and others.
-- Supporting consistent and reproducible athletic testing and monitoring in collegiate settings for both male and female athletes.
-
-*Refer to `Part1_Framework.pdf` for details on framework.*
+- Supporting consistent and reproducible athletic testing and monitoring in collegiate settings for both male and female athletes. <br />
+<sub>^<sub> Refer to `Part1_Framework.pdf` for details on framework.
 
 [TOC](#table-of-contents)
 
@@ -48,15 +47,12 @@ The project has been successful in doing the following in sports performance are
 
 **Part 1: Data Connection and Exploration**
 
-This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexion, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Database table used for the project: `research_experiment_refactor_test`
-
-*Refer to `Part1_Summary.pdf` for details*
-
-*Refer to `Part1_LitReview.pdf` for literature review*
+This phase was about connecting to the database, checking data quality, exploring the available performance metrics, and choosing five metrics for detailed study. SQL and Python (SQLAlchemy and pandas) were used to assess whether the data was complete, which data-sources  (Hawkins, Kinexion, or Vald) were covered, how, time-span, athlete coverage, and metric identification. This phase aimed to lay a solid foundation for further analysis by identifying reliable, well-represented metrics based records. By focusing on well represented device- and team-focused metrics-based data, subsequent steps would be grounded in both representative and best possible data to get statistically sound insights to answer the research question. A **literature review** was conducted to get to the research question. This phase helped create a solid foundation to derive practically applicable insights from the data, identify gaps, and note data issues. Database table used for the project: `research_experiment_refactor_test`. <br />
+<sub>^<sub> Refer to `Part1_Summary.pdf` for details & `Part1_LitReview.pdf` for literature review
 
 **Part 2: Data Cleaning and Transformation**
 
-This phase was about wrangling the data to extract usable, meaningful and representative data ready for analysis. It involved cleaning, transforming, and fixing the raw data to ensure it is usable, consistent and representable. The output was structured as a data set suitable for statistical testing and visualization. 
+This phase was about wrangling the data to extract usable, meaningful and representative data ready for analysis. It involved cleaning, transforming, and fixing the raw data to ensure it is usable, consistent and representable. The output was structured as a dataset suitable for statistical testing and visualization. 
 
 **Part 3: Longitudinal Analysis and visualization**
 
@@ -162,9 +158,9 @@ Vald
 
 ### 1.4 Brief review of literature and metric selection
 
-Refer to `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed the theoretical framework for this inquiry.
-
-Refer to `Part1_LitReview.pdf` for literature review.
+Refer to:
+- `Part1_Framework.pdf` for more on why RFD and ME&GC constructs formed the theoretical framework for this inquiry
+- `Part1_LitReview.pdf` for literature review
 
 ## Research Question
 > What are the most important metrics for Rate of Force Development (RFD) and Movement-Efficiency & Gait-Complexity (ME&GC), and how do female and male athletes perform in these metrics?
@@ -201,8 +197,9 @@ The 5 metrics were selected because of the properties of correlation and their p
 | Peak Propulsive Power (PPP) | Explosive force production[^3]     | Sensitive to micro-fatigue[^4]|
 | Peak Velocity        | Measures movement efficiency & output[^5]  | >10% asymmetry meaningful[^6]|
 | Speed Max            | High-speed performance and positional analysis[^7] | <90% of best = underperformance[^8]|
-| Distance Total       | Indicates cumulative load & ACWR spikes[^9] | >20% ACWR associated with risk[^10]|
-*References section is at the end*
+| Distance Total       | Indicates cumulative load & ACWR spikes <sup>*<sup> [^9] | >20% ACWR associated with risk[^10]|
+
+<sub>*<sub> ACWR: Acute Chronic Workload Ratio | References section is at the end
 
 Some of the thresholds above changed later in Part 4 after digging deeper into the literature was needed to build the Flagging system
 
@@ -233,10 +230,10 @@ These 5 metrics were explored only for `Basketball` as both Women's Basketball a
 | Peak Velocity (m/s) | Hawkins | Men's Basketball | <3.0 | 3.0–4.5 | >4.5 |
 | | | Women's Basketball | <2.5 | 2.5–4.0 | >4.0 |
 | | | Football | <3.0 | 3.0–4.5 | >4.5 |
-| Speed Max (m/s) | Kinexon | Men's Basketball | <4.0 | 4.0–7.5 | >7.5 |
+| Speed Max (m/s) | Kinexion | Men's Basketball | <4.0 | 4.0–7.5 | >7.5 |
 | | | Women's Basketball | <3.5 | 3.5–7.5 | >7.5 |
 | | | Football | <5.0 | 5.0–8.5 | >8.5 |
-| Distance Total (m) | Kinexon | Men's Basketball | <4000 | 4000–7000 | >7000 |
+| Distance Total (m) | Kinexion | Men's Basketball | <4000 | 4000–7000 | >7000 |
 | | | Women's Basketball | <3500 | 3500–6000 | >6000 |
 | | | Football | <8000 | 8000–11500 | >11500 |
 ___
@@ -250,7 +247,7 @@ ___
 > **Note:** Football records show the contrast with not only women basketball players but also with women Baskteball players, indicating how different sports might be tracking different metrics and performance measures due to different performance expectations and Low/Normal/Peak ranges as is shown in `1.4.2` above. This was also confirmed later in `part3.2_viz_comparison.ipynb` with Box and Violin Plot Analysis for all sports with selected 5 metrics.
 ___
 
-*Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.*
+<sub>^<sub> Refer to `Part1_Metrics.pdf` for additional work done to select the metrics.
 
 [TOC](#table-of-contents)
 
@@ -266,13 +263,15 @@ ___
 
 <img src="IMAGES/2.1.1_nulls_lookback.png" alt="most nulls or zero look back prd" width= "600">
 
-*mRSI was later not used in the final analysis*
+<sub>^<sub> mRSI was later not used in the final analysis
 
 2.1.2 
 
 ### % of athletes with > 5 measurements
 
 <img src="IMAGES/2.1.2.png" alt=">=5 tests" width= "500">
+
+<br />
 
 <img src="IMAGES/2.1.2viz.png" alt=">=5 tests viz" width= "900">
 
@@ -330,7 +329,8 @@ As these 7 questions can be adequately answered in this  data-project, it can be
 
 The following parts are included in `part3.1_viz_individual.ipynb`
 
-3.1.1 Line plots 6-12 months: The time series line plots with markers may look a little crowded, but does the job for this project. Code is in ***3.1A** in part3.1_viz_individual.ipynb*.
+3.1.1 Line plots 6-12 months: The time series line plots with markers may look a little crowded, but does the job for this project. <br />
+<sub>^<sub> Code is in ***3.1A** in part3.1_viz_individual.ipynb*.
 
 Peak Propulsive Power
 
@@ -362,7 +362,8 @@ Distance Total
 
 <br />
 
-3.1.2 Best and worst performance dates: There are many reasons this data is not accurate as there are gaps and inconsistent testing. Code is in ***3.1B** in part3.1_viz_individual.ipynb*.
+3.1.2 Best and worst performance dates: There are many reasons this data is not accurate as there are gaps and inconsistent testing. <br />
+<sub>^<sub> Code is in ***3.1B** in part3.1_viz_individual.ipynb*.
 
 3.1.3 Trend (regression): Code is in ***3.1C** in part3.1_viz_individual.ipynb*.
 
@@ -386,7 +387,7 @@ Distance Total
 
 Yes, trends were seen. as expected with inconsistent thresholds and the nature of dynamic human physiologic systems and the attempt to capture their performance with basic metrics without use of a composite index based derived metric.
 
-**Surprises**
+##Surprises
 
 - Female players not tested as much as the male players (confirms existing knowledge)
 - Female players have more speed max values than male players, and their distance total is almost the same as men.
@@ -395,8 +396,6 @@ Yes, trends were seen. as expected with inconsistent thresholds and the nature o
 - There are not enough construct-based studies to actually understand bodily systems and sports performance (as attempted in this project with RFD and ME&GC). Studies that do construct based studies point to limitations in combining metrics meaningfully.
 
 ### 3.2 Team Comparison Analysis
-
-*Refer to `part3.2_viz_comparison.ipynb` for all visualizations and full analysis*
 
 3.2.1 Comparing the 5 selected metric(s) between teams. Code is part of ***`3.2A`** in part3_viz_comparison.ipynb*
 
@@ -409,7 +408,9 @@ Gender stratified aggregate plots
 **Interpretation:** "Gender as a moderator" visual clearly shows that between both basketball teams, Total Distance is almost the same, and women have a higher speed max. Gender as a moderator plays a role. 
 - However, it is also seen that in Speed Max line plot in 3.1.1 above, between April 2025 and July 2025 male players had considerably more Speed Max tests than female players. Could this be the reason that women players have a higher Speed Max?   
 - The exact same exact case happens in Total Distance lie plot in 3.1.1 above, where between between April 2025 and July 2025 male players had considerably more Total Distance tests than female players. Could this be the reason that women players almost similar Total Distance results? 
-- Were the results in both Total Distance and Speed Max skewed by the more testing frequency of male players in the 4 month period?
+- Were the results in both Total Distance and Speed Max skewed by the more testing frequency of male players in the 4 month period? 
+
+<sub>^<sub> Refer to `part3.2_viz_comparison.ipynb` for all visualizations and full analysis
 
 <br />
 
@@ -582,15 +583,13 @@ To address these issues, the 5 metrics, consistently represented in both men’s
 
 <br />
 
-The performance monitoring flag system highlights essential changes in athlete performance, training load, and testing consistency. It uses individual baselines, statistical benchmarks, and team norms for a multi-layered approach. Thresholds are based on physiological logic, best practices, and reliable statistics.
-
-*For more information refer to `Part4_FlagSystem.pdf`* for explanation about the flag system**
+The performance monitoring flag system highlights essential changes in athlete performance, training load, and testing consistency. It uses individual baselines, statistical benchmarks, and team norms for a multi-layered approach. Thresholds are based on physiological logic, best practices, and reliable statistics. <br />
+<sub>^<sub> For more information refer to `Part4_FlagSystem.pdf`* for explanation about the flag system
 ​
 ### Data Cleaning and Validity Thresholds
 
-Before applying any flags, the dataset was cleaned using linear interpolation and carry-forward/backfill methods. Implausible values were removed using gender-specific physiological cut-offs, leaving only realistic data for baselines and risk checks. 
-
-*For more information refer to `Part4_Justification.pdf`*
+Before applying any flags, the dataset was cleaned using linear interpolation and carry-forward/backfill methods. Implausible values were removed using gender-specific physiological cut-offs, leaving only realistic data for baselines and risk checks. <br />
+<sub>^<sub> For more information refer to `Part4_Justification.pdf`
 
 [TOC](#table-of-contents)
 
@@ -726,9 +725,7 @@ The following limitations can be seen in sports performance measurement and spor
 - Contextual factors like injury, fatigue, practice type, etc. are often not measured and accounted for in sports testing.
 - More data also tends to create higher averages.
 
-*Refer to `Part5_Observations_Limitations.pdf` for additional information*
-
-<br />
+<sub>^<sub>Refer to `Part5_Observations_Limitations.pdf` for additional information
 
 [TOC](#table-of-contents)
 
