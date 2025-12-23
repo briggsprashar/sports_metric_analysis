@@ -387,7 +387,7 @@ Distance Total
 
 Yes, trends were seen. as expected with inconsistent thresholds and the nature of dynamic human physiologic systems and the attempt to capture their performance with basic metrics without use of a composite index based derived metric.
 
-##Surprises
+## Surprises
 
 - Female players not tested as much as the male players (confirms existing knowledge)
 - Female players have more speed max values than male players, and their distance total is almost the same as men.
