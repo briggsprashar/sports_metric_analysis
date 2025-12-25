@@ -96,7 +96,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 
 ## 2. Team 
 
-- Siddikha Abrahim: Research Assistant
+- Siddikha Abrahim: Research Analyst
 - Naira Khergiani: Research Analyst
 - Jaison Philip: Research Analyst
 - <a href="https://github.com/paulquimbo">Paul Quimbo</a>: Lead Coder
