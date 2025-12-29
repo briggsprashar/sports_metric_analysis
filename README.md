@@ -86,7 +86,7 @@ The unified collegiate athletics dataset had data different metrics captured fro
 **Project Management**
 
 - This <a href="https://github.com/SBU-Sports-Metrics/Project-Workflow">artifact</a> was used to initially establish a workflow
-- Later <a href="https://github.com/orgs/SBU-Sports-Metrics/projects/1/views/1">GitHub Project</a> was used to manage the full project lifecycle.
+- Later <a href="https://github.com/users/briggsprashar/projects/1">GitHub Project</a> was used to manage the full project lifecycle.
 
 <br />
 
